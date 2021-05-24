@@ -1,0 +1,32 @@
+package it.polimi.ingsw.observer;
+
+import it.polimi.ingsw.model.MarbleMarket.Market;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MarketObservable {
+
+    private final List<MarketObserver> observers = new ArrayList<>();
+
+    public void addObserver(MarketObserver observer){
+        synchronized (observers) {
+            observers.add(observer);
+        }
+    }
+
+    public void removeObserver(MarketObserver observer){
+        synchronized (observers) {
+            observers.remove(observer);
+        }
+    }
+
+    public void notifyMarketState(Market market){
+        synchronized (observers) {
+            for(MarketObserver observer : observers){
+                observer.updateMarketState(market);
+            }
+        }
+    }
+
+}

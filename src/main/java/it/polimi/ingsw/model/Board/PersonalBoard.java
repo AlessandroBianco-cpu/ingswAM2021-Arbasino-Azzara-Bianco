@@ -7,11 +7,12 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.QuantityResource;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.model.VaticanReporter;
+import it.polimi.ingsw.observer.ProductionZoneObservable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalBoard {
+public class PersonalBoard extends ProductionZoneObservable {
 
     private ResourcesStock generalResource;
     private Strongbox strongbox;
@@ -62,10 +63,15 @@ public class PersonalBoard {
 
     public void addExtraDevSlot(ExtraDevCard card){
         devCardSlots.add(new ExtraDevSlot(card));
+        notifyPersonalBoardState(this);
     }
 
     public int getNumOfExtraDevCards(){
         return devCardSlots.size()-4;
+    }
+
+    public Player getOwner() {
+        return owner;
     }
 
     public void setBasePowerInput(ResourceType firstInput, ResourceType secondInput){
@@ -118,7 +124,6 @@ public class PersonalBoard {
                 return false;
         }
         return true;
-        //TODO discount!!!
     }
 
     /**
@@ -134,24 +139,30 @@ public class PersonalBoard {
         return counter >= r.getQuantity();
     }
 
-    /**
+     /**
      * This methods is used to sum all the productionPowerInputs of the given slots
-     * @param activeProductionSlots List of indexes of slots to active
+     * @param productionSlotsToActivate List of indexes of slots to active
      * @return the sum of all requirements grouped by ResourceType
      */
-    public List<QuantityResource> sumProductionPowerInputs(List<Integer> activeProductionSlots){
-        List<QuantityResource> sumList = new ArrayList<>();
+     public List<QuantityResource> sumProductionPowerInputs(List<Integer> productionSlotsToActivate){
+        List<QuantityResource> sumResources = new ArrayList<>();
 
-        for(int i : activeProductionSlots)
-            for(QuantityResource q : devCardSlots.get(i).getProductionPowerInput()){
-                int indexWithResourceType = isAlreadyIn(sumList, q.getResourceType());
-                if (indexWithResourceType == NOT_IN_LIST)
-                    sumList.add(q);
-                else
-                    sumList.get(indexWithResourceType).setQuantity(
-                            sumList.get(indexWithResourceType).getQuantity() + q.getQuantity());
+        for(int i : productionSlotsToActivate){
+            List<QuantityResource> productionResource = devCardSlots.get(i).getProductionPowerInput();
+            for(QuantityResource q : productionResource){
+                int indexWithSameResource = isAlreadyIn(sumResources, q.getResourceType());
+                if(indexWithSameResource == NOT_IN_LIST){
+                    QuantityResource toAdd = new QuantityResource(q.getResourceType(), q.getQuantity());
+                    sumResources.add(toAdd);
+                }else{
+                    int oldQuantity = sumResources.get(indexWithSameResource).getQuantity();
+                    int newQuantity = oldQuantity + q.getQuantity();
+                    sumResources.get(indexWithSameResource).setQuantity(newQuantity);
+                }
             }
-        return sumList;
+        }
+
+        return sumResources;
     }
 
     public boolean canAddResourceInWarehouse(ResourceType resourceType, int shelfIndex){
@@ -212,6 +223,10 @@ public class PersonalBoard {
         generalResource.decreaseStock(quantityResource);
     }
 
+    /**
+     * @param quantityResource Quantity Resource to check
+     * @return true if strongbox has enough resources of the given type
+     */
     public boolean strongboxHasEnoughResources(QuantityResource quantityResource){
         return strongbox.hasEnoughResources(quantityResource);
     }
@@ -247,10 +262,31 @@ public class PersonalBoard {
      * @return true if player can activate the production with the given input, false otherwise
      */
     public boolean canUseDevCards(List<Integer> productionSlotsIndexes){
+        if (!(indexesInListAreInBound(productionSlotsIndexes)))
+                return false;
         return (satisfiedResourceRequirement(sumProductionPowerInputs(productionSlotsIndexes)));
     }
 
+    /**
+     * Check if indexes are in bound
+     * @param indexes list of indexes to check if are all in bound
+     * @return true if all indexes are in bound
+     */
+    private boolean indexesInListAreInBound(List<Integer> indexes){
+        for(int n : indexes){
+            if (n < 0 || (n > devCardSlots.size() - 1))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Method used to know whether a single DevSlot can be used
+     * @param productionSlotIndex index of the slot to check
+     * @return true if can be used, false otherwise
+     */
     public boolean canUseDevSlot(int productionSlotIndex){
+        if(productionSlotIndex < 0 || (productionSlotIndex > devCardSlots.size() - 1))
         if (devCardSlots.get(productionSlotIndex).hasCards())
             return satisfiedResourceRequirement(devCardSlots.get(productionSlotIndex).getProductionPowerInput());
         return false;
@@ -268,7 +304,6 @@ public class PersonalBoard {
         return false;
     }
 
-    //TODO nome più esplicativo per il metodo
     /**
      * Method used to remove a specified resourceType from the different resource spots to pay cards or activate production
      * @param fromStrongbox number of resource to take from Strongbox
@@ -276,12 +311,11 @@ public class PersonalBoard {
      * @param fromExtraDepot number of resource to take from ExtraDepot
      * @param resourceType type of resource to remove
      */
-    public void specialDecreaseResources(int fromStrongbox, int fromWarehouse, int fromExtraDepot, ResourceType resourceType) {
+    public void removeResourcesInResourceSpots (int fromStrongbox, int fromWarehouse, int fromExtraDepot, ResourceType resourceType) {
         removeResourcesFromStrongBox(new QuantityResource(resourceType,fromStrongbox));
         removeResourcesFromWarehouse(new QuantityResource(resourceType,fromWarehouse));
         removeResourcesFromExtraDepot(new QuantityResource(resourceType,fromExtraDepot));
     }
-
 
     /**
      * This method adds to the Player the resources of the cards chosen during after the Production
@@ -339,7 +373,34 @@ public class PersonalBoard {
         if(numberBoughtCards == CARDS_TO_END_GAME){
             owner.notifyLastRound();
         }
+        notifyPersonalBoardState(this);
     }
 
+    public boolean canPlaceDevCardOnDevSlot(DevCard devCard, int devCardSlotIndex){
+        if(devCardSlotIndex < 1 || devCardSlotIndex > 3)
+            return false;
 
+        return devCard.getLevel() == ( ((DevCardSlot) (devCardSlots.get(devCardSlotIndex))).getTopCardLevel() + 1);
+    }
+
+    public DevCard[] getTopDevCardsInSlots(){
+        DevCard[] topDev = new DevCard[3];
+        //starts from 1 because we have the board base power in the index 0
+        for(int i = 0; i<3; i++){
+            topDev[i] = ((DevCardSlot)devCardSlots.get(i+1)).getTopCard();
+        }
+        return topDev;
+    }
+
+    public List<ExtraDevCard> getTopExtraDevCardsInSlots() {
+        List<ExtraDevCard> topExtra = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            if (i < getNumOfExtraDevCards()) {
+                topExtra.add(((ExtraDevSlot) devCardSlots.get(i + 4)).getCard());
+            } else {
+                topExtra.add(null);
+            }
+        }
+        return topExtra;
+    }
 }

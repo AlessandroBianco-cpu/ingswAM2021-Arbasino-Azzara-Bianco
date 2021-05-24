@@ -1,0 +1,22 @@
+package it.polimi.ingsw.controller.playersState;
+
+import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.networking.message.EndTurnMessage;
+import it.polimi.ingsw.networking.message.Message;
+
+public class AfterMainActionState extends PlayerState{
+
+    public AfterMainActionState(Controller controller) {
+        super(controller);
+    }
+
+    @Override
+    public void performAction(Message message) {
+        if (message instanceof EndTurnMessage){
+            controller.setCurrentPlayerWantToEndTurn(true);
+        } else {
+            baseActionsOutsideMainAction(message);
+        }
+    }
+
+}

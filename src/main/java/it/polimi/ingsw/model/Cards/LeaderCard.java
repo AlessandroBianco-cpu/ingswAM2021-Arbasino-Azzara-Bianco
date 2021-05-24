@@ -48,4 +48,8 @@ public abstract class LeaderCard extends Card {
     public boolean isExtraDepotCard(){
         return false;
     }
+
+    public void attivazioneCartaPerTestareCarteLight(){
+        active=true;
+    }
 }

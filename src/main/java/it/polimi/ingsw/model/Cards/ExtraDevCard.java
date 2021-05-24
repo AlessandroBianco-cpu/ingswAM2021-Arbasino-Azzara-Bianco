@@ -21,4 +21,6 @@ public class ExtraDevCard extends LeaderCard{
     public boolean isExtraDevCard() {
         return true;
     }
+
+
 }

@@ -14,13 +14,19 @@ import java.util.List;
 public abstract class Game implements VaticanReporter {
 
     List<Player> players = new LinkedList<>();
-
-
     protected Market market = new Market();
     protected LeaderDeck leaderDeck;
     protected boolean lastRound = false;
     protected DevCardMarket devCardMarket = new DevCardMarket();
     protected int vaticanReportCounter = 0;
+
+    public void addPlayers(List<Player> playersToAdd) {
+        for(Player p : playersToAdd ){
+            if(!players.contains(p)){
+                players.add(p);
+            }
+        }
+    }
 
     public List<Player> getPlayers() {
         return players;
@@ -66,6 +72,10 @@ public abstract class Game implements VaticanReporter {
 
     public void activateLastRound() {
         lastRound = true;
+    }
+
+    public boolean isLastRound(){
+        return lastRound;
     }
 
     public Player computeWinnerPlayer(){

@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.LorenzoGameMethods;
 import it.polimi.ingsw.model.LorenzoIlMagnifico.LorenzoIlMagnifico;
 import it.polimi.ingsw.model.Player;
 
-public class SinglePlayerGame extends Game implements LorenzoGameMethods {
+import java.io.Serializable;
+
+public class SinglePlayerGame extends Game implements LorenzoGameMethods, Serializable {
 
     private LorenzoIlMagnifico lorenzoIlMagnifico;
     private final int NOT_AVAILABLE_DECK = -1;
@@ -21,7 +23,7 @@ public class SinglePlayerGame extends Game implements LorenzoGameMethods {
         lorenzoIsWinner = true;
     }
 
-    public boolean getLorenzoWin(){return lorenzoIsWinner;}
+    public boolean isLorenzoWinner(){return lorenzoIsWinner;}
 
     @Override
     public void throwCardByColor(DevCardColor color){
@@ -34,6 +36,7 @@ public class SinglePlayerGame extends Game implements LorenzoGameMethods {
             destroyedCards++;
             indexAvailable = devCardMarket.firstAvailableDeckByColor(colorCode);
         }
+        devCardMarket.notifyDevCardMarketState(devCardMarket);
         if(indexAvailable == NOT_AVAILABLE_DECK){
             setLorenzoWin();
         }

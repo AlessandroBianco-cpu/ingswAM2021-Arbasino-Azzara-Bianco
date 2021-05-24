@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model.Board;
 
 import it.polimi.ingsw.model.VaticanReporter;
+import it.polimi.ingsw.observer.FaithTrackObservable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class FaithTrack {
+public class FaithTrack extends FaithTrackObservable {
 
     private Map<Integer, Integer> faithTrack = new HashMap<>();
 
@@ -15,6 +16,10 @@ public class FaithTrack {
     private boolean firstVaticanReportHasOccurred;
     private boolean secondVaticanReportHasOccurred;
     private boolean thirdVaticanReportHasOccurred;
+
+    private boolean firstVaticanSectionPointsAchieved;
+    private boolean secondVaticanSectionPointsAchieved;
+    private boolean thirdVaticanSectionPointsAchieved;
 
     private final int FIRST_VATICAN_SECTION = 5;
     private final int SECOND_VATICAN_SECTION = 12;
@@ -85,20 +90,26 @@ public class FaithTrack {
 
         for (int i = 0; i < n; i++)
             updatePosition();
+
+        notifyFaithTrackState(this);
     }
 
     private void firstVaticanReport(){
         if (!firstVaticanReportHasOccurred){
-            if (position >= FIRST_VATICAN_SECTION)
+            if (position >= FIRST_VATICAN_SECTION){
                 vaticanReportFaithPoints += FIRST_POPE_FAVOR_TILE_SCORE;
+                firstVaticanSectionPointsAchieved = true;
+            }
             firstVaticanReportHasOccurred = true;
         }
     }
 
     private void secondVaticanReport(){
         if (!secondVaticanReportHasOccurred){
-            if (position >= SECOND_VATICAN_SECTION)
+            if (position >= SECOND_VATICAN_SECTION){
                 vaticanReportFaithPoints += SECOND_POPE_FAVOR_TILE_SCORE;
+                secondVaticanSectionPointsAchieved = true;
+            }
             secondVaticanReportHasOccurred = true;
         }
 
@@ -106,8 +117,10 @@ public class FaithTrack {
 
     private void thirdVaticanReport(){
         if (!thirdVaticanReportHasOccurred){
-            if (position >= THIRD_VATICAN_SECTION)
+            if (position >= THIRD_VATICAN_SECTION){
                 vaticanReportFaithPoints += THIRD_POPE_FAVOR_TILE_SCORE;
+                thirdVaticanSectionPointsAchieved = true;
+            }
             thirdVaticanReportHasOccurred = true;
         }
     }
@@ -122,6 +135,7 @@ public class FaithTrack {
             case 2: secondVaticanReport(); break;
             case 3: thirdVaticanReport(); break;
         }
+        notifyFaithTrackState(this);
     }
 
     /**
@@ -136,4 +150,15 @@ public class FaithTrack {
         return vaticanReportFaithPoints;
     }
 
+    public boolean isFirstVaticanSectionPointsAchieved() {
+        return firstVaticanSectionPointsAchieved;
+    }
+
+    public boolean isSecondVaticanSectionPointsAchieved() {
+        return secondVaticanSectionPointsAchieved;
+    }
+
+    public boolean isThirdVaticanSectionPointsAchieved() {
+        return thirdVaticanSectionPointsAchieved;
+    }
 }

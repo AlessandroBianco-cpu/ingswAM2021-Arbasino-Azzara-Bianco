@@ -9,4 +9,9 @@ public class PurpleToken extends ColoredToken{
         super(lorenzoGameMethods);
         this.color = DevCardColor.PURPLE;
     }
+
+    @Override
+    public boolean isPurple() {
+        return true;
+    }
 }

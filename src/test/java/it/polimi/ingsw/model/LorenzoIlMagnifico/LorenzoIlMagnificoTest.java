@@ -59,7 +59,7 @@ class LorenzoIlMagnificoTest {
             token.doAction();
         }
 
-        assertTrue(game.getLorenzoWin());
+        assertTrue(game.isLorenzoWinner());
 
     }
 

@@ -9,4 +9,9 @@ public class YellowToken extends ColoredToken {
         super(lorenzoGameMethods);
         this.color = DevCardColor.YELLOW;
     }
+
+    @Override
+    public boolean isYellow() {
+        return true;
+    }
 }

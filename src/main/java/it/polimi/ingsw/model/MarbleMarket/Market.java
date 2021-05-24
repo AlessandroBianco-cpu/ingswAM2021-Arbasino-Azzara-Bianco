@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model.MarbleMarket;
 
+import it.polimi.ingsw.observer.MarketObservable;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Market {
+public class Market extends MarketObservable {
 
     private final int ROW_SIZE = 4;
     private final int COL_SIZE = 3;
@@ -93,6 +95,7 @@ public class Market {
         marbleMatrix[rowIndex][ROW_SIZE - 1] = marbleLeft;
         marbleLeft = tempMarble;
 
+        notifyMarketState(this);
         return marbleLinkedList;
 
     }
@@ -121,6 +124,7 @@ public class Market {
         marbleMatrix[COL_SIZE - 1][colIndex] = marbleLeft;
         marbleLeft = tempMarble;
 
+        notifyMarketState(this);
         return marbleLinkedList;
 
     }

@@ -2,11 +2,12 @@ package it.polimi.ingsw.model.LorenzoIlMagnifico;
 
 import it.polimi.ingsw.model.LorenzoGameMethods;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TokenStack {
+public class TokenStack implements Serializable {
 
     private LorenzoIlMagnifico lorenzoIlMagnifico;
     private List<ActionToken> tokenStack;
@@ -38,10 +39,11 @@ public class TokenStack {
     /**
      * Executes the action of the Token on top of the TokenStack
      */
-    public void executeFirstToken(){
+    public ActionToken executeFirstToken(){
         ActionToken currentToken = ((LinkedList<ActionToken>)tokenStack).pop();
         ((LinkedList<ActionToken>)tokenStack).addLast(currentToken);
         currentToken.doAction();
+        return currentToken;
     }
 
 

@@ -3,11 +3,12 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.Cards.DevCard;
 import it.polimi.ingsw.model.Cards.DevCardColor;
 import it.polimi.ingsw.model.Cards.DevDeck;
+import it.polimi.ingsw.observer.DevCardMarketObservable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DevCardMarket {
+public class DevCardMarket extends DevCardMarketObservable {
     private final int NUMBER_OF_DECKS = 12;
     private final int NOT_AVAILABLE = -1;
     private DevDeck[] devDecks;
@@ -39,7 +40,9 @@ public class DevCardMarket {
     }
 
     public DevCard popDevCardFromIndex(int index){
-        return devDecks[index].popFirstCard();
+        DevCard cardToReturn = devDecks[index].popFirstCard();
+        notifyDevCardMarketState(this);
+        return cardToReturn;
     }
 
     public DevCard getDevCardFromIndex(int index){
@@ -65,6 +68,14 @@ public class DevCardMarket {
 
     public DevDeck getDeckByIndex(int index){
         return devDecks[index];
+    }
+
+    public DevCard[] getTopCards(){
+        DevCard[] devCards = new DevCard[12];
+        for(int i = 0; i < 12; i++) {
+            devCards[i] = getDevCardFromIndex(i);
+        }
+        return devCards;
     }
 
 }

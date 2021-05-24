@@ -42,6 +42,7 @@ class StrongboxTest {
 
     @Test
     void decreaseStrongbox() {
+
         strongbox.increaseStrongbox(new QuantityResource(STONE,2));
         strongbox.increaseStrongbox(new QuantityResource(COIN, 2));
         strongbox.increaseStrongbox(new QuantityResource(SERVANT,1));
@@ -52,6 +53,7 @@ class StrongboxTest {
         assertEquals(0, strongbox.getNumResource(SERVANT));
         assertEquals(0, strongbox.getNumResource(SHIELD));
         assertEquals(2, strongbox.getNumResource(STONE));
+
     }
 
     @Test

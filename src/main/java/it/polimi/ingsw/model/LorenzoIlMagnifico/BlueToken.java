@@ -10,4 +10,8 @@ public class BlueToken extends ColoredToken{
         this.color = DevCardColor.BLUE;
     }
 
+    @Override
+    public boolean isBlue() {
+        return true;
+    }
 }

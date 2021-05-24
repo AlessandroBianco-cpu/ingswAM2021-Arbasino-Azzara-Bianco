@@ -19,4 +19,9 @@ public class ShuffleToken extends ActionToken{
         lorenzoIlMagnifico.advance();
         tokenStack.shuffleStack();
     }
+
+    @Override
+    public boolean isShuffle() {
+        return true;
+    }
 }

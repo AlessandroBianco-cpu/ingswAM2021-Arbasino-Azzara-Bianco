@@ -12,16 +12,23 @@ public class ExtraDevSlot extends ProductionSlot{
 
     private List<QuantityResource> productionPowerInput;
     private List<QuantityResource> productionPowerOutput;
+    private ExtraDevCard card;
 
     public ExtraDevSlot(ExtraDevCard card){
+        this.card = card;
+
         this.productionPowerInput = new ArrayList<>();
         productionPowerInput.add(new QuantityResource(card.getAbilityResource(), 1));
 
         this.productionPowerOutput = new ArrayList<>();
     }
 
+    public ExtraDevCard getCard() {
+        return card;
+    }
+
     public void setProductionPowerOutput(ResourceType output) {
-        productionPowerInput.clear();
+        productionPowerOutput = new ArrayList<>();
         productionPowerOutput.add(new QuantityResource(ResourceType.FAITH,1));
         productionPowerOutput.add(new QuantityResource(output,1));
     }

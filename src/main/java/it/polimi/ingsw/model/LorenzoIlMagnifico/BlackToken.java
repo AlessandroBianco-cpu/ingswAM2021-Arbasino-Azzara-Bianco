@@ -18,4 +18,8 @@ public class BlackToken extends ActionToken{
             lorenzoIlMagnifico.advance();
     }
 
+    @Override
+    public boolean isBlack() {
+        return true;
+    }
 }

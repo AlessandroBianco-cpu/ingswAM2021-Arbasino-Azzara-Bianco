@@ -23,7 +23,8 @@ class SinglePlayerGameTest {
 
     @Test
     void lorenzoCorrectlyAdvance(){
-        Player player = new Player(singlePlayerGame, "player", singlePlayerGame.getDevCardMarket());
+        Player player = new Player("daniele");
+        player.setGame(singlePlayerGame);
         List<Player> listOfPlayers = singlePlayerGame.getPlayers();
         listOfPlayers.add(player);
         List<Marble> marbles = new ArrayList<>();

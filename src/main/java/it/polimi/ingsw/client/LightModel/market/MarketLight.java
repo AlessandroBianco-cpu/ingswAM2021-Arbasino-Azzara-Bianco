@@ -1,0 +1,93 @@
+package it.polimi.ingsw.client.LightModel.market;
+
+import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.networking.message.updateMessage.MarketUpdateMessage;
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class MarketLight {
+
+    private final int ROW_SIZE = 4;
+    private final int COL_SIZE = 3;
+
+    private MarbleLight[][] marbleMatrix;
+    private MarbleLight marbleLeft;
+
+    public MarketLight() {
+        marbleMatrix = new MarbleLight[COL_SIZE][ROW_SIZE];
+    }
+
+    public void updateMarketLight(MarketUpdateMessage message){
+        List<ResourceType> marbleUpdate = message.getMarketStatus();
+        for(int i = 0; i < COL_SIZE; i++)
+            for (int j = 0; j < ROW_SIZE; j++)
+                marbleMatrix[i][j] = parseResource(marbleUpdate.remove(0));
+
+        marbleLeft = parseResource(message.getMarbleLeft());
+    }
+
+
+    private MarbleLight parseResource(ResourceType resource){
+        switch (resource){
+            case SERVANT:
+                return new PurpleMarbleLight();
+            case COIN:
+                return new YellowMarbleLight();
+            case SHIELD:
+                return new BlueMarbleLight();
+            case STONE:
+                return new GreyMarbleLight();
+            case FAITH:
+                return new RedMarbleLight();
+            default:
+                return new WhiteMarbleLight();
+        }
+    }
+
+    public void print(){
+        System.out.println("Market");
+        for (int i = 0; i < COL_SIZE; i++){
+            System.out.print(i+1 + " ");
+            for (int j = 0; j < ROW_SIZE; j++){
+                System.out.print(marbleMatrix[i][j].toString() + " ");
+            }
+            System.out.println();
+        }
+        System.out.print("  ");
+        System.out.print("\u20091 ");
+        System.out.print("\u20092 ");
+        System.out.print("\u20093 ");
+        System.out.print("\u20094 \n");
+
+        System.out.print("Marble Left -> " + marbleLeft.toString() + "\n");
+
+    }
+
+    public static void main(String[] args) {
+        MarketLight market = new MarketLight();
+
+        List<ResourceType> resourcesInMarket = new LinkedList<>();
+
+        resourcesInMarket.add(ResourceType.NOTHING);
+        resourcesInMarket.add(ResourceType.COIN);
+        resourcesInMarket.add(ResourceType.STONE);
+        resourcesInMarket.add(ResourceType.SHIELD);
+        resourcesInMarket.add(ResourceType.SHIELD);
+        resourcesInMarket.add(ResourceType.SERVANT);
+        resourcesInMarket.add(ResourceType.SERVANT);
+        resourcesInMarket.add(ResourceType.NOTHING);
+        resourcesInMarket.add(ResourceType.STONE);
+        resourcesInMarket.add(ResourceType.COIN);
+        resourcesInMarket.add(ResourceType.NOTHING);
+        resourcesInMarket.add(ResourceType.FAITH);
+
+        ResourceType resourceLeft = ResourceType.NOTHING;
+
+        MarketUpdateMessage message = new MarketUpdateMessage(resourcesInMarket, resourceLeft);
+
+        market.updateMarketLight(message);
+        market.print();
+    }
+
+}

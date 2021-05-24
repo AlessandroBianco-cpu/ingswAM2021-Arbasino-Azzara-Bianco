@@ -1,7 +1,33 @@
 package it.polimi.ingsw.model.LorenzoIlMagnifico;
 
-public abstract class ActionToken {
+import java.io.Serializable;
+
+public abstract class ActionToken implements Serializable {
 
     abstract void doAction();
+    public boolean isBlack(){
+        return false;
+    }
+
+    public boolean isBlue(){
+        return false;
+    }
+
+    public boolean isGreen(){
+        return false;
+    }
+
+    public boolean isPurple(){
+        return false;
+    }
+
+    public boolean isYellow(){
+        return false;
+    }
+
+    public boolean isShuffle(){
+        return false;
+    }
+
 
 }

@@ -18,6 +18,7 @@ public class BaseDevSlot extends ProductionSlot{
     public BaseDevSlot() {
         productionPowerInput = new ArrayList<>();
         productionPowerOutput = new ArrayList<>();
+
     }
 
     @Override
@@ -36,13 +37,13 @@ public class BaseDevSlot extends ProductionSlot{
     }
 
     public void setProductionPowerInput(ResourceType firstInput, ResourceType secondInput) {
-        productionPowerInput.clear();
+        productionPowerInput = new ArrayList<>();
         productionPowerInput.add( new QuantityResource(firstInput, 1));
         productionPowerInput.add( new QuantityResource(secondInput, 1));
     }
 
     public void setProductionPowerOutput(ResourceType output) {
-        productionPowerInput.clear();
+        productionPowerOutput = new ArrayList<>();
         productionPowerOutput.add(new QuantityResource(output,1));
     }
 

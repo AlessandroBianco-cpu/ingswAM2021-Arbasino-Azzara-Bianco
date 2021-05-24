@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
-public class QuantityResource {
+import java.io.Serializable;
+
+public class QuantityResource implements Serializable {
     private ResourceType resourceType;
     private int quantity;
 

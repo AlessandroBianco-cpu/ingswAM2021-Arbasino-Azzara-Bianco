@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.Cards;
 
-public abstract class Card {
+import java.io.Serializable;
+
+public abstract class Card implements Serializable {
 
     protected int id;
     protected int victoryPoints;

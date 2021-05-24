@@ -11,7 +11,6 @@ import static it.polimi.ingsw.model.ResourceType.*;
 
 public class DevDeck extends Deck{
 
-    //TODO json
     private List <DevCard> cards;
     private List<QuantityResource> costOne;
     private List<QuantityResource> costTwo;
@@ -52,7 +51,9 @@ public class DevDeck extends Deck{
     }
 
     public DevCard getFirstCard(){
-        return cards.get(0);
+        if(cards.size() > 0)
+            return cards.get(0);
+        return null;
     }
 
     public int getDeckSize(){

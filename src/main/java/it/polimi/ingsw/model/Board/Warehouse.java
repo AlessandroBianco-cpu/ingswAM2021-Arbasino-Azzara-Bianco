@@ -3,13 +3,14 @@ package it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.QuantityResource;
 import it.polimi.ingsw.model.ResourceSpot;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.observer.WarehouseObservable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.NOTHING;
 
-public class Warehouse implements ResourceSpot {
+public class Warehouse extends WarehouseObservable implements ResourceSpot {
 
     private final int ERROR = -1;
     private final int NOT_EXISTS = -1;
@@ -31,6 +32,9 @@ public class Warehouse implements ResourceSpot {
      * @param depotTo number of depot player wants to swap resources to
      */
     public boolean swap(int depotFrom, int depotTo) {
+        if(!(depotIndexIsInBound(depotFrom) && depotIndexIsInBound(depotTo)))
+            return false;
+
         if (!(depots[depotFrom].getQuantity() <= depotTo + 1 && depots[depotTo].getQuantity() <= depotFrom + 1))
             return false;
 
@@ -38,23 +42,31 @@ public class Warehouse implements ResourceSpot {
         depots[depotFrom] = depots[depotTo];
         depots[depotTo] = tmp;
 
+        notifyWarehouseState(this);
         return true;
     }
 
-    public boolean canMoveFromWarehouseToExtraDepot(int depotFrom, int toExtraDepot, int quantity){
+    public boolean canMoveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity){
+        if(!(extraDepotIndexIsInBound(extraDepotTo) && depotIndexIsInBound(depotFrom)))
+            return false;
+
         return  depots[depotFrom].getQuantity() >= quantity
-                && ((extraDepots.get(toExtraDepot).getCurrentNumberOfResources()+quantity) <= extraDepots.get(toExtraDepot).getMAX_SIZE()
-                && depots[depotFrom].getResourceType() == extraDepots.get(toExtraDepot).getExtraDepotResourceType());
+                && ((extraDepots.get(extraDepotTo).getCurrentNumberOfResources()+quantity) <= extraDepots.get(extraDepotTo).getMAX_SIZE()
+                && depots[depotFrom].getResourceType() == extraDepots.get(extraDepotTo).getExtraDepotResourceType());
     }
 
-    public void moveFromWarehouseToExtraDepot(int depotFrom, int toExtraDepot, int quantity){
+    public void moveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity){
         depots[depotFrom].decrease(quantity);
         if (depots[depotFrom].getQuantity() == 0)
             depots[depotFrom].setResourceType(NOTHING);
-        extraDepots.get(toExtraDepot).addResource(new QuantityResource(extraDepots.get(toExtraDepot).getExtraDepotResourceType(), quantity));
+        extraDepots.get(extraDepotTo).addResource(new QuantityResource(extraDepots.get(extraDepotTo).getExtraDepotResourceType(), quantity));
+        notifyWarehouseState(this);
     }
 
     public boolean canMoveFromExtraDepotToWarehouse(int extraDepotFrom, int depotTo, int quantity){
+        if(!(extraDepotIndexIsInBound(extraDepotFrom) && depotIndexIsInBound(depotTo)))
+            return false;
+
         return  extraDepots.get(extraDepotFrom).hasEnoughResources(new QuantityResource(extraDepots.get(extraDepotFrom).getExtraDepotResourceType(),quantity))
                 && (depots[depotTo].getQuantity()+quantity) <= (depotTo+1)
                 && (depots[depotTo].getResourceType() == extraDepots.get(extraDepotFrom).getExtraDepotResourceType()
@@ -66,9 +78,13 @@ public class Warehouse implements ResourceSpot {
         for(int i=0; i < quantity; i++){
             addResource(extraDepots.get(extraDepotFrom).getExtraDepotResourceType(), depotTo);
         }
+        notifyWarehouseState(this);
     }
 
     public boolean canAddResourceInWarehouse(ResourceType type, int shelfIndex){
+        if(!(depotIndexIsInBound(shelfIndex)))
+            return false;
+
         if(depots[shelfIndex].getQuantity() < shelfIndex + 1){
             int indexWithSameResource = indexWithSameResource(type);
             if (indexWithSameResource == NOT_EXISTS ){
@@ -97,6 +113,7 @@ public class Warehouse implements ResourceSpot {
             //the shelf chosen is right and there's space to add the resource
             depots[shelfIndex].increase(1);
         }
+        notifyWarehouseState(this);
     }
 
     /**
@@ -128,8 +145,9 @@ public class Warehouse implements ResourceSpot {
     @Override
     public boolean hasEnoughResources(QuantityResource requestedQuantityResource) {
         int indexWithSameResource = indexWithSameResource(requestedQuantityResource.getResourceType());
-        if (indexWithSameResource == NOT_EXISTS)
-            return false;
+        if (indexWithSameResource == NOT_EXISTS){
+            return requestedQuantityResource.getQuantity() <= 0;
+        }
         return depots[indexWithSameResource].getQuantity() >= requestedQuantityResource.getQuantity();
     }
 
@@ -140,9 +158,12 @@ public class Warehouse implements ResourceSpot {
      */
     public void removeResourcesFromWarehouse(QuantityResource quantityResource){
         int indexWithSameResource = indexWithSameResource(quantityResource.getResourceType());
-        depots[indexWithSameResource].decrease(quantityResource.getQuantity());
-        if(depots[indexWithSameResource].getQuantity()==0)
-            depots[indexWithSameResource].setResourceType(NOTHING);
+        if (indexWithSameResource != NOT_EXISTS){
+            depots[indexWithSameResource].decrease(quantityResource.getQuantity());
+            if(depots[indexWithSameResource].getQuantity()==0)
+                depots[indexWithSameResource].setResourceType(NOTHING);
+            notifyWarehouseState(this);
+        }
     }
 
     /**
@@ -151,6 +172,7 @@ public class Warehouse implements ResourceSpot {
      */
     public void addExtraDepot(ResourceType resourceType){
         extraDepots.add(new ExtraDepot(resourceType));
+        notifyWarehouseState(this);
     }
 
     /**
@@ -173,16 +195,21 @@ public class Warehouse implements ResourceSpot {
     public void addInExtraDepot(ResourceType resourceType){
         extraDepots .get(getExtraDepotIndexByResourceType(resourceType))
                     .addResource(new QuantityResource(resourceType, 1));
+        notifyWarehouseState(this);
     }
 
 
     /**
-     * Method used to get a QuantityResource from the extraDepot of the same tipe of the quantity resource given in input
+     * Method used to get a QuantityResource from the extraDepot of the same type of the quantity resource given in input
      * @param quantityResource Resources asked to withdraw
      */
     public void removeResourceFromExtraDepot(QuantityResource quantityResource){
-        extraDepots .get(getExtraDepotIndexByResourceType(quantityResource.getResourceType()))
+        int index = getExtraDepotIndexByResourceType(quantityResource.getResourceType());
+        if(index == NOT_EXISTS)
+            return;
+        extraDepots .get(index)
                     .removeQuantityResource(quantityResource.getQuantity());
+        notifyWarehouseState(this);
     }
 
     public int getExtraDepotIndexByResourceType(ResourceType resourceType){
@@ -199,9 +226,42 @@ public class Warehouse implements ResourceSpot {
      */
     public boolean extraDepotHasEnoughResources(QuantityResource quantityResource){
         int extraDepotIndex = getExtraDepotIndexByResourceType(quantityResource.getResourceType());
+        //because if we are asking for a 0 quantity resource and the XtraDepot does not exist is still valid
         if (extraDepotIndex == NOT_EXISTS)
-            return false;
+            return quantityResource.getQuantity() <= 0;
         return extraDepots.get(extraDepotIndex).hasEnoughResources(quantityResource);
+    }
+
+    /**
+     * Method that returns the complete status of the warehouse, including the eventual two extra depots
+     * @return the array of quantityResource where the current status is stored
+     */
+    public QuantityResource[] getDepots() {
+        QuantityResource[] warehouseStatus = new QuantityResource[5];
+        for(int i = 0; i<NUMBER_OF_DEPOTS; i++){
+            warehouseStatus[i] = depots[i];
+        }
+        if(extraDepots.size() == 0){
+            warehouseStatus[3] = new QuantityResource(NOTHING,0);
+            warehouseStatus[4] = new QuantityResource(NOTHING,0);
+        }else if(extraDepots.size() == 1){
+            warehouseStatus[3] = new QuantityResource(extraDepots.get(0).getExtraDepotResourceType(),extraDepots.get(0).getCurrentNumberOfResources());
+            warehouseStatus[4] = new QuantityResource(NOTHING,0);
+        }else{
+            warehouseStatus[3] = new QuantityResource(extraDepots.get(0).getExtraDepotResourceType(),extraDepots.get(0).getCurrentNumberOfResources());
+            warehouseStatus[4] = new QuantityResource(extraDepots.get(1).getExtraDepotResourceType(),extraDepots.get(1).getCurrentNumberOfResources());
+        }
+        return warehouseStatus;
+    }
+
+    public boolean depotIndexIsInBound(int depotIndex){
+        return depotIndex >= 0 && depotIndex < NUMBER_OF_DEPOTS;
+    }
+
+    public boolean extraDepotIndexIsInBound(int extraDepotIndex){
+        if (extraDepots.size() == 0)
+            return false;
+        return extraDepotIndex >= 0 && (extraDepotIndex <= extraDepots.size() - 1);
     }
 
 }

@@ -6,11 +6,11 @@ import java.util.List;
 
 public class DevCard extends Card {
 
-    private int level;
-    private List<QuantityResource> cost;
-    private DevCardColor color;
-    private List<QuantityResource> productionPowerInput;
-    private List<QuantityResource> productionPowerOutput;
+    private final int level;
+    private final List<QuantityResource> cost;
+    private final DevCardColor color;
+    private final List<QuantityResource> productionPowerInput;
+    private final List<QuantityResource> productionPowerOutput;
 
     public DevCard(int victoryPoints, int level, int id, List<QuantityResource> cost, DevCardColor color,
         List<QuantityResource> productionPowerInput, List<QuantityResource> productionPowerOutput) {
@@ -35,12 +35,10 @@ public class DevCard extends Card {
         return color;
     }
 
-    //TODO Vedere se fare override
     public List<QuantityResource> getProductionPowerInput() {
         return productionPowerInput;
     }
 
-    //TODO Vedere se fare override
     public List<QuantityResource> getProductionPowerOutput() {
         return productionPowerOutput;
     }

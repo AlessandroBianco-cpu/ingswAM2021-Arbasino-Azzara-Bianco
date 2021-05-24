@@ -2,12 +2,16 @@ package it.polimi.ingsw.model.LorenzoIlMagnifico;
 
 import it.polimi.ingsw.model.DevCardMarket;
 import it.polimi.ingsw.model.LorenzoGameMethods;
+import it.polimi.ingsw.observer.LorenzoObservable;
+
+import java.io.Serializable;
 
 
-public class LorenzoIlMagnifico {
+public class LorenzoIlMagnifico extends LorenzoObservable implements Serializable {
 
     private int position;
     private TokenStack tokenStack;
+    private ActionToken lastTokenExecuted;
     private DevCardMarket devCardMarket;
     private LorenzoGameMethods lorenzoGameMethods;
     private boolean firstVaticanReportHasOccurred;
@@ -38,6 +42,8 @@ public class LorenzoIlMagnifico {
         }else if(position == 24 && !thirdVaticanReportHasOccurred){
             lorenzoGameMethods.setLorenzoWin();
         }
+
+        notifyLorenzoPosition(this);
     }
 
     /**
@@ -45,7 +51,8 @@ public class LorenzoIlMagnifico {
      * action performed by the Token on top of the Stack
      */
     public void doAction() {
-        tokenStack.executeFirstToken();
+        lastTokenExecuted = tokenStack.executeFirstToken();
+        notifyLorenzoState(this);
     }
 
     /**
@@ -57,5 +64,9 @@ public class LorenzoIlMagnifico {
 
     public TokenStack getTokenStack() {
         return tokenStack;
+    }
+
+    public ActionToken getLastTokenExecuted() {
+        return lastTokenExecuted;
     }
 }
