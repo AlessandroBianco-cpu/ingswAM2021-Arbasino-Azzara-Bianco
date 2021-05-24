@@ -22,8 +22,8 @@ public class LeaderDeck extends Deck {
         final int CONVERT_POINTS = 5;
         final int DISCOUNT_AMOUNT = -1;
 
-        cards= new LinkedList<LeaderCard>();
-        //TODO json
+        cards= new LinkedList<>();
+
         LinkedList<Requirement> requirementExtraDepotStone = new LinkedList<>();
         LinkedList<Requirement> requirementExtraDepotServant = new LinkedList<>();
         LinkedList<Requirement> requirementExtraDepotShield = new LinkedList<>();

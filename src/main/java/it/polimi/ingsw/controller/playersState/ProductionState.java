@@ -26,26 +26,6 @@ public class ProductionState extends PlayerState{
     public void performAction(Message message) {
         if (message instanceof ResourcePlayerWantsToSpendMessage){
             ResourceType resourceType = ((ResourcePlayerWantsToSpendMessage) message).getResourceType();
-            //TODO cancellare ste print di debug
-            System.out.println("Resource to pay size "+ resourceToPay.size());
-            for(QuantityResource q : resourceToPay){
-                String string = "prova";
-                switch (q.getResourceType()){
-                    case COIN:
-                        string = "coin";
-                        break;
-                    case SERVANT:
-                        string = "servant";
-                        break;
-                    case STONE:
-                        string = "stone";
-                        break;
-                    case SHIELD:
-                        string = "shield";
-                        break;
-                }
-                System.out.println(string + q.getQuantity());
-            }
 
             if (!(resourceTypeIsInListToPay(resourceType))){ //The resource should not be paid
                 controller.sendErrorToCurrentPlayer("The resource selected must not be paid");

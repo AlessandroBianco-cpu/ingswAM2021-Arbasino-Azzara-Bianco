@@ -99,7 +99,7 @@ public class SingleController implements Controller{
             winner = currentPlayer.getNickname();
         }
         virtualView.updateWinner(winner);
-        //TODO chiudere le connessioni
+
 
     }
 
@@ -110,13 +110,13 @@ public class SingleController implements Controller{
      */
     public void performTurn(Player currentPlayer) {
 
-        //viene settato il giocatore corrente nella virtual view:essa gestirà l'invio del messaggio all'utente
+        //set the current player in the virtual view
         virtualView.setCurrentPlayer(currentPlayer.getNickname());
         setCurrentPlayerState(new BeforeMainActionState(this));
         setCurrentPlayerWantToEndTurn(false);
         virtualView.startTurn();
 
-        //gestione della fase di inizio turno (il player non ha ancora eseguito nessuna azione)
+        //handle the start turn actions phase
         while (currentPlayerWantsToEndTurn == false) {
             virtualView.catchMessages();
             Message actionMessage = uim.getActionMessage();

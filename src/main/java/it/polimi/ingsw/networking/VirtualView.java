@@ -157,7 +157,10 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         notifyNewMessage(m);
     }
 
-    //TODO DA FARE OBSERVER PER IL GAME
+    /**
+     * Send the winner message
+     * @param winner is the nickname of the winner
+     */
     public void updateWinner(String winner) {
         System.out.println("[SERVER] The winner is " + winner);
         for (ClientHandler clientHandler : clients.values()){

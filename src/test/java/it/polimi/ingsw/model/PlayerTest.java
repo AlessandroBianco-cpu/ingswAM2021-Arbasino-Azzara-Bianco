@@ -47,29 +47,6 @@ class PlayerTest {
         player.getPersonalBoard().setBasePowerOutput(ResourceType.SHIELD);
 
         assertTrue(player.getPersonalBoard().canUseDevCards(indexActivated));
-        //TODO cancellare
-        List<Integer> lista = new ArrayList<>();
-        lista.add(0);
-        List<QuantityResource> qtList = player.getPersonalBoard().sumProductionPowerInputs(lista);
-        System.out.println("Resource to pay size "+ qtList.size());
-        for(QuantityResource q : qtList){
-            String string = "prova";
-            switch (q.getResourceType()){
-                case COIN:
-                    string = "coin";
-                    break;
-                case SERVANT:
-                    string = "servant";
-                    break;
-                case STONE:
-                    string = "stone";
-                    break;
-                case SHIELD:
-                    string = "shield";
-                    break;
-            }
-            System.out.println(string + q.getQuantity());
-        }
 
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(ResourceType.SERVANT,1));
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(ResourceType.COIN,1));

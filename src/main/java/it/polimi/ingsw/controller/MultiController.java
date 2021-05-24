@@ -128,7 +128,6 @@ public class MultiController implements Controller {
 
         String winner = game.computeWinnerPlayer().getNickname();
         virtualView.updateWinner(winner);
-        //TODO chiudere le connessioni
 
     }
 

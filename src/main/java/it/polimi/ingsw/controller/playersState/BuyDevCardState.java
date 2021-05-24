@@ -24,9 +24,6 @@ public class BuyDevCardState  extends  PlayerState{
         this.listResourcesToPay = new ArrayList<>(totalResourcesToPay);
     }
 
-    /* private List<QuantityResource> copyList(List<QuantityResource> initialList){
-        return new ArrayList<>(initialList);
-    } */
 
     @Override
     public void performAction(Message message) {

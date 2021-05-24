@@ -14,7 +14,7 @@ public class DiscountCard extends LeaderCard {
         this.discountAmount = discountAmount;
     }
 
-    //TODO controlli requisiti attivazione
+
     @Override
     public void activateCard(LeaderCardPowerAdder leaderCardPowerAdder) {
         leaderCardPowerAdder.addDiscountCardPower(this);
