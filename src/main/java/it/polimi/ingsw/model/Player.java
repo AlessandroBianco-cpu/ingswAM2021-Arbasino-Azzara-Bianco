@@ -313,8 +313,8 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
     public void addResourceInWarehouseFromBuffer(int bufferIndex, int shelf){
         Marble toConvert = ((LinkedList<Marble>)buffer).get(bufferIndex);
         ((LinkedList<Marble>)buffer).remove(bufferIndex);
-        notifyMarbleBuffer(buffer);
         addResourceInWarehouse(toConvert.convertResource(),shelf);
+        notifyMarbleBuffer(buffer);
     }
 
     public boolean canAddResourceInExtraDepot(ResourceType resourceType){
@@ -333,8 +333,8 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
     public void addResourceInExtraDepotFromBuffer(int bufferIndex){
         Marble toConvert = ((LinkedList<Marble>)buffer).get(bufferIndex);
         ((LinkedList<Marble>)buffer).remove(bufferIndex);
-        notifyMarbleBuffer(buffer);
         personalBoard.addResourceInExtraDepot(toConvert.convertResource());
+        notifyMarbleBuffer(buffer);
     }
 
     public boolean canDiscardResourceFromBuffer(int bufferIndex){

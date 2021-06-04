@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.LorenzoIlMagnifico.LorenzoIlMagnifico;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Observable class used by LorenzoIlMagnifico server-side
+ */
 public class LorenzoObservable {
 
     private final List<LorenzoObserver> observers = new ArrayList<>();

@@ -6,6 +6,9 @@ import it.polimi.ingsw.networking.message.*;
 
 import java.util.List;
 
+/**
+ * State used to manage the storage of resources taken from the MarbleMarket
+ */
 public class MarketState extends PlayerState{
 
     List <Marble> marbleBuffer;
@@ -27,7 +30,7 @@ public class MarketState extends PlayerState{
                 controller.discardResourceFromBuffer(marbleIndex);
                 if (marbleBuffer.size() == 0)
                     controller.setCurrentPlayerState(new AfterMainActionState(controller));
-            } else{
+            } else {
                 controller.sendErrorToCurrentPlayer("You can't discard this marble!");
             }
         } else if (message instanceof StoreResourceInWarehouse){

@@ -2,14 +2,14 @@ package it.polimi.ingsw.networking;
 
 import it.polimi.ingsw.networking.message.Message;
 import it.polimi.ingsw.networking.message.PingMessage;
+import it.polimi.ingsw.networking.message.WinnerMessage;
+import it.polimi.ingsw.networking.message.WrongTurnMessage;
 import it.polimi.ingsw.observer.ConnectionObservable;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
-import static it.polimi.ingsw.utils.StringToPrint.*;
 
 /**
  * Handles network connection on the Server side
@@ -26,7 +26,6 @@ public class ClientHandler extends ConnectionObservable {
     private ObjectOutputStream socketOut;
     private ObjectInputStream socketIn;
 
-
     public ClientHandler(Socket socket) {
         this.socket = socket;
         this.connected = true;
@@ -40,43 +39,36 @@ public class ClientHandler extends ConnectionObservable {
         this.active = active;
     }
 
-    public boolean isActive() {
-        return active;
+    public void setMyTurn (boolean myTurn) {
+        this.myTurn = myTurn;
     }
+
+    public boolean isActive() { return active; }
 
     public boolean isConnected() {
         return connected;
     }
 
     public void send(Object object){
-
-        if (object instanceof String) {
-            String s = ((String) object);
-            switch (s) {
-                case startTurnMessage:
-                    myTurn = true;
-                    return;
-                case endTurnMessage:
-                    myTurn = false;
-                    return;
-            }
+        try {
+            socketOut.reset();
+            socketOut.writeObject(object);
+            socketOut.flush();
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
         }
-            try {
-                socketOut.reset();
-                socketOut.writeObject(object);
-                socketOut.flush();
-            } catch (IOException | NullPointerException e) {
-                e.printStackTrace();
-            }
+        if(object instanceof WinnerMessage)
+            closeConnection();
     }
-
 
     /**
      * Closes connection with client
      */
     public synchronized void closeConnection() {
+        connected = false;
         try {
-            connected = false;
+            socketOut.close();
+            socketIn.close();
             socket.close();
             System.out.println("[SERVER] Connection closed with client");
         } catch (IOException e) {
@@ -91,7 +83,7 @@ public class ClientHandler extends ConnectionObservable {
         Thread t = new Thread(() -> {
             while (connected) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -112,7 +104,7 @@ public class ClientHandler extends ConnectionObservable {
         Thread t = new Thread(() -> {
             while (connected) {
                 try {
-                    socket.setSoTimeout(500000);
+                    socket.setSoTimeout(30000);
                     Message fromClient = null;
                     try {
                         fromClient = (Message) socketIn.readObject();
@@ -129,7 +121,7 @@ public class ClientHandler extends ConnectionObservable {
                             }
                         } else {
                             System.out.println("[SERVER] I send a wrongTurn message");
-                            send(wrongTurnMessage);
+                            send(new WrongTurnMessage());
                         }
                     }
                 } catch (IOException | NullPointerException | IllegalArgumentException e) {

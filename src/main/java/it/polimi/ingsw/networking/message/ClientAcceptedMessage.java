@@ -1,12 +1,9 @@
 package it.polimi.ingsw.networking.message;
 
-import java.io.Serializable;
-
 /**
- * Message class used to send a nickname
+ * Packet used to send the player that the chosen nickname is valid
  */
-public class ClientAcceptedMessage implements Serializable {
-
+public class ClientAcceptedMessage extends Server2Client {
     //set-up done
     private static final long serialVersionUID = 1720561504621287405L;
 

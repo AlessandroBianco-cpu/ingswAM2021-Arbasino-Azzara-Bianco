@@ -8,12 +8,13 @@ import it.polimi.ingsw.model.GameMode.MultiPlayerGame;
 import it.polimi.ingsw.model.GameMode.SinglePlayerGame;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.networking.message.ClientAcceptedMessage;
+import it.polimi.ingsw.networking.message.GameStartedMessage;
+import it.polimi.ingsw.networking.message.S2CPlayersNumberMessage;
+import it.polimi.ingsw.networking.message.WaitingMessage;
 import it.polimi.ingsw.observer.ConnectionObserver;
 import it.polimi.ingsw.observer.LobbyObservable;
 
 import java.util.*;
-
-import static it.polimi.ingsw.utils.StringToPrint.*;
 
 public class Lobby  extends LobbyObservable implements ConnectionObserver {
 
@@ -49,7 +50,7 @@ public class Lobby  extends LobbyObservable implements ConnectionObserver {
     public synchronized void deregisterConnection(ClientHandler client) {
         System.out.println("[SERVER] Unregistering client...");
         clients.remove(client);
-        System.out.println("[SERVER] Done!");
+        System.out.println("[SERVER] Client unregistered!");
     }
 
     /**
@@ -94,12 +95,12 @@ public class Lobby  extends LobbyObservable implements ConnectionObserver {
                     if (clients.size() == 1 && playersNumber == -1) {
                         setPlayersNumber(client);
                     } else {
-                        client.send(waitPlayersMessage);
+                        client.send(new WaitingMessage("Waiting for other players"));
                     }
                 }
                 else {
-                    client.send(playersNumber);
-                    client.send(waitMessage);
+                    client.send(new S2CPlayersNumberMessage(playersNumber));
+                    client.send(new WaitingMessage("Waiting for other players"));
                     ready = true;
                 }
                 lock.notifyAll();
@@ -107,7 +108,6 @@ public class Lobby  extends LobbyObservable implements ConnectionObserver {
 
             if (ready)
                 setPlayersNickname();
-
     }
 
     /**
@@ -115,14 +115,14 @@ public class Lobby  extends LobbyObservable implements ConnectionObserver {
      * @param client current client
      */
     private void setPlayersNumber(ClientHandler client) {
-        client.send(startTurnMessage);
+        client.setMyTurn(true);
         virtualView.requestPlayersNum(client);
         playersNumber = userInputManager.getPlayersNumber();
         System.out.println("[SERVER] The game will have " + playersNumber + " players");
 
         if (playersNumber > 1) {
-            client.send(waitPlayersMessage);
-            client.send(endTurnMessage);
+            client.send(new WaitingMessage("Waiting for other players"));
+            client.setMyTurn(false);
         }
         else {
             ready = true;
@@ -147,7 +147,7 @@ public class Lobby  extends LobbyObservable implements ConnectionObserver {
      */
     private void setNickname(ClientHandler client) {
 
-        client.send(startTurnMessage);
+        client.setMyTurn(true);
         virtualView.requestNickname(client);
         String nickname = userInputManager.getNickname();
 
@@ -165,9 +165,7 @@ public class Lobby  extends LobbyObservable implements ConnectionObserver {
         System.out.println("[SERVER] " + nickname + " registered!");
 
         client.send(new ClientAcceptedMessage(nickname));
-
-        client.send(waitMessage);
-        client.send(endTurnMessage);
+        client.setMyTurn(false);
     }
 
 
@@ -221,9 +219,9 @@ public class Lobby  extends LobbyObservable implements ConnectionObserver {
         System.out.println("[SERVER] Leader cards chosen by the player");
 
         System.out.println("[SERVER] Single player game starts");
+        virtualView.sendToCurrentPlayer(new GameStartedMessage());
         controller.play();
     }
-
 
     /**
      * Creates MultiGame and MultiController and starts a new match
@@ -265,11 +263,12 @@ public class Lobby  extends LobbyObservable implements ConnectionObserver {
         controller.distributeInitialResource();
 
         System.out.println("[SERVER] Set-Up completed, game starts");
+        virtualView.sendBroadcast(new GameStartedMessage());
         controller.play();
     }
-
 
     public boolean isReady() {
         return ready;
     }
+
 }

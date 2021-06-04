@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="608.0">
+         <image>
+            <Image url="@stilized.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="229.0" fitWidth="230.0" layoutX="26.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@warehouse.png" />
+         </image>
+      </ImageView>
+      <Pane id="1" layoutX="121.0" layoutY="193.0" prefHeight="40.0" prefWidth="40.0" />
+      <Pane id="2" layoutX="88.0" layoutY="241.0" prefHeight="40.0" prefWidth="40.0" />
+      <Pane id="3" layoutX="153.0" layoutY="241.0" prefHeight="40.0" prefWidth="40.0" />
+      <Pane id="4" layoutX="121.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
+      <Pane id="5" layoutX="169.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
+      <Pane id="6" layoutX="73.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
+      <Pane id="leaderDepot1" layoutX="285.0" layoutY="134.0" prefHeight="214.0" prefWidth="140.0" />
+      <Pane id="leaderDepot2" layoutX="446.0" layoutY="134.0" prefHeight="214.0" prefWidth="140.0" />
+      <CheckBox id="depot1" layoutX="38.0" layoutY="190.0" mnemonicParsing="false" />
+      <CheckBox id="depot2" layoutX="17.0" layoutY="253.0" mnemonicParsing="false" />
+      <CheckBox id="depot3" layoutX="8.0" layoutY="309.0" mnemonicParsing="false" />
+      <ChoiceBox id="choiceBox" layoutX="340.0" layoutY="74.0" prefWidth="150.0" />
+      <ChoiceBox id="quantityBox" layoutX="515.0" layoutY="74.0" prefHeight="24.0" prefWidth="55.0" />
+      <ImageView id="swapButton" fitHeight="26.0" fitWidth="123.0" layoutX="80.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@buttons/swapButton.png" />
+         </image>
+      </ImageView>
+      <Pane id="firstExtra1" layoutX="309.0" layoutY="304.0" prefHeight="35.0" prefWidth="35.0" />
+      <Pane id="firstExtra2" layoutX="365.0" layoutY="304.0" prefHeight="35.0" prefWidth="35.0" />
+      <Pane id="secondExtra1" layoutX="472.0" layoutY="304.0" prefHeight="35.0" prefWidth="35.0" />
+      <Pane id="secondExtra2" layoutX="528.0" layoutY="304.0" prefHeight="35.0" prefWidth="35.0" />
+   </children>
+</Pane>

@@ -431,7 +431,7 @@ public class DevDeck extends Deck{
 
     }
 
-
-
-
+    public List<DevCard> getCards() {
+        return cards;
+    }
 }

@@ -13,4 +13,8 @@ public class NoResourceLight extends ResourceLight {
         return (" ");
     }
 
+    @Override
+    public String toImage() {
+        return null;
+    }
 }

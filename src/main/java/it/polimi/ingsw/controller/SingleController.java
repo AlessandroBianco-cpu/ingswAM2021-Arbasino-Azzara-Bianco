@@ -39,7 +39,7 @@ public class SingleController implements Controller{
     }
 
     /**
-     * Handle the initial distribution of resources
+     * Handles the initial distribution of resources
      */
     public void distributeInitialResource() {
 
@@ -48,8 +48,6 @@ public class SingleController implements Controller{
     /**
      * This method is used to distribute 4 leader cards for player, each player must discard 2 of them
      */
-
-    //va bene se scarta un player alla volta o l'azione deve essere concorrente???
     public void distributeLeaderCard() {
 
         currentPlayer.addLeaderCard(game.getLeaderDeck().popFirstCard());
@@ -88,9 +86,10 @@ public class SingleController implements Controller{
      */
     public void play() {
 
-        while (!game.isLastRound() && !((SinglePlayerGame) game).isLorenzoWinner()) {
+        while (gameHasToRun()) {
             performTurn(currentPlayer);
-            lorenzoIlMagnifico.doAction();
+            if (!game.isLastRound())
+                lorenzoIlMagnifico.doAction();
         }
         String winner;
         if(((SinglePlayerGame) game).isLorenzoWinner()){
@@ -100,7 +99,10 @@ public class SingleController implements Controller{
         }
         virtualView.updateWinner(winner);
 
+    }
 
+    private boolean gameHasToRun(){
+        return (!game.isLastRound()) && !((SinglePlayerGame) game).isLorenzoWinner();
     }
 
     /**
@@ -110,14 +112,14 @@ public class SingleController implements Controller{
      */
     public void performTurn(Player currentPlayer) {
 
-        //set the current player in the virtual view
+        //viene settato il giocatore corrente nella virtual view:essa gestirà l'invio del messaggio all'utente
         virtualView.setCurrentPlayer(currentPlayer.getNickname());
         setCurrentPlayerState(new BeforeMainActionState(this));
         setCurrentPlayerWantToEndTurn(false);
         virtualView.startTurn();
 
-        //handle the start turn actions phase
-        while (currentPlayerWantsToEndTurn == false) {
+        //gestione della fase di inizio turno (il player non ha ancora eseguito nessuna azione)
+        while (!currentPlayerWantsToEndTurn) {
             virtualView.catchMessages();
             Message actionMessage = uim.getActionMessage();
             currentState.performAction(actionMessage);
@@ -137,6 +139,16 @@ public class SingleController implements Controller{
     @Override
     public void sendErrorToCurrentPlayer(String errorMessage) {
         virtualView.handleClientInputError(errorMessage);
+    }
+
+    @Override
+    public void sendResponseToCurrentPlayer(String message) {
+        virtualView.handleClientInput(message);
+    }
+
+    @Override
+    public void sendMessageToCurrentPlayer(Message message) {
+        virtualView.sendToCurrentPlayer(message);
     }
 
     @Override

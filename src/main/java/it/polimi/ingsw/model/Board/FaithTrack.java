@@ -21,6 +21,7 @@ public class FaithTrack extends FaithTrackObservable {
     private boolean secondVaticanSectionPointsAchieved;
     private boolean thirdVaticanSectionPointsAchieved;
 
+    private String owner;
     private final int FIRST_VATICAN_SECTION = 5;
     private final int SECOND_VATICAN_SECTION = 12;
     private final int THIRD_VATICAN_SECTION = 19;
@@ -29,8 +30,9 @@ public class FaithTrack extends FaithTrackObservable {
     private final int THIRD_POPE_FAVOR_TILE_SCORE = 4;
     private VaticanReporter vaticanReporter;
 
-    public FaithTrack(VaticanReporter vaticanReporter) {
+    public FaithTrack(VaticanReporter vaticanReporter, String owner) {
         this.vaticanReporter = vaticanReporter;
+        this.owner = owner;
         position = 0;
         vaticanReportFaithPoints = 0;
         firstVaticanReportHasOccurred = false;
@@ -161,4 +163,6 @@ public class FaithTrack extends FaithTrackObservable {
     public boolean isThirdVaticanSectionPointsAchieved() {
         return thirdVaticanSectionPointsAchieved;
     }
+
+    public String getOwner(){return owner;}
 }

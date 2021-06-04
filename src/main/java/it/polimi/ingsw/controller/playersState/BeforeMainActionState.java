@@ -7,9 +7,14 @@ import it.polimi.ingsw.networking.message.ActivateProductionMessage;
 import it.polimi.ingsw.networking.message.BuyCardMessage;
 import it.polimi.ingsw.networking.message.InsertMarbleMessage;
 import it.polimi.ingsw.networking.message.Message;
+import it.polimi.ingsw.networking.message.updateMessage.CardPaymentResourceBufferUpdateMessage;
+import it.polimi.ingsw.networking.message.updateMessage.ProductionResourceBufferUpdateMessage;
 
 import java.util.List;
 
+/**
+ * State before the player has chosen the Main Action (takeResourcesFromMarket || buyDevCard || activateProduction)
+ */
 public class BeforeMainActionState extends PlayerState{
 
     public BeforeMainActionState(Controller controller) {
@@ -44,6 +49,7 @@ public class BeforeMainActionState extends PlayerState{
         } else if (message instanceof BuyCardMessage){
             int index = ((BuyCardMessage) message).getIndexCard() - 1; //human readable --> programmer readable
             if (controller.canBuyDevCardFromMarket(index)){
+                controller.sendMessageToCurrentPlayer(new CardPaymentResourceBufferUpdateMessage(controller.getDevCardCostFromMarketIndex(index)));
                 controller.setCurrentPlayerState(new BuyDevCardState(controller, index));
             }else{
                 controller.sendErrorToCurrentPlayer("You cannot buy this devCard!");
@@ -66,8 +72,8 @@ public class BeforeMainActionState extends PlayerState{
                 controller.setLeaderPowerOutput(5, leaderOutput.get(0));
             }
             if (controller.canUseDevCards(prodSlotIndexes)) {
+                controller.sendMessageToCurrentPlayer(new ProductionResourceBufferUpdateMessage(controller.getResourceToPayForProduction(prodSlotIndexes)));
                 controller.setCurrentPlayerState(new ProductionState(controller, prodSlotIndexes));
-
             } else {
                 controller.sendErrorToCurrentPlayer("You cannot activate this slots combo!");
             }

@@ -25,6 +25,16 @@ public class SinglePlayerGame extends Game implements LorenzoGameMethods, Serial
 
     public boolean isLorenzoWinner(){return lorenzoIsWinner;}
 
+    public void vaticanReport() {
+        vaticanReportCounter++;
+        for(Player player : players)
+            player.vaticanReport(vaticanReportCounter);
+        lorenzoIlMagnifico.setVaticanReportOccurrence(vaticanReportCounter);
+        if (vaticanReportCounter == 3) {
+            activateLastRound();
+        }
+    }
+
     @Override
     public void throwCardByColor(DevCardColor color){
         final int cardsToDestroy = 2;

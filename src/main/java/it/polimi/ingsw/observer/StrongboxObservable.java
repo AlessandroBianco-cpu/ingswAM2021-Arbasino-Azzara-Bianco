@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Board.Strongbox;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Observable class used by Strongbox server-side
+ */
 public class StrongboxObservable {
 
     private final List<StrongboxObserver> observers = new ArrayList<>();

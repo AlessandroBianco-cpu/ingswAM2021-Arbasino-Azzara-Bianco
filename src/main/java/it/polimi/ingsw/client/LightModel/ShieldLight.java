@@ -13,4 +13,9 @@ public class ShieldLight extends ResourceLight{
     public String toString() {
         return (ConsoleColors.BLUE + "⬤" + ConsoleColors.RESET);
     }
+
+    @Override
+    public String toImage() {
+        return "/punchBoard/shield.png";
+    }
 }

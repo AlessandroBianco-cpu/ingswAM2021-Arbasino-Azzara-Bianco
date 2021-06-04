@@ -5,15 +5,21 @@ import it.polimi.ingsw.model.QuantityResource;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.networking.message.Message;
 import it.polimi.ingsw.networking.message.ResourcePlayerWantsToSpendMessage;
+import it.polimi.ingsw.networking.message.updateMessage.ProductionResourceBufferUpdateMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * State used to manage the payment of the resources needed to complete the production
+ * of the development cards selected in the previous state (BeforeMainActionState) and
+ * to add the produced resources to the player's strongbox
+ */
 public class ProductionState extends PlayerState{
 
-    private List<Integer> productionSlotIndexes;
-    private List<QuantityResource> totalResourcesToPay;
-    private List<QuantityResource> resourceToPay;
+    private final List<Integer> productionSlotIndexes;
+    private final List<QuantityResource> totalResourcesToPay;
+    private final List<QuantityResource> resourceToPay;
 
     public ProductionState(Controller controller, List<Integer> productionSlotIndexes) {
         super(controller);
@@ -26,6 +32,7 @@ public class ProductionState extends PlayerState{
     public void performAction(Message message) {
         if (message instanceof ResourcePlayerWantsToSpendMessage){
             ResourceType resourceType = ((ResourcePlayerWantsToSpendMessage) message).getResourceType();
+
 
             if (!(resourceTypeIsInListToPay(resourceType))){ //The resource should not be paid
                 controller.sendErrorToCurrentPlayer("The resource selected must not be paid");
@@ -50,12 +57,21 @@ public class ProductionState extends PlayerState{
                     controller.setCurrentPlayerState(new AfterMainActionState(controller));
                 }
 
+                controller.sendMessageToCurrentPlayer(new ProductionResourceBufferUpdateMessage(resourceToPay));
+
             }else{
                 controller.sendErrorToCurrentPlayer("The combination of resources selected is not valid ");
             }
         } else baseActionsDuringMainAction(message);
     }
 
+    /**
+     * Removes the resources of the type given by the player
+     * @param fromStrongbox quantity to remove from Strongbox
+     * @param fromWarehouse quantity to remove from Warehouse
+     * @param fromExtraDepot quantity to remove from ExtraDepot
+     * @param resourceType type of resource inserted by the player
+     */
     private void removeResourcesFromListToPay(int fromStrongbox, int fromWarehouse, int fromExtraDepot, ResourceType resourceType){
         int totalToRemove = fromStrongbox + fromWarehouse + fromExtraDepot;
         for(QuantityResource resourceInListToPay : totalResourcesToPay){
@@ -72,6 +88,10 @@ public class ProductionState extends PlayerState{
         }
     }
 
+    /**
+     * @param resourceType type of resource looked for
+     * @return true if present, false otherwise
+     */
     private boolean resourceTypeIsInListToPay(ResourceType resourceType){
         for (QuantityResource q : resourceToPay){
             if (q.getResourceType() == resourceType)
@@ -80,6 +100,11 @@ public class ProductionState extends PlayerState{
         return false;
     }
 
+    /**
+     * method used to retrieve the amount of a certain resource player has to pay
+     * @param resourceType type of the resource looked for
+     * @return the quantity player has to pay of the given resource
+     */
     private int getQuantityToPayFromList (ResourceType resourceType){
         for (QuantityResource q : resourceToPay){
             if (q.getResourceType() == resourceType)

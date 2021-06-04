@@ -15,13 +15,13 @@ public class ShuffleToken extends ActionToken{
      */
     @Override
     public void doAction(){
-        //System.out.println("Executing ShuffleToken");
         lorenzoIlMagnifico.advance();
         tokenStack.shuffleStack();
     }
 
     @Override
-    public boolean isShuffle() {
-        return true;
-    }
+    public boolean isShuffle() { return true; }
+
+    @Override
+    public String toImage() { return "shuffleToken.png"; }
 }

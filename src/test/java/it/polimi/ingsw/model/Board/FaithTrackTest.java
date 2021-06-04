@@ -14,7 +14,7 @@ class FaithTrackTest {
     @BeforeEach
     void setup(){
         Game multiplayerGame = new MultiPlayerGame();
-        faithTrack = new FaithTrack(multiplayerGame);
+        faithTrack = new FaithTrack(multiplayerGame, "player");
     }
 
     @Test

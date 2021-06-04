@@ -13,4 +13,9 @@ public class StoneLight extends ResourceLight{
     public String toString() {
         return (ConsoleColors.BLACK_BRIGHT + "⬤" + ConsoleColors.RESET);
     }
+
+    @Override
+    public String toImage() {
+        return "/punchBoard/stone.png";
+    }
 }

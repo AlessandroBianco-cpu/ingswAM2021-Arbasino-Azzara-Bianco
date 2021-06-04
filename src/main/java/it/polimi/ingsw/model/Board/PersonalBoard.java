@@ -37,7 +37,7 @@ public class PersonalBoard extends ProductionZoneObservable {
         devCardSlots.add(new DevCardSlot());
         devCardSlots.add(new DevCardSlot());
         warehouse = new Warehouse();
-        faithTrack = new FaithTrack(vaticanReporter);
+        faithTrack = new FaithTrack(vaticanReporter, owner.getNickname());
         strongbox = new Strongbox();
         victoryPointsCounter = 0;
         numberBoughtCards = 0;
@@ -383,13 +383,8 @@ public class PersonalBoard extends ProductionZoneObservable {
         return devCard.getLevel() == ( ((DevCardSlot) (devCardSlots.get(devCardSlotIndex))).getTopCardLevel() + 1);
     }
 
-    public DevCard[] getTopDevCardsInSlots(){
-        DevCard[] topDev = new DevCard[3];
-        //starts from 1 because we have the board base power in the index 0
-        for(int i = 0; i<3; i++){
-            topDev[i] = ((DevCardSlot)devCardSlots.get(i+1)).getTopCard();
-        }
-        return topDev;
+    public List<DevCard> getProductionSlotByIndex(int index){
+        return ((DevCardSlot) devCardSlots.get(index)).getCards();
     }
 
     public List<ExtraDevCard> getTopExtraDevCardsInSlots() {

@@ -1,10 +1,13 @@
 package it.polimi.ingsw.networking.message;
 
-public class StartTurnMessage extends Server2Client{
 
+/**
+ * Packet sent from players to the players in order to tell them whose player the turn is
+ */
+public class StartTurnMessage extends Server2Client{
     private static final long serialVersionUID = 3557258901834940946L;
 
-    private String currentPlayerNickname;
+    private final String currentPlayerNickname;
 
     public StartTurnMessage(String currentPlayerNickname) {
         this.currentPlayerNickname = currentPlayerNickname;

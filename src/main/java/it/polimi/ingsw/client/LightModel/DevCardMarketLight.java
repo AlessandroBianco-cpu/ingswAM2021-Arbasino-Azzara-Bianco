@@ -7,15 +7,33 @@ import it.polimi.ingsw.utils.ConsoleColors;
 
 import java.util.List;
 
+/**
+ * Lightweight representation of the DevCardMarket stored client-side
+ */
 public class DevCardMarketLight {
-    private DevCard[] grid;
+    private final DevCard[] grid;
     private final int NUMBER_OF_DECKS = 12;
     private final ParserForModel parser = new ParserForModel();
-
 
     public DevCardMarketLight() {
         grid = new DevCard[NUMBER_OF_DECKS];
     }
+
+    /**
+     * Updates the state of the class
+     * @param message updated state
+     */
+    public void updateDevCardMarketLight(DevCardMarketUpdateMessage message){
+        DevCard[] update = message.getDevCardMarketStatus();
+        for (int i = 0; i < NUMBER_OF_DECKS; i++)
+            grid[i] = update[i];
+    }
+
+    public DevCard[] getGrid() {
+        return grid;
+    }
+
+    // ------------------------ PRINTER METHODS ------------------------
 
     private void displayTopCorner(DevCard card){
         if(card != null)
@@ -38,9 +56,9 @@ public class DevCardMarketLight {
     private void displayResource(DevCard card, String typeOfList){
         List<QuantityResource> list;
         if( card != null){
-            if(typeOfList == "COST"){
+            if(typeOfList.equals("COST")){
                 list = card.getCost();
-            }else if(typeOfList == "INPUT"){
+            }else if(typeOfList.equals("INPUT")){
                 list = card.getProductionPowerInput();
             }else
                 list = card.getProductionPowerOutput();
@@ -82,12 +100,6 @@ public class DevCardMarketLight {
             System.out.print(parser.parseCardColor(card.getColor()) + "╚═══════════╝" + ConsoleColors.RESET);
         else
             System.out.print("╚═══════════╝");
-    }
-
-    public void updateDevCardMarketLight(DevCardMarketUpdateMessage message){
-        DevCard[] update = message.getDevCardMarketStatus();
-        for (int i = 0; i < NUMBER_OF_DECKS; i++)
-            grid[i] = update[i];
     }
 
     public void print(){

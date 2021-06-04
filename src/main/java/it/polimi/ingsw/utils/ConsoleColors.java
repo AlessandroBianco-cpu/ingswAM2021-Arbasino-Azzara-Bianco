@@ -1,5 +1,8 @@
 package it.polimi.ingsw.utils;
 
+/**
+ * Class containing colors used in CLI
+ */
 public class ConsoleColors {
 
     // Reset
@@ -24,7 +27,6 @@ public class ConsoleColors {
     public static final String CYAN_BOLD = "\033[1;36m";   // CYAN
     public static final String WHITE_BOLD = "\033[1;37m";  // WHITE
 
-
     // High Intensity
     public static final String BLACK_BRIGHT = "\033[0;90m";  // BLACK
     public static final String RED_BRIGHT = "\033[0;91m";    // RED
@@ -34,17 +36,6 @@ public class ConsoleColors {
     public static final String PURPLE_BRIGHT = "\033[0;95m"; // PURPLE
     public static final String CYAN_BRIGHT = "\033[0;96m";   // CYAN
     public static final String WHITE_BRIGHT = "\033[0;97m";  // WHITE
-
-
-    // Underline
-    public static final String BLACK_UNDERLINED = "\033[4;30m";  // BLACK
-    public static final String RED_UNDERLINED = "\033[4;31m";    // RED
-    public static final String GREEN_UNDERLINED = "\033[4;32m";  // GREEN
-    public static final String YELLOW_UNDERLINED = "\033[4;33m"; // YELLOW
-    public static final String BLUE_UNDERLINED = "\033[4;34m";   // BLUE
-    public static final String PURPLE_UNDERLINED = "\033[4;35m"; // PURPLE
-    public static final String CYAN_UNDERLINED = "\033[4;36m";   // CYAN
-    public static final String WHITE_UNDERLINED = "\033[4;37m";  // WHITE
 
     // Background
     public static final String BLACK_BACKGROUND = "\033[40m";  // BLACK

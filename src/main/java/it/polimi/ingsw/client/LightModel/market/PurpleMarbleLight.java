@@ -10,8 +10,10 @@ public class PurpleMarbleLight extends MarbleLight{
     }
 
     @Override
-    public String toString() {
-        return (ConsoleColors.PURPLE + "⬤" + ConsoleColors.RESET);
+    public String toString() { return (ConsoleColors.PURPLE + "⬤" + ConsoleColors.RESET); }
 
+    @Override
+    public String toImage() {
+        return "/marbles/purple.png";
     }
 }

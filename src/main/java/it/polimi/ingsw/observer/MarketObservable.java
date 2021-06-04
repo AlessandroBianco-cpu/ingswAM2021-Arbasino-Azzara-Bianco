@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.MarbleMarket.Market;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Observable class used by FaithTrack server-side
+ */
 public class MarketObservable {
 
     private final List<MarketObserver> observers = new ArrayList<>();

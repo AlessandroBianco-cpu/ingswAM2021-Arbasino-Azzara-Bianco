@@ -19,7 +19,8 @@ public class BlackToken extends ActionToken{
     }
 
     @Override
-    public boolean isBlack() {
-        return true;
-    }
+    public boolean isBlack() { return true; }
+
+    @Override
+    public String toImage() { return "blackToken.png"; }
 }

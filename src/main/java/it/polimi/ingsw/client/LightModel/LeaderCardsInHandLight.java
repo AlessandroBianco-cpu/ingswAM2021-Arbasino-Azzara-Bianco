@@ -4,22 +4,65 @@ import it.polimi.ingsw.model.Cards.LeaderCard;
 import it.polimi.ingsw.model.Cards.Requirement;
 import it.polimi.ingsw.model.QuantityResource;
 import it.polimi.ingsw.networking.message.updateMessage.LeaderInHandUpdateMessage;
+import it.polimi.ingsw.networking.message.updateMessage.OpponentsLeaderCardsInHandUpdateMessage;
 import it.polimi.ingsw.utils.ConsoleColors;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Lightweight representation of the leader cards owned by the player. It is store client-side
+ */
 public class LeaderCardsInHandLight {
     private List<LeaderCard> cards;
+    private List<LeaderCard> activeCards;
+    private int sizeOfTotalLeadersInHand; //int value meant to be used to hide some informations when displaying opponent's leader cards
     private final ParserForModel parser = new ParserForModel();
+
     public LeaderCardsInHandLight() {
         this.cards = new ArrayList<>();
+        this.activeCards = new ArrayList<>();
     }
 
+    /**
+     * Updates the state of the cards
+     * @param message updated cards situation
+     */
     public void updateLeaderInHand(LeaderInHandUpdateMessage message){
         this.cards = message.getCards();
+        for(LeaderCard card : cards)
+            if (card.isActive() && !(idIsInActiveCardsList(card)))
+                activeCards.add(card);
     }
 
+    /**
+     * Method used to retrieve if the id is already in the list of an active list
+     * @param cardToFind LeaderCard to look for
+     * @return true if contained, false otherwise
+     */
+    private boolean idIsInActiveCardsList(LeaderCard cardToFind){
+        for(LeaderCard leaderCard : activeCards)
+            if (leaderCard.getId() == cardToFind.getId())
+                return true;
+        return false;
+    }
+
+    public void updateOpponentLeaderInHand(OpponentsLeaderCardsInHandUpdateMessage message){
+        this.cards = message.getActiveCards();
+        this.sizeOfTotalLeadersInHand = message.getNumberOfCards();
+    }
+
+    // ------------------------ GETTERS ------------------------
+
+    public List<LeaderCard> getCards() {
+        return cards;
+    }
+
+    public List<LeaderCard> getActiveCards() {
+        return activeCards;
+    }
+
+    // ------------------------ PRINTERS ------------------------
     private void displayTopCorner(LeaderCard card){
         if(card != null)
             System.out.print(parser.parseActiveCard(card) + "╔═══════════╗" + ConsoleColors.RESET);
@@ -124,37 +167,125 @@ public class LeaderCardsInHandLight {
             System.out.print("");
     }
 
+    private void backTop(){
+        System.out.print("╔═══════════╗");
+    }
+
+    private void backOne(){
+        System.out.print("║\\~ ~ ~ ~ ~/║");
+    }
+
+    private void backTwo(){
+        System.out.print("║|\\~ ~ ~ ~/|║");
+    }
+
+    private void backCenter(){
+        System.out.print("║||{{ : }}||║");
+    }
+
+    private void backThree(){
+        System.out.print("║|/~ ~ ~ ~\\|║");
+    }
+
+    private void backFour(){
+        System.out.print("║/~ ~ ~ ~ ~\\║");
+    }
+
+    private void backBottom(){
+        System.out.print("╚═══════════╝");
+    }
+
     public void print(){
-        for(int i = 0; i<cards.size(); i++){
-            displayTopCorner(cards.get(i));
+        for (LeaderCard card : cards) {
+            displayTopCorner(card);
         }
         System.out.println();
         for(int i = 0; i<cards.size(); i++){
             displayIndex(cards.get(i), (i+1));
         }
         System.out.println();
-        for(int i = 0; i<cards.size(); i++){
-            displayRequirement(cards.get(i));
+        for (LeaderCard card : cards) {
+            displayRequirement(card);
         }
         System.out.println();
-        for(int i = 0; i<cards.size(); i++){
-            displayPoints(cards.get(i));
+        for (LeaderCard card : cards) {
+            displayPoints(card);
         }
         System.out.println();
-        for(int i = 0; i<cards.size(); i++){
-            displayCardType(cards.get(i));
+        for (LeaderCard card : cards) {
+            displayCardType(card);
         }
         System.out.println();
-        for(int i = 0; i<cards.size(); i++){
-            displayActive(cards.get(i));
+        for (LeaderCard card : cards) {
+            displayActive(card);
         }
         System.out.println();
-        for(int i = 0; i<cards.size(); i++){
-            displayPower(cards.get(i));
+        for (LeaderCard card : cards) {
+            displayPower(card);
         }
         System.out.println();
-        for(int i = 0; i<cards.size(); i++){
-            displayBottom(cards.get(i));
+        for (LeaderCard card : cards) {
+            displayBottom(card);
+        }
+        System.out.println();
+    }
+
+    public void opponentPrint(){
+        int activeCards = cards.size();
+        for (int i=0; i<sizeOfTotalLeadersInHand; i++) {
+            if(i < activeCards)
+                displayTopCorner(cards.get(i));
+            else
+                backTop();
+        }
+        System.out.println();
+        for (int i=0; i<sizeOfTotalLeadersInHand; i++) {
+            if(i < activeCards)
+                displayIndex(cards.get(i), (i+1));
+            else
+                backOne();
+        }
+        System.out.println();
+        for (int i=0; i<sizeOfTotalLeadersInHand; i++) {
+            if(i < activeCards)
+                displayRequirement(cards.get(i));
+            else
+                backTwo();
+        }
+        System.out.println();
+        for (int i=0; i<sizeOfTotalLeadersInHand; i++) {
+            if(i < activeCards)
+                displayPoints(cards.get(i));
+            else
+                backCenter();
+        }
+        System.out.println();
+        for (int i=0; i<sizeOfTotalLeadersInHand; i++) {
+            if(i < activeCards)
+                displayCardType(cards.get(i));
+            else
+                backCenter();
+        }
+        System.out.println();
+        for (int i=0; i<sizeOfTotalLeadersInHand; i++) {
+            if(i < activeCards)
+                displayActive(cards.get(i));
+            else
+                backThree();
+        }
+        System.out.println();
+        for (int i=0; i<sizeOfTotalLeadersInHand; i++) {
+            if(i < activeCards)
+               displayPower(cards.get(i));
+            else
+                backFour();
+        }
+        System.out.println();
+        for (int i=0; i<sizeOfTotalLeadersInHand; i++) {
+            if(i < activeCards)
+                displayBottom(cards.get(i));
+            else
+                backBottom();
         }
         System.out.println();
     }

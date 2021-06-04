@@ -2,15 +2,17 @@ package it.polimi.ingsw.networking.message.updateMessage;
 
 import it.polimi.ingsw.networking.message.Broadcast;
 
+/**
+ * Packet used to update the status of the Faith Track
+ */
 public class FaithTrackUpdateMessage extends Broadcast {
-
     private static final long serialVersionUID = 1557675867488135049L;
 
-    private String nickname;
-    private int position;
-    private boolean firstVaticanReportVPAchieved;
-    private boolean secondVaticanReportVPAchieved;
-    private boolean thirdVaticanReportVPAchieved;
+    private final String nickname;
+    private final int position;
+    private final boolean firstVaticanReportVPAchieved;
+    private final boolean secondVaticanReportVPAchieved;
+    private final boolean thirdVaticanReportVPAchieved;
 
     public FaithTrackUpdateMessage(String nickname, int position, boolean firstVaticanReportVPAchieved, boolean secondVaticanReportVPAchieved, boolean thirdVaticanReportVPAchieved) {
         this.nickname = nickname;

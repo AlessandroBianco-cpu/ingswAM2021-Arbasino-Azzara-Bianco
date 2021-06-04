@@ -7,10 +7,16 @@ import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.networking.message.DevCardPayment;
 import it.polimi.ingsw.networking.message.InsertDevCardInDevSlot;
 import it.polimi.ingsw.networking.message.Message;
+import it.polimi.ingsw.networking.message.PlacementDevCardMessage;
+import it.polimi.ingsw.networking.message.updateMessage.CardPaymentResourceBufferUpdateMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * State used to manage the purchase of a developmentCard
+ */
 public class BuyDevCardState  extends  PlayerState{
 
     int devCardMarketIndex;
@@ -23,7 +29,6 @@ public class BuyDevCardState  extends  PlayerState{
         this.totalResourcesToPay = controller.getDevCardCostFromMarketIndex(devCardMarketIndex);
         this.listResourcesToPay = new ArrayList<>(totalResourcesToPay);
     }
-
 
     @Override
     public void performAction(Message message) {
@@ -42,12 +47,16 @@ public class BuyDevCardState  extends  PlayerState{
         } else if (message instanceof DevCardPayment){
             applyPayment(message);
             if (listResourcesToPay.size() == 0)
-                controller.sendErrorToCurrentPlayer("You can now place the Dev Card");
+                controller.sendMessageToCurrentPlayer(new PlacementDevCardMessage(controller.getDevCardFromDevCardMarketIndex(devCardMarketIndex)));
         } else {
             baseActionsDuringMainAction(message);
         }
     }
 
+    /**
+     * Remove the resource paid by the player from the list of resources he has to pay in order to place the card
+     * @param message message containing the resources used to pay
+     */
     private void applyPayment(Message message){
         int totalResourceGiven = 0;
         ResourceType givenResourceType = ((DevCardPayment) message).getResourceType();
@@ -97,6 +106,7 @@ public class BuyDevCardState  extends  PlayerState{
         for(QuantityResource resourceToPay : listResourcesToPay){
             if (resourceToPay.getResourceType() == resourceType){
                 listResourcesToPay.remove(resourceToPay);
+                controller.sendMessageToCurrentPlayer(new CardPaymentResourceBufferUpdateMessage(listResourcesToPay));
                 return;
             }
         }

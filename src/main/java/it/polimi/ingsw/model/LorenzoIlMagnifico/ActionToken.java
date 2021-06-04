@@ -5,9 +5,8 @@ import java.io.Serializable;
 public abstract class ActionToken implements Serializable {
 
     abstract void doAction();
-    public boolean isBlack(){
-        return false;
-    }
+    public abstract String toImage();
+    public boolean isBlack(){ return false; }
 
     public boolean isBlue(){
         return false;

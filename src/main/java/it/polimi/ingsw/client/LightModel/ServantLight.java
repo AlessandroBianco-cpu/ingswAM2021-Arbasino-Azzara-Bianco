@@ -13,4 +13,9 @@ public class ServantLight extends ResourceLight {
     public String toString() {
         return (ConsoleColors.PURPLE + "⬤" + ConsoleColors.RESET);
     }
+
+    @Override
+    public String toImage() {
+        return "/punchBoard/servant.png";
+    }
 }

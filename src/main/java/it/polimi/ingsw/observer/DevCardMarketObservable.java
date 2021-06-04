@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.DevCardMarket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Observable class used by DevCardMarket server-side
+ */
 public class DevCardMarketObservable {
 
     private final List<DevCardMarketObserver> observers = new ArrayList<>();

@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static it.polimi.ingsw.utils.StringToPrint.*;
-
 public class VirtualView extends ViewObservable implements MarketObserver, PlayerItemsObserver, StrongboxObserver, FaithTrackObserver, WarehouseObserver, DevCardMarketObserver, LorenzoObserver, ProductionZoneObserver {
 
     private Map<String, ClientHandler> clients = new ConcurrentHashMap<>();
@@ -43,7 +41,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      */
     public void setCurrentPlayer(String currentPlayer){
         this.currentPlayer = currentPlayer;
-        clients.get(currentPlayer).send(startTurnMessage);
+        clients.get(currentPlayer).setMyTurn(true);
     }
 
     /**
@@ -54,7 +52,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
 
         int num = -1;
         System.out.println("[SERVER] Sending setting_num message");
-        firstClient.send(setPlayersNumMessage);
+        firstClient.send(new SetPlayersNumMessage());
         Message message = firstClient.read();
 
         while (! (message instanceof NumOfPlayerMessage)) {
@@ -64,7 +62,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
 
         num = ((NumOfPlayerMessage) message).getNumPlayers();
         while (num < 1 || num > 4) {
-            firstClient.send(setPlayersNumMessage);
+            firstClient.send(new SetPlayersNumMessage());
             message = firstClient.read();
             num = ((NumOfPlayerMessage) message).getNumPlayers();
             }
@@ -79,7 +77,8 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      */
     public void requestNickname(ClientHandler currClient) {
 
-        currClient.send(setNicknameMessage);
+        currClient.send(new SetNicknameMessage());
+        sendToEveryoneExceptCurrentPlayer(new WaitingMessage("Other players are choosing nickname"));
         Message nicknameMessage = currClient.read();
 
         while (! (nicknameMessage instanceof SettingNicknameMessage)) {
@@ -97,7 +96,8 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      */
     public void requestInitialDiscard() {
 
-        clients.get(currentPlayer).send(setLeadersMessage);
+        clients.get(currentPlayer).send(new SetLeadersMessage());
+        sendToEveryoneExceptCurrentPlayer(new WaitingMessage("Other players are choosing leader cards..."));
         Message discardingMessage =  clients.get(currentPlayer).read();
 
         while (! (discardingMessage instanceof ChooseLeaderMessage)) {
@@ -116,6 +116,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     public void requestInitialResources(int num) {
 
         clients.get(currentPlayer).send(new ChooseResourcesMessage(num));
+        sendToEveryoneExceptCurrentPlayer(new WaitingMessage("Other players are choosing starting resources"));
         Message resourcesMessage = clients.get(currentPlayer).read();
 
         while (! (resourcesMessage instanceof ChooseResourcesMessage)) {
@@ -143,7 +144,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      * @param currClient player addressee
      */
     public void errorTakenNickname(ClientHandler currClient) {
-        currClient.send(takenNameMessage);
+        currClient.send(new TakenNameMessage());
         Message nicknameMessage = currClient.read();
         String nickname = ((SettingNicknameMessage) nicknameMessage).getNickname();
         notifyNickname(nickname);
@@ -157,15 +158,9 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         notifyNewMessage(m);
     }
 
-    /**
-     * Send the winner message
-     * @param winner is the nickname of the winner
-     */
     public void updateWinner(String winner) {
         System.out.println("[SERVER] The winner is " + winner);
-        for (ClientHandler clientHandler : clients.values()){
-            clientHandler.send(new WinnerMessage(winner));
-        }
+        sendBroadcast(new WinnerMessage(winner));
     }
 
     /**
@@ -173,12 +168,12 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      */
     public void startTurn() {
         for (ClientHandler clientHandler : clients.values()) {
-            clientHandler.send(new StartTurnMessage(currentPlayer));
+            clientHandler.send(new it.polimi.ingsw.networking.message.StartTurnMessage(currentPlayer));
         }
     }
 
     public void endTurn(){
-        clients.get(currentPlayer).send(endTurnMessage);
+        clients.get(currentPlayer).setMyTurn(false);
     }
 
 
@@ -191,6 +186,10 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         clients.get(currentPlayer).send(new ClientInputResponse(errorMessage));
     }
 
+    public void handleClientInput(String input){
+        clients.get(currentPlayer).send(new ClientInputResponse(input));
+    }
+
     public void handleClientInputError(){
         //mandi il messaggio al client
         clients.get(currentPlayer).send(new ClientInputResponse());
@@ -201,10 +200,19 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      * This method send a message to all clients
      * @param m is the message
      */
-    private void sendBroadcast(Message m){
+    public void sendBroadcast(Message m){
         for(ClientHandler c : clients.values())
             c.send(m);
     }
+
+    public void sendToEveryoneExceptCurrentPlayer(Message m){
+        for(String s : clients.keySet()){
+            if (!(s.equals(currentPlayer)))
+                clients.get(s).send(m);
+        }
+    }
+
+    public void sendToCurrentPlayer(Message m){clients.get(currentPlayer).send(m);}
 
     @Override
     public void updateMarketState(Market market) {
@@ -230,7 +238,15 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
 
     @Override
     public void updateLeaderCards(List<LeaderCard> leaderCards) {
-        sendBroadcast(new LeaderInHandUpdateMessage(leaderCards, currentPlayer));
+        //send to current
+        sendToCurrentPlayer(new LeaderInHandUpdateMessage(leaderCards, currentPlayer));
+
+        List<LeaderCard> activeLeaders = new ArrayList<>();
+        for (LeaderCard leaderCard : leaderCards)
+            if (leaderCard.isActive())
+                activeLeaders.add(leaderCard);
+
+        sendToEveryoneExceptCurrentPlayer(new OpponentsLeaderCardsInHandUpdateMessage(activeLeaders, leaderCards.size(), currentPlayer));
     }
 
     @Override
@@ -243,7 +259,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
 
     @Override
     public void updateFaithTrack(FaithTrack faithTrack) {
-        sendBroadcast(new FaithTrackUpdateMessage(currentPlayer, faithTrack.getPosition(),
+        sendBroadcast(new FaithTrackUpdateMessage(faithTrack.getOwner(), faithTrack.getPosition(),
                 faithTrack.isFirstVaticanSectionPointsAchieved(),
                 faithTrack.isSecondVaticanSectionPointsAchieved(),
                 faithTrack.isThirdVaticanSectionPointsAchieved()));
@@ -276,6 +292,6 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
 
     @Override
     public void updateProductionZoneState(PersonalBoard personalBoard) {
-        sendBroadcast(new ProductionZoneUpdateMessage(personalBoard.getOwner().getNickname(), personalBoard.getTopDevCardsInSlots(), personalBoard.getTopExtraDevCardsInSlots()));
+        sendBroadcast(new ProductionZoneUpdateMessage(personalBoard.getOwner().getNickname(), personalBoard.getProductionSlotByIndex(1), personalBoard.getProductionSlotByIndex(2), personalBoard.getProductionSlotByIndex(3), personalBoard.getTopExtraDevCardsInSlots()));
     }
 }
