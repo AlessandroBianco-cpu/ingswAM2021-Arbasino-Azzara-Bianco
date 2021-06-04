@@ -5,7 +5,7 @@ import it.polimi.ingsw.observer.ViewObserver;
 
 public class UserInputManager implements ViewObserver {
 
-    private Message actionMessage; //is the message send by the client
+    private Message actionMessage; //is the message sent by the client
 
     private String nickname; //set-up Lobby
     private int playersNumber; //set-up Lobby
@@ -20,12 +20,10 @@ public class UserInputManager implements ViewObserver {
         return actionMessage;
     }
 
-
     @Override
     public void updateMessage(Message m) {
         this.actionMessage = m;
     }
-
 
     public String getNickname() {
         return nickname;
@@ -35,7 +33,6 @@ public class UserInputManager implements ViewObserver {
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
-
 
     public int getPlayersNumber() {
         return playersNumber;

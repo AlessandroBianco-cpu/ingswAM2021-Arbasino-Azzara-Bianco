@@ -13,4 +13,9 @@ public class CoinLight extends ResourceLight{
     public String toString() {
         return (ConsoleColors.YELLOW + "⬤" + ConsoleColors.RESET);
     }
+
+    @Override
+    public String toImage() {
+        return "/punchBoard/coin.png";
+    }
 }

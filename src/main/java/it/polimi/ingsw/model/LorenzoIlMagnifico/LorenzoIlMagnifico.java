@@ -31,7 +31,8 @@ public class LorenzoIlMagnifico extends LorenzoObservable implements Serializabl
      * Increases LorenzoIlMagnifico position by 1
      */
     public void advance() {
-        position++;
+        if (position + 1 < 25)
+            position++;
 
         if(position == 8 && !firstVaticanReportHasOccurred){
             lorenzoGameMethods.vaticanReport();
@@ -69,4 +70,14 @@ public class LorenzoIlMagnifico extends LorenzoObservable implements Serializabl
     public ActionToken getLastTokenExecuted() {
         return lastTokenExecuted;
     }
+
+    public void setVaticanReportOccurrence(int vaticanReportNumber){
+        if (vaticanReportNumber == 1)
+            firstVaticanReportHasOccurred = true;
+        else if (vaticanReportNumber == 2)
+            secondVaticanReportHasOccurred = true;
+        else if (vaticanReportNumber == 3)
+            thirdVaticanReportHasOccurred = true;
+    }
+
 }

@@ -18,7 +18,6 @@ public class Server implements Runnable, LobbyObserver {
     private  final List<ClientHandler> clientsList = Collections.synchronizedList(new ArrayList<>());
     private boolean first = true;
 
-
     /**
      * Manages clients' reception
      */
@@ -74,8 +73,8 @@ public class Server implements Runnable, LobbyObserver {
         synchronized (clientsList) {
             while (clientsList.size() == 0) {
                 try {
-                    clientsList.wait();
                     System.out.println("[SERVER] I'm waiting");
+                    clientsList.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

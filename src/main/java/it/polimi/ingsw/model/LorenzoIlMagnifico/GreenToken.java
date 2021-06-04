@@ -11,7 +11,8 @@ public class GreenToken extends ColoredToken{
     }
 
     @Override
-    public boolean isGreen() {
-        return true;
-    }
+    public boolean isGreen() { return true; }
+
+    @Override
+    public String toImage() { return "greenToken.png" ; }
 }

@@ -49,6 +49,7 @@ public abstract class LeaderCard extends Card {
         return false;
     }
 
+
     public void attivazioneCartaPerTestareCarteLight(){
         active=true;
     }

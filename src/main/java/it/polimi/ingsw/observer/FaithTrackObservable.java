@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Board.FaithTrack;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Observable class used by FaithTrack server-side
+ */
 public class FaithTrackObservable {
 
     private final List<FaithTrackObserver> observers = new ArrayList<>();

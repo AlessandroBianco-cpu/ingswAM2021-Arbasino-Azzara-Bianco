@@ -2,15 +2,17 @@ package it.polimi.ingsw.networking.message.updateMessage;
 
 import it.polimi.ingsw.networking.message.Broadcast;
 
+/**
+ * Packet used to update the status of the Strongbox of the player whose nickname corresponds to the one in the message.
+ */
 public class StrongboxUpdateMessage extends Broadcast {
-
     private static final long serialVersionUID = -4108888313766422964L;
 
-    private String nickname;
-    private int coins;
-    private int servants;
-    private int shields;
-    private int stones;
+    private final String nickname;
+    private final int coins;
+    private final int servants;
+    private final int shields;
+    private final int stones;
 
     public StrongboxUpdateMessage(String nickname, int coins, int servants, int shields, int stones) {
         this.nickname = nickname;

@@ -6,21 +6,20 @@ import it.polimi.ingsw.model.MarbleMarket.Marble;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.QuantityResource;
 import it.polimi.ingsw.model.ResourceType;
+import it.polimi.ingsw.networking.message.Message;
 
 import java.util.List;
 
 public interface Controller {
 
     /**
-     * Handle the initial distribution of resources
+     * Handles the initial distribution of resources
      */
     void distributeInitialResource();
 
     /**
-     * This method is used to distribute 4 leader cards for player, each player must discard 2 of them
+     * This method is used to distribute 4 leader cards per player. Each player has to discard 2 of the cards
      */
-
-    //va bene se scarta un player alla volta o l'azione deve essere concorrente???
     void distributeLeaderCard();
 
     /**
@@ -30,13 +29,13 @@ public interface Controller {
 
     void performTurn(Player currentPlayer);
 
-
     void setCurrentPlayerState(PlayerState state);
 
     void setCurrentPlayerWantToEndTurn(boolean wantToEndTurn);
 
     void sendErrorToCurrentPlayer(String errorMessage);
-
+    void sendResponseToCurrentPlayer(String message);
+    void sendMessageToCurrentPlayer(Message message);
     void sendGenericErrorToCurrentPlayer();
 
     // ---------------------------------- Methods calling model ------------------------------

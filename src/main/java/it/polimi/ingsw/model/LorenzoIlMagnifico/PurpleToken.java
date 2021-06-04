@@ -11,7 +11,8 @@ public class PurpleToken extends ColoredToken{
     }
 
     @Override
-    public boolean isPurple() {
-        return true;
-    }
+    public boolean isPurple() { return true; }
+
+    @Override
+    public String toImage() { return "purpleToken.png"; }
 }

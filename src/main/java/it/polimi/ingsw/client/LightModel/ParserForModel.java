@@ -9,6 +9,9 @@ import it.polimi.ingsw.model.QuantityResource;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.utils.ConsoleColors;
 
+/**
+ * Util class used to parse resources and correctly print them client-side
+ */
 public class ParserForModel {
 
     public ResourceLight parseStorableResource(ResourceType resource){

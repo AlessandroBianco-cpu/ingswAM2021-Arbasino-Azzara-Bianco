@@ -10,7 +10,6 @@ import java.io.IOException;
  */
 public interface UiObserver {
 
-
     void updateMessage(Message message) throws IOException;
 
     void updateConnection(String ip, String port);

@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Board.PersonalBoard;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Observable class used to notify a change of the production slots of a player's personal board server-side
+ */
 public class ProductionZoneObservable {
 
     private final List<ProductionZoneObserver> observers = new ArrayList<>();

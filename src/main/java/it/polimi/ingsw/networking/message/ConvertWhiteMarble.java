@@ -2,12 +2,15 @@ package it.polimi.ingsw.networking.message;
 
 import it.polimi.ingsw.model.ResourceType;
 
+/**
+ * Packet used to send to the server the will of the player to convert a white marble into an other type of marble.
+ * It contains the index of the marble he wants to convert (human-readable) and the type of resource he wants to convert it into
+ */
 public class ConvertWhiteMarble extends Client2Server{
-
     private static final long serialVersionUID = -1240123964326341430L;
 
-    private int marbleIndex;
-    private ResourceType resourceToConvert;
+    private final int marbleIndex;
+    private final ResourceType resourceToConvert;
 
     public ConvertWhiteMarble(int marbleIndex, ResourceType resourceToConvert) {
         this.marbleIndex = marbleIndex;

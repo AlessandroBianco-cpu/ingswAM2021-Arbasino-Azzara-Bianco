@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Board.Warehouse;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Observable class used by Warehouse server-side
+ */
 public class WarehouseObservable {
 
     private final List<WarehouseObserver> observers = new ArrayList<>();

@@ -38,7 +38,7 @@ public class MultiController implements Controller {
     }
 
     /**
-     * Handle the initial distribution of resources
+     * Handles the initial distribution of resources
      */
     public void distributeInitialResource() {
         int playersTurn = 1;
@@ -77,7 +77,7 @@ public class MultiController implements Controller {
 
 
     /**
-     * This method is used to distribute 4 leader cards for player, each player must discard 2 of them
+     * This method is used to distribute 4 leader cards per player. Each player has to discard 2 of the cards
      */
     public void distributeLeaderCard() {
         //add four leader card for every active player in the game
@@ -115,7 +115,7 @@ public class MultiController implements Controller {
     }
 
     /**
-     * Handles player's turn shifts
+     * Handles players turn shifts
      */
     public void play() {
 
@@ -132,7 +132,7 @@ public class MultiController implements Controller {
     }
 
     /**
-     * Handles a player's turn whit all command player can/must do
+     * Handles player's turn
      * @param currentPlayer current player
      */
     public void performTurn(Player currentPlayer) {
@@ -166,6 +166,15 @@ public class MultiController implements Controller {
     @Override
     public void sendErrorToCurrentPlayer(String errorMessage) {
         virtualView.handleClientInputError(errorMessage);
+    }
+
+    @Override
+    public void sendResponseToCurrentPlayer(String message) {
+        virtualView.handleClientInput(message);
+    }
+    @Override
+    public void sendMessageToCurrentPlayer(Message message) {
+        virtualView.sendToCurrentPlayer(message);
     }
 
     @Override

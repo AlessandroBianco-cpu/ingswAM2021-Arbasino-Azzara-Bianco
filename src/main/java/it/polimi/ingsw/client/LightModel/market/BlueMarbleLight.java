@@ -13,4 +13,7 @@ public class BlueMarbleLight extends MarbleLight{
     public String toString() {
         return (ConsoleColors.BLUE + "⬤" + ConsoleColors.RESET);
     }
+
+    @Override
+    public String toImage() { return "/marbles/blue.png"; }
 }

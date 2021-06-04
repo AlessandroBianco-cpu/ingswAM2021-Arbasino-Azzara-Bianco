@@ -10,21 +10,70 @@ import it.polimi.ingsw.utils.ConsoleColors;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Lightweight representation of the Development slots. It is stored client-side
+ */
 public class ProductionZoneLight {
-    private DevCard[] cardsInProductionSlot;
+    private List<DevCard> firstSlot;
+    private List<DevCard> secondSlot;
+    private List<DevCard> thirdSlot;
     private List<ExtraDevCard> activatedExtraCards;
     private final ParserForModel parser = new ParserForModel();
+    
 
     public ProductionZoneLight() {
-        cardsInProductionSlot = new DevCard[3];
         activatedExtraCards = new ArrayList<>();
+        firstSlot = new ArrayList<>();
+        secondSlot = new ArrayList<>();
+        thirdSlot = new ArrayList<>();
     }
 
+    /**
+     * Updates the state of the slots
+     * @param message updated slots
+     */
     public void updateProductionZoneLight(ProductionZoneUpdateMessage message){
-        cardsInProductionSlot = message.getCardsInProductionSlot();
+        firstSlot = message.getFirstDevSlot();
+        secondSlot = message.getSecondDevSlot();
+        thirdSlot = message.getThirdDevSlot();
         activatedExtraCards = message.getActivatedExtraCards();
     }
+    
+    private List<DevCard> slotByIndex(int index){
+        switch(index){
+            case 0:
+                return firstSlot;
+            case 1:
+                return secondSlot;
+            case 2:
+                return thirdSlot;
+            default: //can't never return the default value
+                return null;
+        }
+    }
+    
+    // ------------------------ GETTERS ------------------------
 
+
+    public List<DevCard> getFirstSlot() {
+        return firstSlot;
+    }
+
+    public List<DevCard> getSecondSlot() {
+        return secondSlot;
+    }
+
+    public List<DevCard> getThirdSlot() {
+        return thirdSlot;
+    }
+
+    private static DevCard getTopCard (List<DevCard> slot) {
+        if(slot.size()>0)
+            return slot.get(slot.size() - 1);
+        return null;
+    }
+
+    // ------------------------ PRINTERS ------------------------
     private void displayTopCorner(DevCard card){
         if(card != null)
             System.out.print(parser.parseCardColor(card.getColor()) + "╔═══════════╗" + ConsoleColors.RESET);
@@ -150,11 +199,33 @@ public class ProductionZoneLight {
             System.out.print("");
     }
 
+    private void displayCoveredCards(List<DevCard> slot, int round){
+        if(slot.size() <= 1){
+            System.out.print("             ");
+        }else if(slot.size() == 2){
+            if(round == 0){
+                String color = parser.parseCardColor(slot.get(0).getColor());
+                System.out.print(color + "══════1══════" + ConsoleColors.RESET);
+            }else
+                System.out.print("             ");
+        }else {
+            if(round == 0) {
+                String color = parser.parseCardColor(slot.get(1).getColor());
+                System.out.print(color + "══════2══════" + ConsoleColors.RESET);
+            }else{
+                String color = parser.parseCardColor(slot.get(1).getColor());
+                System.out.print(color + "══════1══════" + ConsoleColors.RESET);
+            }
+        }
+
+
+    }
+
     public void print(){
         System.out.print("╔═══════════╗");
         int i;
         for(i=0; i<3; i++){
-            displayTopCorner(cardsInProductionSlot[i]);
+            displayTopCorner(getTopCard(slotByIndex(i)));
         }
         for(ExtraDevCard card : activatedExtraCards){
             displayTopCorner(card);
@@ -163,7 +234,7 @@ public class ProductionZoneLight {
 
         System.out.print("║ index: 0  ║");
         for(i=0; i<3; i++){
-            displayIndex(cardsInProductionSlot[i],i+1 );
+            displayIndex(getTopCard(slotByIndex(i)),i+1 );
         }
         for(ExtraDevCard card : activatedExtraCards){
             displayIndex(card, i+1);
@@ -173,7 +244,7 @@ public class ProductionZoneLight {
 
         System.out.print("║           ║");
         for(i=0; i<3; i++){
-            displayResource(cardsInProductionSlot[i],"COST");
+            displayResource(getTopCard(slotByIndex(i)),"COST");
         }
         for(ExtraDevCard card : activatedExtraCards){
             displayResource(card, "NOTHING");
@@ -182,7 +253,7 @@ public class ProductionZoneLight {
 
         System.out.print("║           ║");
         for(i=0; i<3; i++){
-            displayLevelAndPoints(cardsInProductionSlot[i]);
+            displayLevelAndPoints(getTopCard(slotByIndex(i)));
         }
         for(ExtraDevCard card : activatedExtraCards){
             displayPoints(card);
@@ -191,7 +262,7 @@ public class ProductionZoneLight {
 
         System.out.print("║   ?   ?   ║");
         for(i=0; i<3; i++){
-            displayResource(cardsInProductionSlot[i], "INPUT" );
+            displayResource(getTopCard(slotByIndex(i)), "INPUT" );
         }
         for(ExtraDevCard card : activatedExtraCards){
             displayResource(card, "INPUT");
@@ -200,7 +271,7 @@ public class ProductionZoneLight {
 
         System.out.print("║   ↓ ↓ ↓   ║");
         for(i=0; i<3; i++){
-            displayArrows(cardsInProductionSlot[i]);
+            displayArrows(getTopCard(slotByIndex(i)));
         }
         for(ExtraDevCard card : activatedExtraCards){
             displayArrows(card);
@@ -209,7 +280,7 @@ public class ProductionZoneLight {
 
         System.out.print("║     ?     ║");
         for(i=0; i<3; i++){
-            displayResource(cardsInProductionSlot[i], "OUTPUT" );
+            displayResource(getTopCard(slotByIndex(i)), "OUTPUT" );
         }
         for(ExtraDevCard card : activatedExtraCards){
             displayResource(card, "OUTPUT");
@@ -219,11 +290,20 @@ public class ProductionZoneLight {
         System.out.print("╚═══════════╝");
 
         for(i=0; i<3; i++){
-            displayBottom(cardsInProductionSlot[i]);
+            displayBottom(getTopCard(slotByIndex(i)));
         }
         for(ExtraDevCard card : activatedExtraCards){
             displayBottom(card);
         }
         System.out.println();
+        for(i = 0; i<2; i++){
+            System.out.print("             ");
+            for(int j = 0; j<3; j++){
+                displayCoveredCards(slotByIndex(j), i);
+            }
+            System.out.println();
+        }
+
+
     }
 }

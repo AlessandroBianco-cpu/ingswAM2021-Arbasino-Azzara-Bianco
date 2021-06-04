@@ -10,4 +10,7 @@ public abstract class Card implements Serializable {
     public int getVictoryPoints() {
         return victoryPoints;
     }
+
+    public int getId() { return id; }
+
 }

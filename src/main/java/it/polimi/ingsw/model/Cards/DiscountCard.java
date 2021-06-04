@@ -14,7 +14,6 @@ public class DiscountCard extends LeaderCard {
         this.discountAmount = discountAmount;
     }
 
-
     @Override
     public void activateCard(LeaderCardPowerAdder leaderCardPowerAdder) {
         leaderCardPowerAdder.addDiscountCardPower(this);

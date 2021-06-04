@@ -34,18 +34,28 @@ class ProductionZoneLightTest {
         List<ExtraDevCard> leaders = new ArrayList<>();
         leaders.add(c1);
         leaders.add(c2);
-        DevCard[] devs = new DevCard[3];
-        devs[0] = devDecks[0].popFirstCard();
-        devs[1] = devDecks[1].popFirstCard();
-        devs[2] = devDecks[2].popFirstCard();
+        List<DevCard> firstDepot = devDecks[0].getCards();
+        firstDepot.remove(3);
+        List<DevCard> secondDepot = devDecks[1].getCards();
+        secondDepot.remove(3);
+        List<DevCard> thirdDepot = devDecks[2].getCards();
+        thirdDepot.remove(3);
+
         ProductionZoneLight pz = new ProductionZoneLight();
-        ProductionZoneUpdateMessage message = new ProductionZoneUpdateMessage("me", devs, leaders);
+        ProductionZoneUpdateMessage message = new ProductionZoneUpdateMessage("me", firstDepot,secondDepot,thirdDepot, leaders);
         pz.updateProductionZoneLight(message);
         pz.print();
-        devs[1]=null;
+        System.out.println("------------------------------------------------------------------------------------------------------------------");
+        firstDepot.remove(2);
+        firstDepot.remove(1);
+        secondDepot.remove(2);
+        message = new ProductionZoneUpdateMessage("me", firstDepot,secondDepot,thirdDepot, leaders);
+        pz.updateProductionZoneLight(message);
+        pz.print();
+        secondDepot = new ArrayList<>();
         leaders.remove(c2);
         System.out.println("------------------------------------------------------------------------------------------------------------------");
-        message = new ProductionZoneUpdateMessage("me", devs, leaders);
+        message = new ProductionZoneUpdateMessage("me", firstDepot,secondDepot,thirdDepot, leaders);
         pz.updateProductionZoneLight(message);
         pz.print();
 

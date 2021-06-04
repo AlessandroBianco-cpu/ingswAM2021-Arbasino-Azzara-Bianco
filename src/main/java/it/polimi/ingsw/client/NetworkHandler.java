@@ -11,22 +11,24 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 
-import static it.polimi.ingsw.utils.StringToPrint.*;
-
+/**
+ * Class used to implement the network communication between Client-Server. It is stored client-side
+ * It is charged to establish the connection with the server, read messages from the server and send messages to the server
+ */
 public class NetworkHandler implements Runnable, UiObserver {
-    Socket socket;
-    ObjectInputStream socketIn;
-    ObjectOutputStream socketOut;
+    private Socket socket;
+    private ObjectInputStream socketIn;
+    private ObjectOutputStream socketOut;
     private final View view;
+    private boolean connected = false;
     private boolean ready = false;
 
     public NetworkHandler(View view) {
         this.view = view;
     }
 
-
     /**
-     * Server messages' manager
+     * Server messages manager
      * @param inputObject message from server
      */
     private void manageInputFromServer(Object inputObject) {
@@ -41,8 +43,20 @@ public class NetworkHandler implements Runnable, UiObserver {
         else if(inputObject instanceof StartTurnMessage)
             view.displayStartTurn((StartTurnMessage) inputObject);
 
+        else if(inputObject instanceof WaitingMessage)
+            view.waitingOtherPlayers(((WaitingMessage) inputObject).getMessage());
+
         else if(inputObject instanceof MarbleBufferUpdateMessage)
             view.updateBuffer((MarbleBufferUpdateMessage) inputObject);
+
+        else if (inputObject instanceof CardPaymentResourceBufferUpdateMessage)
+            view.updateDevCardResourcesToPay((CardPaymentResourceBufferUpdateMessage) inputObject);
+
+        else if (inputObject instanceof PlacementDevCardMessage)
+            view.updatePlaceNewCard((PlacementDevCardMessage) inputObject);
+
+        else if (inputObject instanceof ProductionResourceBufferUpdateMessage)
+            view.updateProductionResourcesToPay((ProductionResourceBufferUpdateMessage) inputObject);
 
         else if(inputObject instanceof MarketUpdateMessage)
             view.updateMarketLight((MarketUpdateMessage) inputObject);
@@ -71,49 +85,40 @@ public class NetworkHandler implements Runnable, UiObserver {
         else if(inputObject instanceof ChooseResourcesMessage) {
             ChooseResourcesMessage m = (ChooseResourcesMessage) inputObject;
             view.updateNumOfResourcesToAdd(m.getNumOfRes());
-            view.displayStringMessages("Remember you must choose " +m.getNumOfRes()+ " resources. Type \"initialRes\"");
         }
         else if (inputObject instanceof LeaderInHandUpdateMessage)
             view.updateLeaderCardsInHand((LeaderInHandUpdateMessage) inputObject);
+
+        else if (inputObject instanceof OpponentsLeaderCardsInHandUpdateMessage)
+            view.updateOpponentsLeaderCardsInHand ((OpponentsLeaderCardsInHandUpdateMessage) inputObject);
 
         else if(inputObject instanceof ClientInputResponse)
             view.displayStringMessages( ((ClientInputResponse) inputObject).getErrorMessage());
 
         else if (inputObject instanceof WinnerMessage)
-            view.displayWinner( ((WinnerMessage) inputObject).getMessage());
+            view.displayWinner(((WinnerMessage) inputObject).getMessage());
 
-        else if (inputObject instanceof Integer) {
-            int num = ((Integer) inputObject);
-            view.updatePlayersNumber(num);
-        }
+        else if (inputObject instanceof WrongTurnMessage)
+            view.displayWrongTurn();
 
-        else if (inputObject instanceof String) {
-            if (! (inputObject.equals("")) ) {
-                String stringMessage = (String) inputObject;
-                switch (stringMessage) {
-                    case wrongTurnMessage:
-                        view.displayWrongTurn();
-                        break;
-                    case setPlayersNumMessage:
-                        view.displayStringMessages("Remember you must set the players number. Type \"setting\" ");
-                        break;
-                    case setNicknameMessage:
-                        view.displayStringMessages("Remember you must set your nickname. Type \"nick\"");
-                        break;
-                    case setLeadersMessage:
-                        view.displayStringMessages("Remember you must discard two of your leaders. Type \"initialDis\"");
-                        break;
-                    case takenNameMessage:
-                        view.displayTakenNickname();
-                        break;
-                    case waitPlayersMessage:
-                        view.displayStringMessages(waitOtherPlayers);
-                        break;
-                    case waitMessage:
-                        view.waiting();
-                        break;
-                }
-            }
+        else if (inputObject instanceof GameStartedMessage)
+            view.gameStarted();
+
+        else if (inputObject instanceof SetPlayersNumMessage)
+            view.askPlayersNumber();
+
+        else if (inputObject instanceof SetNicknameMessage)
+            view.askNickname();
+
+        else if (inputObject instanceof SetLeadersMessage)
+            view.askInitialDiscard();
+
+        else if (inputObject instanceof TakenNameMessage)
+            view.displayTakenNickname();
+
+        else if (inputObject instanceof S2CPlayersNumberMessage){
+            view.updatePlayersNumber(((S2CPlayersNumberMessage) inputObject).getNum());
+
         } else {
             throw new IllegalArgumentException();
         }
@@ -125,9 +130,9 @@ public class NetworkHandler implements Runnable, UiObserver {
      */
     public void pingToServer() {
         Thread t = new Thread(() -> {
-            while (true) {
+            while (connected) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -156,7 +161,7 @@ public class NetworkHandler implements Runnable, UiObserver {
                 }
             }
         }
-
+        connected = true;
         try {
             socketOut = new ObjectOutputStream(socket.getOutputStream());
             socketIn = new ObjectInputStream(socket.getInputStream());
@@ -169,7 +174,7 @@ public class NetworkHandler implements Runnable, UiObserver {
         try{
             while (true) {
                 try {
-                    socket.setSoTimeout(500000);
+                    socket.setSoTimeout(30000);
                     Object inputObject = socketIn.readObject();
                     manageInputFromServer(inputObject);
                     // close socket if winMessage is received
@@ -183,13 +188,7 @@ public class NetworkHandler implements Runnable, UiObserver {
         } catch(NoSuchElementException e) {
             view.displayNetworkError();
         } finally {
-            try {
-                socketIn.close();
-                socketOut.close();
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            closeConnection();
         }
     }
 
@@ -201,13 +200,25 @@ public class NetworkHandler implements Runnable, UiObserver {
     @Override
     public void updateMessage(Message message) throws IOException {
         try {
-            //TODO vedere se senza il reset il server gira meglio
-            //socketOut.reset();
+            //vedere se senza il reset il server gira meglio
+            socketOut.reset();
             socketOut.writeObject(message);
             socketOut.flush();
         }
         catch (IOException ioException) {
             ioException.printStackTrace();
+        }
+    }
+
+    public synchronized void closeConnection() {
+        connected = false;
+        try {
+            System.out.println("I'm closing client-side");
+            socketOut.close();
+            socketIn.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.MarbleMarket.Marble;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Observable class used by Player server-side
+ */
 public class PlayerItemsObservable {
 
     private final List<PlayerItemsObserver> observers = new ArrayList<>();

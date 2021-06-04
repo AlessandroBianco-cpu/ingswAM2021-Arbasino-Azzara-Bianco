@@ -15,12 +15,15 @@ import java.util.Scanner;
 
 import static it.polimi.ingsw.utils.StringToPrint.*;
 
+/**
+ * CLI class
+ */
 public class CLI extends UiObservable implements Runnable, View {
 
     private final Scanner in;
     private String owner;
-    private boolean answerReady = false;
     private boolean gameCreated = false;
+    private int yourTurnMessageCounter = 0;
     private ModelLight model = new ModelLight();
 
     //variables sent from Server
@@ -40,23 +43,39 @@ public class CLI extends UiObservable implements Runnable, View {
     public void run() {
         askConnection();
         startGame();
-        readInput();
     }
 
     /**
-     * Displays the game table
+     * Sets the owner of this CLI after a Server check
+     * @param m is the message send from the Server
      */
-    public void displayTable(){
-        if(gameCreated){
-            displayMarket();
-            System.out.println();
-            displayDevCardsAvailable();
-        }
+    @Override
+    public void registerClient(ClientAcceptedMessage m) {
+        this.owner = m.getNickname();
+        model.setOwner(owner);
+        System.out.println("You are correctly registered with nickname: "+ owner);
     }
 
-    public void readInput() {
-        while (true) {
+    /**
+     * Sends an endTurn message
+     */
+    public void endTurn(){
+        notifyMessage(new EndTurnMessage());
+    }
 
+    @Override
+    public void gameStarted() {
+        readInput();
+    }
+
+    // ------------------------ INPUT INTERACTIONS ------------------------
+
+    /**
+     * Reads the input from the client. It runs one thread in order to be able to also listen messages from the server
+     */
+    public void readInput() {
+        Thread t = new Thread(() -> {
+        while (true) {
             if (in.hasNext()) {
 
                 String s = in.nextLine().toUpperCase(Locale.ROOT);
@@ -69,20 +88,11 @@ public class CLI extends UiObservable implements Runnable, View {
                     case "SHOW":
                         displayPersonalBoard(owner);
                         break;
+                    case "SHOWOPPONENT":
+                        askOpponentNicknameAndShow();
+                        break;
                     case "SWAP":
                         askSwapType();
-                        break;
-                    case "SETTING":
-                        askPlayersNumber();
-                        break;
-                    case "NICK":
-                        askNickname();
-                        break;
-                    case "INITIALDIS":
-                        askInitialDiscard();
-                        break;
-                    case "INITIALRES":
-                        askInitialResource();
                         break;
                         //action case
                     case "MARBLESROW":
@@ -106,9 +116,6 @@ public class CLI extends UiObservable implements Runnable, View {
                     case "PAYPROD":
                         askHowToPayProduction();
                         break;
-                    case "PLAYERINFO":
-                        askPlayerInfo();
-                        break;
                     case "BUYCARD":
                         askCardIndex();
                         break;
@@ -128,39 +135,12 @@ public class CLI extends UiObservable implements Runnable, View {
                 }
             }
         }
+        });
+        t.start();
     }
 
     /**
-     * This method printf the game starting
-     */
-    private void startGame() {
-        System.out.print("\n" + ConsoleColors.YELLOW_BOLD +
-                " _____ ______   ________  ________  _________  _______   ________  ________           ________  ________     \n" +
-                "|\\   _ \\  _   \\|\\   __  \\|\\   ____\\|\\___   ___|\\  ___ \\ |\\   __  \\|\\   ____\\         |\\   __  \\|\\  _____\\    \n" +
-                "\\ \\  \\\\\\__\\ \\  \\ \\  \\|\\  \\ \\  \\___|\\|___ \\  \\_\\ \\   __/|\\ \\  \\|\\  \\ \\  \\___|_        \\ \\  \\|\\  \\ \\  \\__/     \n" +
-                " \\ \\  \\\\|__| \\  \\ \\   __  \\ \\_____  \\   \\ \\  \\ \\ \\  \\_|/_\\ \\   _  _\\ \\_____  \\        \\ \\  \\\\\\  \\ \\   __\\    \n" +
-                "  \\ \\  \\    \\ \\  \\ \\  \\ \\  \\|____|\\  \\   \\ \\  \\ \\ \\  \\_|\\ \\ \\  \\\\  \\\\|____|\\  \\        \\ \\  \\\\\\  \\ \\  \\_|    \n" +
-                "   \\ \\__\\    \\ \\__\\ \\__\\ \\__\\____\\_\\  \\   \\ \\__\\ \\ \\_______\\ \\__\\\\ _\\ ____\\_\\  \\        \\ \\_______\\ \\__\\     \n" +
-                "    \\|__|     \\|__|\\|__|\\|__|\\_________\\   \\|__|  \\|_______|\\|__|\\|__|\\_________\\        \\|_______|\\|__|     \n" +
-                "                            \\|_________|                             \\|_________|                            \n" +
-                "                                                                                                             \n" +
-                "                                                                                                             \n");
-        System.out.print(
-                " ________  _______   ________   ________  ___  ________   ________  ________  ________   ________  _______      \n" +
-                "|\\   __  \\|\\  ___ \\ |\\   ___  \\|\\   __  \\|\\  \\|\\   ____\\ |\\   ____\\|\\   __  \\|\\   ___  \\|\\   ____\\|\\  ___ \\     \n" +
-                "\\ \\  \\|\\  \\ \\   __/|\\ \\  \\\\ \\  \\ \\  \\|\\  \\ \\  \\ \\  \\___|_\\ \\  \\___|\\ \\  \\|\\  \\ \\  \\\\ \\  \\ \\  \\___|\\ \\   __/|    \n" +
-                " \\ \\   _  _\\ \\  \\_|/_\\ \\  \\\\ \\  \\ \\   __  \\ \\  \\ \\_____  \\\\ \\_____  \\ \\   __  \\ \\  \\\\ \\  \\ \\  \\    \\ \\  \\_|/__  \n" +
-                "  \\ \\  \\\\  \\\\ \\  \\_|\\ \\ \\  \\\\ \\  \\ \\  \\ \\  \\ \\  \\|____|\\  \\\\|____|\\  \\ \\  \\ \\  \\ \\  \\\\ \\  \\ \\  \\____\\ \\  \\_|\\ \\ \n" +
-                "   \\ \\__\\\\ _\\\\ \\_______\\ \\__\\\\ \\__\\ \\__\\ \\__\\ \\__\\____\\_\\  \\ ____\\_\\  \\ \\__\\ \\__\\ \\__\\\\ \\__\\ \\_______\\ \\_______\\\n" +
-                "    \\|__|\\|__|\\|_______|\\|__| \\|__|\\|__|\\|__|\\|__|\\_________|\\_________\\|__|\\|__|\\|__| \\|__|\\|_______|\\|_______|\n" +
-                "                                                 \\|_________\\|_________|                                        \n" +
-                "                                                                                                                \n" +
-                "                                                                                                                \n" +
-                "\n" + ConsoleColors.RESET);
-    }
-
-    /**
-     * Asks the first user connected the number of Players that are going to play (1 to 4 players) and gets the input
+     * Asks, if the user is the first user connected of a Lobby, the number of Players that are going to play (1 to 4 players)
      */
     @Override
     public void askPlayersNumber() {
@@ -171,7 +151,28 @@ public class CLI extends UiObservable implements Runnable, View {
             System.out.println("Insert a number between 1 and 4 to correctly set-up the players in the game!");
             num = getIntegerInput();
         }
+
         notifyMessage(new NumOfPlayerMessage(num));
+    }
+
+    /**
+     * Asks the user a nickname of an opponent and shows his personal board
+     */
+    public void askOpponentNicknameAndShow(){
+        if(model.getNumberOfPlayers()>1) {
+            System.out.println("Insert the nickname of the opponent you want to see the personal board:");
+            model.printOpponentNicknames(owner); //shows opponents' nicknames
+
+            String s = in.nextLine();
+            while (model.getPlayerByNickname(s) == null) {
+                System.out.println("Type a valid opponent nickname, please");
+                s = in.nextLine();
+            }
+            model.printPersonalBoard(s);
+            model.printOpponentLeaderCardInHand(s);
+        }else{
+            model.printLorenzo();
+        }
     }
 
     /**
@@ -183,7 +184,10 @@ public class CLI extends UiObservable implements Runnable, View {
         System.out.println("How many development cards do you want to activate?");
 
         int n = getIntegerInput();
-        while (n < 0 || n > 5) {
+        while (n <= 0 || n > 5) {
+            if(n == 0){
+                return;
+            }
             System.out.println(notInBoundMessage);
             n = getIntegerInput();
         }
@@ -215,48 +219,8 @@ public class CLI extends UiObservable implements Runnable, View {
         notifyMessage(new ActivateProductionMessage(slotsIndexes, resIn1, resIn2, resOut, leadersOutput));
     }
 
-
     /**
-     * Sets the owner of this CLI after a Server check
-     * @param m is the message send from the Server
-     */
-    @Override
-    public void registerClient(ClientAcceptedMessage m) {
-        this.owner = m.getNickname();
-        System.out.println("You are correctly registered with nickname: "+ owner);
-    }
-
-    /**
-     * Prints all the command that player can insert to interact with server
-     */
-    public void giveLegenda(){
-        System.out.println("To activate production from development slots, type: " + printGreen("production"));
-        System.out.println("To activate or discard a leader, type: " + printGreen("leader"));
-        System.out.println("To buy a new development card, type: " + printGreen("buyCard"));
-        System.out.println("To take resources from marbles market inserting a marble in a row, type: " + printGreen("marblesRow"));
-        System.out.println("To take resources from marbles market inserting a marble in a column, type: " + printGreen("marblesCol"));
-        System.out.println("To do a swap action type: " +  printGreen("swap"));
-        System.out.println("To show your personal board, type: " +  printGreen("show"));
-        System.out.println("To show your leader cards, type: " + printGreen("showLeaders"));
-        System.out.println("To store a marble from buffer, type: " + printGreen("storeMarble"));
-        System.out.println("To pay a Development Card, type: " + printGreen("payCard"));
-        System.out.println("To place a DevCard bought, type: " + printGreen("placeCard"));
-        //PLAYER INFO System.out.println("": " + printGreen("playerInfo"));
-        System.out.println("To pay the production, type: " + printGreen("payProd"));
-
-        //anche dei comandi per avere le informazioni degli altri player!!
-    }
-
-    public String printGreen(String string){
-        return (ConsoleColors.GREEN_BOLD + string + ConsoleColors.RESET);
-    }
-
-    public void endTurn(){
-        notifyMessage(new EndTurnMessage());
-    }
-
-    /**
-     * This method handle all the leader action that player can do
+     * This method handles the leader actions player can do
      */
     public void askLeaderAction() {
         System.out.println(listOfLeaderAction);
@@ -280,7 +244,7 @@ public class CLI extends UiObservable implements Runnable, View {
     }
 
     /**
-     * Asks the index of the development card which player want to buy
+     * Asks the index of the development card that player wants to buy
      */
     public void askCardIndex() {
         displayDevCardsAvailable();
@@ -294,6 +258,9 @@ public class CLI extends UiObservable implements Runnable, View {
         notifyMessage(new BuyCardMessage(indexCard));
     }
 
+    /**
+     * Asks the player how he wants to pay a DevCard
+     */
     @Override
     public void askHowToPayDevCard() {
         ResourceType resourceType = askAResource("Choose the type of resource do you want to pay");
@@ -303,7 +270,7 @@ public class CLI extends UiObservable implements Runnable, View {
 
         boolean useLeaderDiscount = booleanRequest("Do you want to use a leader discount?" + printGreen("0") +" -> no" + printGreen("1") + " -> yes");
 
-        notifyMessage(new DevCardPayment(fromWarehouse, fromExtra, fromStrongBox, resourceType, useLeaderDiscount));
+        notifyMessage(new DevCardPayment(fromWarehouse, fromStrongBox, fromExtra, resourceType, useLeaderDiscount));
     }
 
     /**
@@ -340,7 +307,7 @@ public class CLI extends UiObservable implements Runnable, View {
         int fromStrongBox = askAQuantity("strongbox");
         int fromExtra = askAQuantity("extra depot");
 
-        notifyMessage(new ResourcePlayerWantsToSpendMessage(resourceType, fromWarehouse, fromStrongBox, fromExtra));
+        notifyMessage(new ResourcePlayerWantsToSpendMessage( fromWarehouse, fromStrongBox, fromExtra, resourceType));
     }
 
     /**
@@ -349,6 +316,8 @@ public class CLI extends UiObservable implements Runnable, View {
     @Override
     public void askDevCardSlotPosition(){
         System.out.println("Where do you want to place the DevCard?");
+        model.printBoughtCard(owner);
+        displayProductionZone();
         int position = getIntegerInput();
         while (position < 1 || position > 3){
             System.out.println("Wrong slot index, retype");
@@ -366,109 +335,6 @@ public class CLI extends UiObservable implements Runnable, View {
         String nickname = in.nextLine();
         notifyMessage(new SettingNicknameMessage(nickname));
     }
-
-    /**
-     * Prints the number of players
-     * @param number number of players
-     */
-    public void displayNumberOfPlayers(int number) {
-        System.out.println("The game will have " + number + " players");
-    }
-
-
-    @Override
-    public void updateStrongboxLight(StrongboxUpdateMessage m) {
-        model.updatePlayerStrongbox(m);
-    }
-
-    @Override
-    public void updateFaithTrack(FaithTrackUpdateMessage m) {
-        model.updatePlayerFaithTrack(m);
-    }
-
-    @Override
-    public void updateDevCardMarket(DevCardMarketUpdateMessage m) {
-        model.updateDevCardMarket(m);
-    }
-
-    @Override
-    public void updateLeaderCardsInHand(LeaderInHandUpdateMessage m) {
-        model.updatePlayerLeaderInHands(m);
-    }
-
-    @Override
-    public void updateProductionZone(ProductionZoneUpdateMessage m) {
-        model.updateProductionZone(m);
-        if (m.getNickname().equals(owner))
-            model.printProductionZone(owner);
-    }
-
-    @Override
-    public void updateWarehouseLight(WarehouseUpdateMessage m) {
-        model.updateWarehouse(m);
-    }
-
-    @Override
-    public void updateMarketLight(MarketUpdateMessage m) {
-        model.getMarbleMarket().updateMarketLight(m);
-    }
-
-    @Override
-    public void updateBuffer(MarbleBufferUpdateMessage m) {
-        model.getPlayerByNickname(owner).updateBuffer(m.getBuffer());
-        displayBuffer();
-    }
-
-    @Override
-    public void displayBuffer(){
-        model.printBuffer(owner);
-    }
-    
-    @Override
-    public void displayDevCardsAvailable() {
-        model.printDevCardMarket();
-    }
-
-    @Override
-    public void displayLeaderCards() {
-        model.printLeaderCardInHand(owner);
-    }
-
-    @Override
-    public void displayWarehouse() {
-        model.printWarehouse(owner);
-    }
-
-    @Override
-    public void displayPersonalBoard(String nickname) {
-        model.printPersonalBoard(nickname);
-    }
-
-    /**
-     * This method displays the owner leader cards
-     */
-    public void showLeaderCards(){
-        displayLeaderCards();
-    }
-
-    /**
-     * This method sets up the LightModel players' nickname
-     * @param m is the message from Server
-     */
-    @Override
-    public void updateNicknames(NicknamesUpdateMessage m) {
-        model.updatePlayersNickname(m);
-        gameCreated = true;
-    }
-
-    /**
-     * Warns that the chosen nickname is already taken and asks a different one
-     */
-    @Override
-    public void displayTakenNickname() {
-        System.out.println("This nickname is already taken. Please try again.");
-    }
-
 
     /**
      * Ask the index of row/column where player wants to insert marble in the market
@@ -489,7 +355,10 @@ public class CLI extends UiObservable implements Runnable, View {
         }
     }
 
-
+    /**
+     * Handles the actions player has to perform with the resources in the buffer of resources received after a
+     * takeResourcesFromMarket action
+     */
     public void handleMarbleBuffer() {
         int index;
         System.out.println(listOfMarbleAction);
@@ -562,7 +431,7 @@ public class CLI extends UiObservable implements Runnable, View {
     /**
      * Ask the index of the warehouse's depot
      *
-     * @return the index of depot
+     * @return the index of depot given by the user
      */
     public int askWarehouseDepot(String s){
         System.out.println("Choose the number of depot " + s);
@@ -577,6 +446,10 @@ public class CLI extends UiObservable implements Runnable, View {
     }
 
 
+    /**
+     * Asks the index of an extra depot
+     * @return the index given by the user
+     */
     public int askExtraDepot(String s){
         System.out.println("Insert the number of an extra depot "+s);
         int depIndex = getIntegerInput();
@@ -588,7 +461,10 @@ public class CLI extends UiObservable implements Runnable, View {
         return depIndex;
     }
 
-
+    /**
+     * Asks a type of resource
+     * @return the type of resource given by the user
+     */
     public ResourceType askAResource(String toPrint) {
         System.out.print(toPrint);
         System.out.println(printResourceLegenda);
@@ -602,33 +478,9 @@ public class CLI extends UiObservable implements Runnable, View {
         return parseResourceIndex(resource);
     }
 
-
-    private ResourceType parseResourceIndex(int res) {
-        switch (res) {
-            case 1: return ResourceType.COIN;
-            case 2: return ResourceType.STONE;
-            case 3: return ResourceType.SHIELD;
-            case 4: return ResourceType.SERVANT;
-        }
-        return  null;
-    }
-
-
-    public void askPlayerInfo() {
-        System.out.println("Insert the nickname of the player you want to show info:\n");
-        for (String s : players)
-            System.out.println(" "+s+" ");
-
-        String nicknameInfo = in.nextLine();
-        while (! (players.contains(nicknameInfo)) ) {
-            System.out.println(typingErrorMessage);
-            nicknameInfo = in.nextLine();
-        }
-
-        notifyMessage(new PlayerInfoMessage(nicknameInfo));
-    }
-
-
+    /**
+     * Asks the leader cards player wants to discard in the initial stage of the game
+     */
     @Override
     public void askInitialDiscard() {
         List<Integer> indexes = new ArrayList<>();
@@ -652,7 +504,11 @@ public class CLI extends UiObservable implements Runnable, View {
         notifyMessage(new ChooseLeaderMessage(indexes));
     }
 
+    /**
+     * Asks the type of resource player wants to add in the initial stage of the game
+     */
     public void askInitialResource() {
+        System.out.println("You must choose "+resToAdd+ " resources to add in your warehouse");
         ChooseResourcesMessage resMessage = new ChooseResourcesMessage(resToAdd);
 
         for(int i=0; i<resToAdd; i++) {
@@ -665,32 +521,7 @@ public class CLI extends UiObservable implements Runnable, View {
     }
 
     /**
-     * This method sets the number of player
-     * @param num is the number of game's players
-     */
-    @Override
-    public void updatePlayersNumber(int num) {
-        playersNumber = num;
-        displayNumberOfPlayers(playersNumber);
-    }
-
-    /**
-     * This method sets the number of resource which player must to add
-     * @param num is the number of resources
-     */
-    @Override
-    public void updateNumOfResourcesToAdd(int num) {
-        this.resToAdd = num;
-    }
-
-    @Override
-    public void updateLorenzoLight(LorenzoUpdateMessage m) {
-        model.updateLorenzo(m);
-        model.printLorenzo();
-    }
-
-    /**
-     * Ask to the player what type of swap he wants to do
+     * Asks the player the type of swap he wants to perform
      */
     @Override
     public void askSwapType() {
@@ -733,26 +564,27 @@ public class CLI extends UiObservable implements Runnable, View {
         }
     }
 
+    /**
+     * Asks the player a quantity
+     * @return the quantity given by the user
+     */
     private int askQuantity(){
         System.out.println("How many resources do you want to move?\n");
         return getIntegerInput();
     }
 
+    /**
+     * Prints a message after the game finished
+     */
     private void endGame() {
         System.out.println("Thanks for playing!");
         System.exit(0);
     }
-    
-    @Override
-    public void displayStartTurn(StartTurnMessage m) {
-        if (m.getCurrentPlayerNickname().equals(owner)) {
-            System.out.println("It's" + ConsoleColors.GREEN_BOLD + " your" + ConsoleColors.RESET + " turn");
-            displayTable();
-        }
-        else
-            System.out.println(m.getMessage());
-    }
 
+    /**
+     * Method used to get an integer from the player
+     * @return the number inserted by the player
+     */
     private int getIntegerInput(){
         int x = -1;
         boolean isOk = false;
@@ -768,25 +600,279 @@ public class CLI extends UiObservable implements Runnable, View {
     }
 
     /**
-     * Prints the winner's nickname
-     * @param winnerMessage is a string to print
+     * Asks the player the connection settings
      */
-    @Override
-    public void displayWinner(String winnerMessage) {
-        System.out.println(winnerMessage);
-        endGame();
-    }
-
-
     private void askConnection() {
-        /*
         System.out.println("IP address of server?");
         String ip = in.nextLine();
         System.out.println("Port?");
         String port = in.nextLine();
-        */
-        notifyConnection("127.0.0.1", "12345");
+        notifyConnection(ip, port);
     }
+
+    // ------------------------ UTIL ------------------------
+    /**
+     * Parses a resource given from user into a ResourceType
+     * @param res integer representing a resource inserted by the user
+     * @return the corresponding resourceType
+     */
+    private ResourceType parseResourceIndex(int res) {
+        switch (res) {
+            case 1: return ResourceType.COIN;
+            case 2: return ResourceType.STONE;
+            case 3: return ResourceType.SHIELD;
+            case 4: return ResourceType.SERVANT;
+        }
+        return  null;
+    }
+
+
+    // ------------------------ UPDATES ------------------------
+    @Override
+    public void updateStrongboxLight(StrongboxUpdateMessage m) {
+        model.updatePlayerStrongbox(m);
+    }
+
+    @Override
+    public void updateFaithTrack(FaithTrackUpdateMessage m) {
+        model.updatePlayerFaithTrack(m);
+    }
+
+    @Override
+    public void updateDevCardMarket(DevCardMarketUpdateMessage m) {
+        model.updateDevCardMarket(m);
+    }
+
+    @Override
+    public void updateLeaderCardsInHand(LeaderInHandUpdateMessage m) {
+        model.updatePlayerLeaderInHands(m);
+    }
+
+    @Override
+    public void updateOpponentsLeaderCardsInHand(OpponentsLeaderCardsInHandUpdateMessage m) {
+        model.updateOpponentsLeaderInHands(m);
+    }
+
+    @Override
+    public void updateDevCardResourcesToPay(CardPaymentResourceBufferUpdateMessage m) {
+        model.updateResourcesToPay(m);
+        displayResourcesToPayForCard();
+    }
+
+    @Override
+    public void updateProductionResourcesToPay(ProductionResourceBufferUpdateMessage m) {
+        model.updateResourcesToPay(m);
+        displayProductionResourcesPayment();
+    }
+
+    @Override
+    public void updateProductionZone(ProductionZoneUpdateMessage m) {
+        model.updateProductionZone(m);
+        if (m.getNickname().equals(owner))
+            model.printProductionZone(owner);
+    }
+
+    @Override
+    public void updateWarehouseLight(WarehouseUpdateMessage m) {
+        model.updateWarehouse(m);
+    }
+
+    @Override
+    public void updateMarketLight(MarketUpdateMessage m) {
+        model.getMarbleMarket().updateMarketLight(m);
+    }
+
+    @Override
+    public void updateBuffer(MarbleBufferUpdateMessage m) {
+        model.getPlayerByNickname(owner).updateBuffer(m.getBuffer());
+        displayBuffer();
+    }
+
+    /**
+     * This method sets up the LightModel players' nickname
+     * @param m is the message from Server
+     */
+    @Override
+    public void updateNicknames(NicknamesUpdateMessage m) {
+        model.updatePlayersNickname(m);
+        gameCreated = true;
+    }
+
+    /**
+     * This method sets the number of player
+     * @param num is the number of game's players
+     */
+    @Override
+    public void updatePlayersNumber(int num) {
+        playersNumber = num;
+        displayNumberOfPlayers(playersNumber);
+    }
+
+    @Override
+    public void updatePlaceNewCard(PlacementDevCardMessage m) {
+        model.updateBoughtCard(m);
+        System.out.println("You can now place the card: ");
+    }
+
+    /**
+     * This method sets the number of resource which player must to add
+     * @param num is the number of resources
+     */
+    @Override
+    public void updateNumOfResourcesToAdd(int num) {
+        this.resToAdd = num;
+        askInitialResource();
+    }
+
+    @Override
+    public void updateLorenzoLight(LorenzoUpdateMessage m) {
+        model.updateLorenzo(m);
+        model.printLorenzo();
+    }
+
+
+    // ------------------------ PRINTERS ------------------------
+
+    /**
+     * Prints the game title
+     */
+    private void startGame() {
+        System.out.print("\n" + ConsoleColors.YELLOW_BOLD +
+                " _____ ______   ________  ________  _________  _______   ________  ________           ________  ________     \n" +
+                "|\\   _ \\  _   \\|\\   __  \\|\\   ____\\|\\___   ___|\\  ___ \\ |\\   __  \\|\\   ____\\         |\\   __  \\|\\  _____\\    \n" +
+                "\\ \\  \\\\\\__\\ \\  \\ \\  \\|\\  \\ \\  \\___|\\|___ \\  \\_\\ \\   __/|\\ \\  \\|\\  \\ \\  \\___|_        \\ \\  \\|\\  \\ \\  \\__/     \n" +
+                " \\ \\  \\\\|__| \\  \\ \\   __  \\ \\_____  \\   \\ \\  \\ \\ \\  \\_|/_\\ \\   _  _\\ \\_____  \\        \\ \\  \\\\\\  \\ \\   __\\    \n" +
+                "  \\ \\  \\    \\ \\  \\ \\  \\ \\  \\|____|\\  \\   \\ \\  \\ \\ \\  \\_|\\ \\ \\  \\\\  \\\\|____|\\  \\        \\ \\  \\\\\\  \\ \\  \\_|    \n" +
+                "   \\ \\__\\    \\ \\__\\ \\__\\ \\__\\____\\_\\  \\   \\ \\__\\ \\ \\_______\\ \\__\\\\ _\\ ____\\_\\  \\        \\ \\_______\\ \\__\\     \n" +
+                "    \\|__|     \\|__|\\|__|\\|__|\\_________\\   \\|__|  \\|_______|\\|__|\\|__|\\_________\\        \\|_______|\\|__|     \n" +
+                "                            \\|_________|                             \\|_________|                            \n" +
+                "                                                                                                             \n" +
+                "                                                                                                             \n");
+        System.out.print(
+                " ________  _______   ________   ________  ___  ________   ________  ________  ________   ________  _______      \n" +
+                        "|\\   __  \\|\\  ___ \\ |\\   ___  \\|\\   __  \\|\\  \\|\\   ____\\ |\\   ____\\|\\   __  \\|\\   ___  \\|\\   ____\\|\\  ___ \\     \n" +
+                        "\\ \\  \\|\\  \\ \\   __/|\\ \\  \\\\ \\  \\ \\  \\|\\  \\ \\  \\ \\  \\___|_\\ \\  \\___|\\ \\  \\|\\  \\ \\  \\\\ \\  \\ \\  \\___|\\ \\   __/|    \n" +
+                        " \\ \\   _  _\\ \\  \\_|/_\\ \\  \\\\ \\  \\ \\   __  \\ \\  \\ \\_____  \\\\ \\_____  \\ \\   __  \\ \\  \\\\ \\  \\ \\  \\    \\ \\  \\_|/__  \n" +
+                        "  \\ \\  \\\\  \\\\ \\  \\_|\\ \\ \\  \\\\ \\  \\ \\  \\ \\  \\ \\  \\|____|\\  \\\\|____|\\  \\ \\  \\ \\  \\ \\  \\\\ \\  \\ \\  \\____\\ \\  \\_|\\ \\ \n" +
+                        "   \\ \\__\\\\ _\\\\ \\_______\\ \\__\\\\ \\__\\ \\__\\ \\__\\ \\__\\____\\_\\  \\ ____\\_\\  \\ \\__\\ \\__\\ \\__\\\\ \\__\\ \\_______\\ \\_______\\\n" +
+                        "    \\|__|\\|__|\\|_______|\\|__| \\|__|\\|__|\\|__|\\|__|\\_________|\\_________\\|__|\\|__|\\|__| \\|__|\\|_______|\\|_______|\n" +
+                        "                                                 \\|_________\\|_________|                                        \n" +
+                        "                                                                                                                \n" +
+                        "                                                                                                                \n" +
+                        "\n" + ConsoleColors.RESET);
+    }
+
+    /**
+     * Prints all the command that player can insert to interact with server
+     */
+    public void giveLegenda(){
+        System.out.println("To activate production from development slots, type: " + printGreen("production"));
+        System.out.println("To activate or discard a leader, type: " + printGreen("leader"));
+        System.out.println("To buy a new development card, type: " + printGreen("buyCard"));
+        System.out.println("To take resources from marbles market inserting a marble in a row, type: " + printGreen("marblesRow"));
+        System.out.println("To take resources from marbles market inserting a marble in a column, type: " + printGreen("marblesCol"));
+        System.out.println("To do a swap action type: " +  printGreen("swap"));
+        System.out.println("To show your personal board, type: " +  printGreen("show"));
+        System.out.println("To show your leader cards, type: " + printGreen("showLeaders"));
+        System.out.println("To store a marble from buffer, type: " + printGreen("storeMarble"));
+        System.out.println("To pay a Development Card, type: " + printGreen("payCard"));
+        System.out.println("To place a DevCard bought, type: " + printGreen("placeCard"));
+        System.out.println("To pay the production, type: " + printGreen("payProd"));
+        System.out.println("To show an opponent's personal board, type: " + printGreen("showOpponent"));
+
+        //anche dei comandi per avere le informazioni degli altri player!!
+    }
+
+    /**
+     * Method used to print in green
+     * @param string string to print
+     * @return the input string in green
+     */
+    public String printGreen(String string){
+        return (ConsoleColors.GREEN_BOLD + string + ConsoleColors.RESET);
+    }
+
+    /**
+     * Method used to print in red Uppercase
+     * @param string string to print
+     * @return the input string in green
+     */
+    public String printRedCaps(String string){return (ConsoleColors.RED_BOLD + string.toUpperCase() + ConsoleColors.RESET); }
+
+    /**
+     * Displays the game table
+     */
+    private void displayTable(){
+        if(gameCreated){
+            displayMarket();
+            System.out.println();
+            displayDevCardsAvailable();
+        }
+    }
+
+    @Override
+    public void displayResourcesToPayForCard() {
+        model.getPlayerByNickname(owner).printResourceBuffer();
+    }
+
+    @Override
+    public void displayProductionResourcesPayment() { model.getPlayerByNickname(owner).printResourceBuffer(); }
+
+    @Override
+    public void displayBuffer(){
+        model.printBuffer(owner);
+    }
+
+    @Override
+    public void displayDevCardsAvailable() {
+        model.printDevCardMarket();
+    }
+
+    @Override
+    public void displayLeaderCards() {
+        model.printLeaderCardInHand(owner);
+    }
+
+    @Override
+    public void displayWarehouse() {
+        model.printWarehouse(owner);
+    }
+
+
+    private void displayPersonalBoard(String nickname) {
+        model.printPersonalBoard(nickname);
+    }
+
+    /**
+     * This method displays the owner leader cards
+     */
+    public void showLeaderCards(){
+        displayLeaderCards();
+    }
+
+    /**
+     * Prints the number of players
+     * @param number number of players
+     */
+    public void displayNumberOfPlayers(int number) {
+        System.out.println("The game will have " + number + " players");
+    }
+
+    /**
+     * Warns that the chosen nickname is already taken and asks a different one
+     */
+    @Override
+    public void displayTakenNickname() {
+        System.out.println("This nickname is already taken. Please try again.");
+    }
+
+
+    private void displayMarket(){
+        model.getMarbleMarket().print();
+    }
+
+    @Override
+    public void displayProductionZone(){model.printProductionZone(owner);}
 
     /**
      * Warns the user that it's not his/her turn
@@ -798,7 +884,7 @@ public class CLI extends UiObservable implements Runnable, View {
 
     /**
      * This method is used to display strings
-     * @param message
+     * @param message message from server
      */
     @Override
     public void displayStringMessages(String message){
@@ -814,18 +900,39 @@ public class CLI extends UiObservable implements Runnable, View {
         System.exit(0);
     }
 
-    @Override
-    public void waiting() {
-        System.out.println("Wait...");
-    }
 
     @Override
-    public void displayMarket(){
-        model.getMarbleMarket().print();
+    public void waitingOtherPlayers(String message) {
+        System.out.println(message);
     }
 
+    /**
+     * Prints the winner's nickname
+     * @param winnerMessage is a string to print
+     */
     @Override
-    public void displayProductionZone(){model.printProductionZone(owner);}
+    public void displayWinner(String winnerMessage) {
+        System.out.println("The winner is " + winnerMessage + "!");
+        endGame();
+    }
+
+    /**
+     * Displays the player whose turn is
+     * @param m message containing the name of the player whose turn is
+     */
+    @Override
+    public void displayStartTurn(StartTurnMessage m) {
+        if (m.getCurrentPlayerNickname().equals(owner)) {
+            System.out.println("It's" + ConsoleColors.GREEN_BOLD + " your" + ConsoleColors.RESET + " turn");
+            yourTurnMessageCounter++;
+            if(yourTurnMessageCounter>1)
+                displayTable();
+        }
+        else
+            System.out.println(m.getMessage());
+    }
+
+    //----------
 
 
 }

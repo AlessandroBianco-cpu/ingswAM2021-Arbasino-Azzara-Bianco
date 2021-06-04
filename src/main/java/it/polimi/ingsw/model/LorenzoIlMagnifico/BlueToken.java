@@ -14,4 +14,7 @@ public class BlueToken extends ColoredToken{
     public boolean isBlue() {
         return true;
     }
+
+    @Override
+    public String toImage() { return "blueToken.png"; }
 }

@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.MarbleMarket.Marble;
 
 import java.util.List;
 
+/**
+ * Observer interface used by VirtualView
+ */
 public interface PlayerItemsObserver {
 
     void updateMarbleBuffer(List<Marble> marbleLinkedList);

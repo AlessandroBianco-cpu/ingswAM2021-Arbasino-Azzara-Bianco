@@ -13,4 +13,9 @@ public class GreyMarbleLight extends MarbleLight{
     public String toString() {
         return (ConsoleColors.BLACK_BRIGHT + "⬤" + ConsoleColors.RESET);
     }
+
+    @Override
+    public String toImage() {
+        return "/marbles/grey.png";
+    }
 }

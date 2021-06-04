@@ -1,15 +1,18 @@
 package it.polimi.ingsw.networking.message;
 
-public class WinnerMessage extends Server2Client{
-
+/**
+ * Packet sent from Server to client to tell the players the name of the winner
+ */
+public class WinnerMessage extends Broadcast{
     private static final long serialVersionUID = -8705473146703255833L;
-    private String winner;
+
+    private final String winner;
 
     public WinnerMessage(String winner) {
         this.winner = winner;
     }
 
     public String getMessage() {
-        return "The winner is " + winner;
+        return winner;
     }
 }

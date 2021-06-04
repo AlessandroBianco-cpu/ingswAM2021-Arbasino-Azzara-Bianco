@@ -3,6 +3,9 @@ package it.polimi.ingsw.client.LightModel;
 import it.polimi.ingsw.networking.message.updateMessage.FaithTrackUpdateMessage;
 import it.polimi.ingsw.utils.ConsoleColors;
 
+/**
+ * Lightweight representation of the FaithTrack stored client-side
+ */
 public class FaithTrackLight{
 
     private final int FAITH_TRACK_SIZE = 25;
@@ -20,6 +23,37 @@ public class FaithTrackLight{
     private boolean secondPopeFavorAchieved = false;
     private boolean thirdPopeFavorAchieved = false;
 
+
+    /**
+     * Updates the status of the faith-tracka
+     * @param m content to update
+     */
+    public void update (FaithTrackUpdateMessage m){
+        this.position = m.getPosition();
+        firstPopeFavorAchieved = m.isFirstVaticanReportVPAchieved();
+        secondPopeFavorAchieved = m.isSecondVaticanReportVPAchieved();
+        thirdPopeFavorAchieved = m.isThirdVaticanReportVPAchieved();
+    }
+
+    // ------------------------ GETTERS ------------------------
+
+    public int getPosition() {
+        return position;
+    }
+
+    public boolean isFirstPopeFavorAchieved() {
+        return firstPopeFavorAchieved;
+    }
+
+    public boolean isSecondPopeFavorAchieved() {
+        return secondPopeFavorAchieved;
+    }
+
+    public boolean isThirdPopeFavorAchieved() {
+        return thirdPopeFavorAchieved;
+    }
+
+    // ------------------------ PRINTERS ------------------------
 
     public void print(){
         System.out.println("|   |   |   | 1 |   |   | 2 |   |   | 4 |   |   | 6 |   |   | 9 |   |   |12 |   |   |16 |   |   |20 |<-Points");
@@ -61,20 +95,13 @@ public class FaithTrackLight{
                 else if(i == END_SECOND_VATICAN_SECTION && !secondPopeFavorAchieved)
                     System.out.print(ConsoleColors.RED_BACKGROUND + " " + SECOND_POPE_FAVOR_TILE_SCORE + " " + ConsoleColors.RESET);
                 else if(i == END_THIRD_VATICAN_SECTION && thirdPopeFavorAchieved)
-                    System.out.print(ConsoleColors.GREEN_BACKGROUND + " " + SECOND_POPE_FAVOR_TILE_SCORE + " " + ConsoleColors.RESET);
+                    System.out.print(ConsoleColors.GREEN_BACKGROUND + " " + THIRD_POPE_FAVOR_TILE_SCORE + " " + ConsoleColors.RESET);
                 else if(i == END_THIRD_VATICAN_SECTION && !thirdPopeFavorAchieved)
-                    System.out.print(ConsoleColors.RED_BACKGROUND + " " + SECOND_POPE_FAVOR_TILE_SCORE + " " + ConsoleColors.RESET);
+                    System.out.print(ConsoleColors.RED_BACKGROUND + " " + THIRD_POPE_FAVOR_TILE_SCORE + " " + ConsoleColors.RESET);
                 else
                     System.out.print("   ");
             }
         }
         System.out.println("Position: " + position);
-    }
-
-    public void update (FaithTrackUpdateMessage m){
-        this.position = m.getPosition();
-        firstPopeFavorAchieved = m.isFirstVaticanReportVPAchieved();
-        secondPopeFavorAchieved = m.isSecondVaticanReportVPAchieved();
-        thirdPopeFavorAchieved = m.isThirdVaticanReportVPAchieved();
     }
 }

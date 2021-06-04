@@ -56,4 +56,8 @@ public class DevCardSlot extends ProductionSlot {
     boolean hasCards() {
         return (cards.size() > 0);
     }
+
+    public List<DevCard> getCards() {
+        return cards;
+    }
 }

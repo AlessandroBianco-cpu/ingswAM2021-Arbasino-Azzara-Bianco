@@ -1,8 +1,11 @@
 package it.polimi.ingsw.networking.message;
 
+/**
+ * Packet used to send the player a response to one of his commands
+ */
 public class ClientInputResponse extends Server2Client{
 
-    private String errorMessage;
+    private final String errorMessage;
     private boolean Ok;
 
     public ClientInputResponse() {

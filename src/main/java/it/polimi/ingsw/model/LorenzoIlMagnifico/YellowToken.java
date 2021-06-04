@@ -11,7 +11,8 @@ public class YellowToken extends ColoredToken {
     }
 
     @Override
-    public boolean isYellow() {
-        return true;
-    }
+    public boolean isYellow() { return true; }
+
+    @Override
+    public String toImage() { return "yellowToken.png"; }
 }
