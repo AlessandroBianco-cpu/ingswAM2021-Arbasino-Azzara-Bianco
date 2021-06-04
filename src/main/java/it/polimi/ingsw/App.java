@@ -19,7 +19,7 @@ public class App {
 
                 new Thread(clientNetworkHandler).start();
                 new Thread(cli).start();
-            }
+            }//start ServerApp
             else if (args[0].equals("-server")){
                 Server server;
 
