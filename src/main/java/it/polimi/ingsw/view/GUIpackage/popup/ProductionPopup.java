@@ -66,10 +66,12 @@ public class ProductionPopup extends SceneObservable implements Popup {
         leaderCards.add((Pane) root.lookup("#leaderCard1"));
         leaderCards.add((Pane) root.lookup("#leaderCard2"));
 
-        for(int i= 0; i<cards.getActiveCards().size(); i++) {
+        int extraDevIndex = 0;
+        for(int i = 0; i<cards.getActiveCards().size(); i++) {
             if (cards.getActiveCards().get(i).isExtraDevCard()) {
-                addImage(leaderCards.get(i), "/leaderCards/" + cards.getActiveCards().get(i).getId() + ".png");
-                devSlots.get(i+4).setDisable(false);
+                addImage(leaderCards.get(extraDevIndex), "/leaderCards/" + cards.getActiveCards().get(i).getId() + ".png");
+                devSlots.get(extraDevIndex+4).setDisable(false);
+                extraDevIndex++;
             }
         }
 

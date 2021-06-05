@@ -288,10 +288,18 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
 
         if(gameModel.getPlayerByNickname(owner).getFaithTrack().isFirstPopeFavorAchieved())
             addImage(popeSpaces.get(0),"/punchBoard/yellow_front_tile.png");
+        else
+            addImage(popeSpaces.get(0),"/punchBoard/yellow_back_tile.png");
+
         if(gameModel.getPlayerByNickname(owner).getFaithTrack().isSecondPopeFavorAchieved())
             addImage(popeSpaces.get(1),"/punchBoard/orange_front_tile.png");
+        else
+            addImage(popeSpaces.get(1),"/punchBoard/orange_back_tile.png");
+
         if(gameModel.getPlayerByNickname(owner).getFaithTrack().isThirdPopeFavorAchieved())
             addImage(popeSpaces.get(2),"/punchBoard/red_front_tile.png");
+        else
+            addImage(popeSpaces.get(2),"/punchBoard/red_back_tile.png");
 
     }
 

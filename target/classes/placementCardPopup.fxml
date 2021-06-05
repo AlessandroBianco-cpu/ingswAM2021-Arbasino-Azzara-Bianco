@@ -3,6 +3,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -26,6 +27,9 @@
       <Pane id="slot3card1" layoutX="376.0" layoutY="160.0" prefHeight="153.0" prefWidth="100.0" />
       <Pane id="slot3card2" layoutX="376.0" layoutY="130.0" prefHeight="153.0" prefWidth="100.0" />
       <Pane id="slot3card3" layoutX="376.0" layoutY="100.0" prefHeight="153.0" prefWidth="100.0" />
-      <Text layoutX="13.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place this card:" wrappingWidth="84.21630859375" />
+      <Text fill="#065488" layoutX="5.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place this card :" wrappingWidth="108.0">
+         <font>
+            <Font name="Avenir Next Bold" size="14.0" />
+         </font></Text>
    </children>
 </Pane>
