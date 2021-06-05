@@ -4,6 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="792.0" fitWidth="1184.0" layoutX="-20.0" layoutY="-50.0" pickOnBounds="true" preserveRatio="true" translateX="-55.0" translateY="-90.0">
@@ -75,14 +76,20 @@
             <Image url="@punchBoard/shield.png" />
          </image>
       </ImageView>
-      <Label id="qtaShield" layoutX="351.0" layoutY="580.0" prefHeight="17.0" prefWidth="26.0" textFill="#100db4" translateX="-90.0" translateY="-70.0" />
+      <Label id="qtaShield" layoutX="351.0" layoutY="580.0" prefHeight="17.0" prefWidth="26.0" textFill="#100db4" translateX="-90.0" translateY="-70.0">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffab" height="45.0" layoutX="299.0" layoutY="495.0" stroke="BLACK" strokeType="INSIDE" width="64.0" />
       <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="390.0" layoutY="570.0" pickOnBounds="true" preserveRatio="true" translateX="-90.0" translateY="-70.0">
          <image>
             <Image url="@punchBoard/servant.png" />
          </image>
       </ImageView>
-      <Label id="qtaServant" layoutX="430.0" layoutY="580.0" prefHeight="17.0" prefWidth="26.0" textFill="#100db4" translateX="-90.0" translateY="-70.0" />
+      <Label id="qtaServant" layoutX="430.0" layoutY="580.0" prefHeight="17.0" prefWidth="26.0" textFill="#100db4" translateX="-90.0" translateY="-70.0">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffab" height="45.0" layoutX="223.0" layoutY="547.0" stroke="BLACK" strokeType="INSIDE" width="64.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffab" height="45.0" layoutX="299.0" layoutY="547.0" stroke="BLACK" strokeType="INSIDE" width="64.0" />
       <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="390.0" layoutY="625.0" pickOnBounds="true" preserveRatio="true" translateX="-90.0" translateY="-70.0">
@@ -95,7 +102,13 @@
             <Image url="@punchBoard/stone.png" />
          </image>
       </ImageView>
-      <Label id="qtaCoin" layoutX="430.0" layoutY="635.0" prefHeight="17.0" prefWidth="26.0" textFill="#100db4" translateX="-90.0" translateY="-70.0" />
-      <Label id="qtaStone" layoutX="355.0" layoutY="635.0" prefHeight="17.0" prefWidth="26.0" textFill="#100db4" translateX="-90.0" translateY="-70.0" />
+      <Label id="qtaCoin" layoutX="430.0" layoutY="635.0" prefHeight="17.0" prefWidth="26.0" textFill="#100db4" translateX="-90.0" translateY="-70.0">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
+      <Label id="qtaStone" layoutX="355.0" layoutY="635.0" prefHeight="17.0" prefWidth="26.0" textFill="#100db4" translateX="-90.0" translateY="-70.0">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
    </children>
 </Pane>

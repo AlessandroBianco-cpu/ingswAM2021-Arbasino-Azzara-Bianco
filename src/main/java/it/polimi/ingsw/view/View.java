@@ -13,14 +13,8 @@ public interface View {
     void registerClient(ClientAcceptedMessage m);
     void askPlayersNumber();
     void askNickname();
-    void chooseMarketPosition(String position);
     void askInitialDiscard();
     void askInitialResource();
-    void askLeaderAction();
-    void askSwapType();
-    void askComboOfSlots();
-    void askHowToPayDevCard();
-    void askDevCardSlotPosition();
 
     //Show errors and re-ask input if needed
     void displayTakenNickname();
@@ -48,7 +42,6 @@ public interface View {
     void displayWrongTurn();
 
     void displayBuffer();
-    void displayDevCardsAvailable();
     void displayLeaderCards();
     void displayWarehouse();
     void displayProductionZone();

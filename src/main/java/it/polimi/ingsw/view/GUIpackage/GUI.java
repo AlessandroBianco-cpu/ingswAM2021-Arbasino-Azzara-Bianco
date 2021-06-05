@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -86,6 +87,7 @@ public class GUI  extends Application implements View {
 
         primaryStage.setResizable(false);
         primaryStage.setTitle("Master of Renaissance");
+        primaryStage.getIcons().add(new Image("/punchBoard/inkwell.png"));
 
         primaryStage.setOnCloseRequest(event -> {
             System.out.println("Disconnected.");
@@ -129,10 +131,6 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toNicknameScene);
     }
 
-    @Override
-    public void chooseMarketPosition(String position) {
-
-    }
 
     @Override
     public void askInitialDiscard() {
@@ -151,37 +149,12 @@ public class GUI  extends Application implements View {
     }
 
     @Override
-    public void askLeaderAction() {
-
-    }
-
-    @Override
     public void gameStarted() {
         playerBoardScene = new PlayerBoardScene(model,owner);
         gameCreated = true;
         playerBoardScene.addObserver(networkHandler);
         Platform.runLater(() -> TransitionHandler.setPlayerBoardScene(playerBoardScene));
         Platform.runLater(TransitionHandler::toPlayerBoardScene);
-    }
-
-    @Override
-    public void askSwapType() {
-
-    }
-
-    @Override
-    public void askComboOfSlots() {
-
-    }
-
-    @Override
-    public void askHowToPayDevCard() {
-
-    }
-
-    @Override
-    public void askDevCardSlotPosition() {
-
     }
 
     @Override
@@ -286,8 +259,8 @@ public class GUI  extends Application implements View {
 
     @Override
     public void updateFaithTrack(FaithTrackUpdateMessage m) {
+        model.updatePlayerFaithTrack(m);
         if (gameCreated) {
-            model.updatePlayerFaithTrack(m);
             Platform.runLater(() -> playerBoardScene.displayFaithTrack(model.getPlayerByNickname(owner).getFaithTrack().getPosition()));
         }
     }
@@ -298,13 +271,12 @@ public class GUI  extends Application implements View {
     @Override
     public void updateLeaderCardsInHand(LeaderInHandUpdateMessage m) {
         model.updatePlayerLeaderInHands(m);
-        displayLeaderCards();
+        if (gameCreated)
+            displayLeaderCards();
     }
 
     @Override
-    public void updateOpponentsLeaderCardsInHand(OpponentsLeaderCardsInHandUpdateMessage m) {
-        model.updateOpponentsLeaderInHands(m);
-    }
+    public void updateOpponentsLeaderCardsInHand(OpponentsLeaderCardsInHandUpdateMessage m) { model.updateOpponentsLeaderInHands(m); }
 
     @Override
     public void updateProductionZone(ProductionZoneUpdateMessage m) {
@@ -340,36 +312,19 @@ public class GUI  extends Application implements View {
     }
 
     @Override
-    public void displayResourcesToPayForCard() {
-        Platform.runLater(() -> playerBoardScene.displayResourcesToPay((CardPaymentPopup) currentPopup));
-    }
+    public void displayResourcesToPayForCard() { Platform.runLater(() -> playerBoardScene.displayResourcesToPay((CardPaymentPopup) currentPopup)); }
 
     @Override
-    public void displayProductionResourcesPayment() {
-        Platform.runLater(() -> playerBoardScene.displayProductionPayment((ProductionPaymentPopup) currentPopup));
-    }
+    public void displayProductionResourcesPayment() { Platform.runLater(() -> playerBoardScene.displayProductionPayment((ProductionPaymentPopup) currentPopup)); }
 
     @Override
-    public void displayDevCardsAvailable() {
-
-    }
+    public void displayLeaderCards() { Platform.runLater(() -> playerBoardScene.displayLeaders()); }
 
     @Override
-    public void displayLeaderCards() {
-        if (gameCreated) {
-            Platform.runLater(() -> playerBoardScene.displayLeaders());
-        }
-    }
+    public void displayWarehouse() { Platform.runLater(() -> playerBoardScene.displayWarehouse()); }
 
     @Override
-    public void displayWarehouse() {
-        Platform.runLater(() -> playerBoardScene.displayWarehouse());
-    }
-
-    @Override
-    public void displayProductionZone() {
-        Platform.runLater(() -> playerBoardScene.displayProductionZone());
-    }
+    public void displayProductionZone() { Platform.runLater(() -> playerBoardScene.displayProductionZone()); }
 
     @Override
     public void displayStartTurn(StartTurnMessage m) {

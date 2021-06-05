@@ -16,8 +16,8 @@ import java.net.Socket;
  */
 public class ClientHandler extends ConnectionObservable {
 
-    private Socket socket;
-    private boolean connected;
+    private final Socket socket;
+    private volatile boolean connected;
     private boolean active;
     private boolean myTurn;
     private Message answer;
@@ -81,14 +81,19 @@ public class ClientHandler extends ConnectionObservable {
      */
     public void pingToClient() {
         Thread t = new Thread(() -> {
+            int counter = 0;
             while (connected) {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(50);
+                    counter++;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 try {
-                    socketOut.writeObject(pingMessage);
+                    if(counter > 100) {
+                        counter = 0;
+                        socketOut.writeObject(pingMessage);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -178,8 +178,7 @@ public class CLI extends UiObservable implements Runnable, View {
     /**
      * Asks the number and the indexes that player want to activate for the production phase
      */
-    @Override
-    public void askComboOfSlots() {
+    private void askComboOfSlots() {
         displayProductionZone();
         System.out.println("How many development cards do you want to activate?");
 
@@ -222,7 +221,7 @@ public class CLI extends UiObservable implements Runnable, View {
     /**
      * This method handles the leader actions player can do
      */
-    public void askLeaderAction() {
+    private void askLeaderAction() {
         System.out.println(listOfLeaderAction);
         String s = in.nextLine();
         switch(s) {
@@ -261,8 +260,7 @@ public class CLI extends UiObservable implements Runnable, View {
     /**
      * Asks the player how he wants to pay a DevCard
      */
-    @Override
-    public void askHowToPayDevCard() {
+    private void askHowToPayDevCard() {
         ResourceType resourceType = askAResource("Choose the type of resource do you want to pay");
         int fromWarehouse = askAQuantity("warehouse");
         int fromStrongBox = askAQuantity("strongbox");
@@ -313,8 +311,7 @@ public class CLI extends UiObservable implements Runnable, View {
     /**
      * Asks the position of slots where player want to insert the new development card
      */
-    @Override
-    public void askDevCardSlotPosition(){
+    private void askDevCardSlotPosition(){
         System.out.println("Where do you want to place the DevCard?");
         model.printBoughtCard(owner);
         displayProductionZone();
@@ -340,8 +337,7 @@ public class CLI extends UiObservable implements Runnable, View {
      * Ask the index of row/column where player wants to insert marble in the market
      * @param position is a string ROW/COLUMN
      */
-    @Override
-    public void chooseMarketPosition(String position) {
+    private void chooseMarketPosition(String position) {
         displayMarket();
         switch (position) {
             case "ROW":
@@ -523,8 +519,7 @@ public class CLI extends UiObservable implements Runnable, View {
     /**
      * Asks the player the type of swap he wants to perform
      */
-    @Override
-    public void askSwapType() {
+    private void askSwapType() {
         int quantity; //quantity in case of extra swapping!
         displayWarehouse();
         System.out.println(listOfSwapTypeMessage);
@@ -823,8 +818,7 @@ public class CLI extends UiObservable implements Runnable, View {
         model.printBuffer(owner);
     }
 
-    @Override
-    public void displayDevCardsAvailable() {
+    private void displayDevCardsAvailable() {
         model.printDevCardMarket();
     }
 

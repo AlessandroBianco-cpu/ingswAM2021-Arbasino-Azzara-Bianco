@@ -130,14 +130,19 @@ public class NetworkHandler implements Runnable, UiObserver {
      */
     public void pingToServer() {
         Thread t = new Thread(() -> {
+            int counter = 0;
             while (connected) {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(50);
+                    counter++;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 try {
-                    updateMessage(new PingMessage());
+                    if (counter > 100) {
+                        counter = 0;
+                        updateMessage(new PingMessage());
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
