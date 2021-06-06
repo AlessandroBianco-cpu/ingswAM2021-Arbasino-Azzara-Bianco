@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.GUIpackage.popup;
 
 import it.polimi.ingsw.client.LightModel.ProductionZoneLight;
 import it.polimi.ingsw.model.Cards.DevCard;
-import it.polimi.ingsw.networking.message.InsertDevCardInDevSlot;
+import it.polimi.ingsw.networking.message.InsertDevCardInDevSlotMessage;
 import it.polimi.ingsw.view.GUIpackage.SceneObservable;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -76,21 +76,21 @@ public class PlacementCardPopup extends SceneObservable implements Popup {
 
         for(Pane pane : slot1) {
             pane.setOnMouseClicked(event -> {
-                notifyNewMessageFromClient(new InsertDevCardInDevSlot(1));
+                notifyNewMessageFromClient(new InsertDevCardInDevSlotMessage(1));
                 stage.close();
             });
         }
 
         for(Pane pane : slot2) {
             pane.setOnMouseClicked(event -> {
-                notifyNewMessageFromClient(new InsertDevCardInDevSlot(2));
+                notifyNewMessageFromClient(new InsertDevCardInDevSlotMessage(2));
                 stage.close();
             });
         }
 
         for(Pane pane : slot3) {
             pane.setOnMouseClicked(event -> {
-                notifyNewMessageFromClient(new InsertDevCardInDevSlot(3));
+                notifyNewMessageFromClient(new InsertDevCardInDevSlotMessage(3));
                 stage.close();
             });
         }
