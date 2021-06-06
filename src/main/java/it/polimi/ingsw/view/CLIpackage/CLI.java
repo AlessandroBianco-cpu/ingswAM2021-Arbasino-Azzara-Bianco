@@ -29,8 +29,6 @@ public class CLI extends UiObservable implements Runnable, View {
     //variables sent from Server
     private int playersNumber = 0;
     private int resToAdd = 0;
-    private final List<String> players = new ArrayList<>();
-
 
     public CLI() {
         this.in = new Scanner(System.in);

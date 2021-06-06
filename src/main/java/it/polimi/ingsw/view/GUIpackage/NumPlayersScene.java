@@ -17,8 +17,8 @@ import java.io.IOException;
 public class NumPlayersScene extends UiObservable {
     private Pane root;
     private int number;
-    private ImageView readyButton;
-    private ChoiceBox choiceBox;
+    private final ImageView readyButton;
+    private final ChoiceBox choiceBox;
 
     public NumPlayersScene() {
         try {

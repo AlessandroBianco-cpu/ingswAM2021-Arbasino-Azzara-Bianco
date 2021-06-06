@@ -29,26 +29,26 @@ import java.util.List;
  */
 public class PlayerBoardScene extends UiObservable implements SceneObserver {
     private ModelLight gameModel;
-    private String owner;
+    private final String owner;
 
     private Pane root;
-    private ImageView showButton;
-    private ImageView endTurnButton;
-    private ImageView productionButton;
-    private ImageView marketButton;
-    private ImageView swapButton;
-    private ImageView buyButton;
-    private List<Pane> slot1;
-    private List<Pane> slot2;
-    private List<Pane> slot3;
-    private List<Pane> depots;
-    private List<Pane> leaders;
-    private List<Pane> extraDepots;
-    private List<Pane> popeSpaces;
-    private ChoiceBox showChoice;
-    private Text consoleText;
-    private List<Label> strongboxLabel;
-    private List<Pane> faithTrack;
+    private final ImageView showButton;
+    private final ImageView endTurnButton;
+    private final ImageView productionButton;
+    private final ImageView marketButton;
+    private final ImageView swapButton;
+    private final ImageView buyButton;
+    private final List<Pane> slot1;
+    private final List<Pane> slot2;
+    private final List<Pane> slot3;
+    private final List<Pane> depots;
+    private final List<Pane> leaders;
+    private final List<Pane> extraDepots;
+    private final List<Pane> popeSpaces;
+    private final ChoiceBox showChoice;
+    private final Text consoleText;
+    private final List<Label> strongboxLabel;
+    private final List<Pane> faithTrack;
 
 
     public PlayerBoardScene(ModelLight model,String owner) {

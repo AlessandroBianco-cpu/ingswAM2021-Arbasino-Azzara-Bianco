@@ -23,10 +23,10 @@ import static it.polimi.ingsw.model.ResourceType.*;
 public class InitialResourcesScene extends UiObservable {
     private Pane root;
 
-    private ImageView readyButton;
-    private List<ImageView> images;
-    private Label messageLabel;
-    private List<Pane> depots;
+    private final ImageView readyButton;
+    private final List<ImageView> images;
+    private final Label messageLabel;
+    private final List<Pane> depots;
     private ResourceType toAdd = NOTHING;
     private int justAdded = 0;
 
@@ -59,9 +59,7 @@ public class InitialResourcesScene extends UiObservable {
         }
 
         for(ImageView im : images) {
-            im.setOnMouseClicked(event -> {
-                toAdd = parseResourceType(im.getId());
-            });
+            im.setOnMouseClicked(event -> toAdd = parseResourceType(im.getId()));
         }
 
         for (Pane pane : depots)

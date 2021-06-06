@@ -19,7 +19,7 @@ import java.io.IOException;
 public class DevMarketPopup extends SceneObservable implements Popup{
 
     private Pane root;
-    private GridPane grid;
+    private final GridPane grid;
 
     public DevMarketPopup(DevCard[] cards) {
 

@@ -32,18 +32,17 @@ import static it.polimi.ingsw.model.ResourceType.*;
 public class BufferPopup extends SceneObservable implements Popup{
 
     private Pane root;
-    private ImageView discardButton;
-    private ImageView convertButton;
+    private final ImageView discardButton;
+    private final ImageView convertButton;
     private ChoiceBox resourceBox;
-    private List<Pane> depots;
-    private List<Pane> buffer;
-    private List<Pane> extraLeaders;
-    private ImageView swapButton;
+    private final List<Pane> depots;
+    private final List<Pane> buffer;
+    private final List<Pane> extraLeaders;
+    private final ImageView swapButton;
     private SwapPopup internalSwapping;
-    private List<ImageView> buttonsList;
-    private List<Pane> extraDepots;
+    private final List<ImageView> buttonsList;
+    private final List<Pane> extraDepots;
     private int chosenIndex = 0;
-    private boolean noExtra = true;
 
     public BufferPopup(WarehouseLight warehouse, BufferLight bufferLight, LeaderCardsInHandLight leaders) {
 
@@ -100,7 +99,6 @@ public class BufferPopup extends SceneObservable implements Popup{
         for(int i = 0; i < leaders.getActiveCards().size();i++){
             if(leaders.getActiveCards().get(i).isExtraDepotCard()) {
                 addImage(extraLeaders.get(i),"/leaderCards/"+leaders.getActiveCards().get(i).getId() +".png"); //leader cards images
-                noExtra = false;
                 for (int j = 0; j < warehouse.getExtraDepotsQuantity()[i]; j++) //leader cards resources on cards
                     addImage(extraDepots.get((2 * i) + j), warehouse.getExtraDepotsTypes()[i].toImage());
             }

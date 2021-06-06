@@ -20,11 +20,10 @@ import java.util.List;
  */
 public class DiscardLeadersScene extends UiObservable {
     private Pane root;
-    private ImageView readyButton;
-    private ArrayList<CheckBox> checkList;
+    private final ImageView readyButton;
+    private final ArrayList<CheckBox> checkList;
     List<Integer> indexes = new ArrayList<>();
 
-    private List<Boolean> selectedCards = new ArrayList<>();
 
     public DiscardLeadersScene(List<LeaderCard> leaders) {
 

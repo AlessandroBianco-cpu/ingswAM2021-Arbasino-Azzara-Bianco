@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class ConnectionScene extends UiObservable {
     private Pane root;
-    private ImageView readyButton;
+    private final ImageView readyButton;
 
     public ConnectionScene() {
         try {
