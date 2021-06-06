@@ -109,12 +109,19 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toConnectionScene);
     }
 
+    /**
+     * Set the owner of the light model after player inserts a correct nickname and server accept it
+     * @param m is the message sent from server
+     */
     @Override
     public void registerClient(ClientAcceptedMessage m) {
         this.owner = m.getNickname();
         model.setOwner(owner);
     }
 
+    /**
+     * Sets the scene that asks to the first player for the number of player of the match
+     */
     @Override
     public void askPlayersNumber() {
         NumPlayersScene numPlayersScene = new NumPlayersScene();
@@ -123,6 +130,9 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toNumPlayersScene);
     }
 
+    /**
+     * Sets the scene that asks for the player's nickname
+     */
     @Override
     public void askNickname() {
         NicknameScene nicknameScene = new NicknameScene("Enter your nickname");
@@ -132,6 +142,9 @@ public class GUI  extends Application implements View {
     }
 
 
+    /**
+     * Sets the scene that asks for the leader cards to choose
+     */
     @Override
     public void askInitialDiscard() {
         DiscardLeadersScene discardLeadersScene = new DiscardLeadersScene(model.getPlayerByNickname(owner).getLeaderCardsInHand().getCards());
@@ -140,6 +153,9 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toDiscardLeadersScene);
     }
 
+    /**
+     * Sets the scene that asks for the initial resources to choose
+     */
     @Override
     public void askInitialResource() {
         InitialResourcesScene initialResourcesScene = new InitialResourcesScene(resToAdd);
@@ -148,6 +164,9 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toInitialResourcesScene);
     }
 
+    /**
+     * Create a new playerBoard scene and sets it
+     */
     @Override
     public void gameStarted() {
         playerBoardScene = new PlayerBoardScene(model,owner);
@@ -157,6 +176,9 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toPlayerBoardScene);
     }
 
+    /**
+     * Sets a nicknameScene with a message of already-taken-nickname
+     */
     @Override
     public void displayTakenNickname() {
         NicknameScene nicknameScene = new NicknameScene("Nickname already chosen by other player");
@@ -165,11 +187,21 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toNicknameScene);
     }
 
+    /**
+     * Displays the network errors
+     */
     @Override
     public void displayNetworkError() {
-        new AlertPopup().displayStringMessages("Networking error!");
+        if(gameCreated)
+            Platform.runLater(() -> playerBoardScene.displayInConsole("Networking error!"));
+        else
+            new AlertPopup().displayStringMessages("Networking error!");
     }
 
+    /**
+     * Display the string message on the player's console log (in the playerBoard scene) and if
+     * there is an already opened popup displays it
+     */
     @Override
     public void displayStringMessages(String message) {
         if(gameCreated) {
@@ -185,8 +217,13 @@ public class GUI  extends Application implements View {
                     Platform.runLater(() -> playerBoardScene.displayProductionPayment(new ProductionPaymentPopup(model.getPlayerByNickname(owner).getResourceBufferLight())));
             }
         }
+        else
+            new AlertPopup().displayStringMessages(message);
     }
 
+    /**
+     * Sets the waiting scene with a string message sent from server
+     */
     @Override
     public void waitingOtherPlayers(String message) {
         WaitingScene waitingScene = new WaitingScene(message);
@@ -195,6 +232,7 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toWaitingScene);
     }
 
+    // ------------------------ UPDATES ------------------------
     @Override
     public void updateMarketLight(MarketUpdateMessage m) {
         model.getMarbleMarket().updateMarketLight(m);
@@ -258,6 +296,26 @@ public class GUI  extends Application implements View {
     }
 
     @Override
+    public void updatePlayersNumber(int num) {
+        playersNumber = num;
+        if(num > 1)
+            displayStringMessages("The game will have "+playersNumber+" players");
+        else
+            displayStringMessages("Let's start your single player match");
+    }
+
+    @Override
+    public void updateNumOfResourcesToAdd(int num) {
+        this.resToAdd = num;
+        askInitialResource();
+    }
+
+    @Override
+    public void updateLorenzoLight(LorenzoUpdateMessage m) {
+        model.updateLorenzo(m);
+    }
+
+    @Override
     public void updateFaithTrack(FaithTrackUpdateMessage m) {
         model.updatePlayerFaithTrack(m);
         if (gameCreated) {
@@ -290,6 +348,9 @@ public class GUI  extends Application implements View {
         model.updatePlayersNickname(m);
     }
 
+    /**
+     * Sets the scene that displays the winner player
+     */
     @Override
     public void displayWinner(String winnerMessage) {
         WinnerScene winnerScene = new WinnerScene(winnerMessage);
@@ -298,6 +359,10 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toWinnerScene);
     }
 
+    /**
+     * If the games is already created this method shows on the console log a wrong-turn-message
+     * else displays a popup alert
+     */
     @Override
     public void displayWrongTurn() {
         if(gameCreated)
@@ -335,23 +400,4 @@ public class GUI  extends Application implements View {
                 Platform.runLater(() -> playerBoardScene.displayInConsole(m.getMessage()));
     }
 
-    @Override
-    public void updatePlayersNumber(int num) {
-        playersNumber = num;
-        if(num > 1)
-            displayStringMessages("The game will have "+playersNumber+" players");
-        else
-            displayStringMessages("Let's start your single player match");
-    }
-
-    @Override
-    public void updateNumOfResourcesToAdd(int num) {
-        this.resToAdd = num;
-        askInitialResource();
-    }
-
-    @Override
-    public void updateLorenzoLight(LorenzoUpdateMessage m) {
-        model.updateLorenzo(m);
-    }
 }

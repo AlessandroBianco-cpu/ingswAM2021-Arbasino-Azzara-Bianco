@@ -6,7 +6,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-
+/**
+ * Scene that displays the winner of the match and credits
+ */
 public class WinnerScene extends UiObservable {
     private Pane root;
     private Text winnerText;

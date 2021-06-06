@@ -215,6 +215,9 @@ public class NetworkHandler implements Runnable, UiObserver {
         }
     }
 
+    /**
+     * Close the connection client-side
+     */
     public synchronized void closeConnection() {
         connected = false;
         try {

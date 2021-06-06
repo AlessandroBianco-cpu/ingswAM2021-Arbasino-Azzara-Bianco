@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Popup that handles interactions with the marbles market
+ */
 public class MarketPopup extends SceneObservable implements Popup{
     private Pane root;
     private List<Button> selections;

@@ -1,13 +1,13 @@
 package it.polimi.ingsw.view.GUIpackage.popup;
 
 import it.polimi.ingsw.client.LightModel.PlayerLight;
+import it.polimi.ingsw.model.Cards.LeaderCard;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -17,6 +17,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.NOTHING;
 
+/**
+ * Popup that shows an opponent's information
+ */
 public class ShowOpponentPopup implements Popup {
 
     private Pane root;
@@ -25,7 +28,8 @@ public class ShowOpponentPopup implements Popup {
     private List<Pane> slot3;
     private List<Pane> depots;
     private List<Pane> leaders;
-    private Text consoleText;
+    private List<Pane> extraDepots;
+    private List<Pane> popeSpaces;
     private String title;
     private List<Label> strongboxLabel;
     private List<Pane> faithTrack;
@@ -52,6 +56,18 @@ public class ShowOpponentPopup implements Popup {
         depots.add((Pane) root.lookup("#thirdDepot1"));
         depots.add((Pane) root.lookup("#thirdDepot2"));
         depots.add((Pane) root.lookup("#thirdDepot3"));
+
+        popeSpaces = new ArrayList<>();
+        for(int i = 0; i<3; i++) {
+            int j = i+1;
+            popeSpaces.add((Pane) root.lookup("#popeSpace"+j));
+        }
+
+        extraDepots = new ArrayList<>();
+        extraDepots.add((Pane) root.lookup("#firstExtra1"));
+        extraDepots.add((Pane) root.lookup("#firstExtra2"));
+        extraDepots.add((Pane) root.lookup("#secondExtra1"));
+        extraDepots.add((Pane) root.lookup("#secondExtra2"));
 
         slot1 = new ArrayList<>();
         for(int i = 0; i<3; i++) {
@@ -81,9 +97,20 @@ public class ShowOpponentPopup implements Popup {
 
         addImage(faithTrack.get(opponent.getFaithTrack().getPosition()),"/punchBoard/blackCross.png");
 
-        for (int i = 0 ; i < opponent.getLeaderCardsInHand().getCards().size(); i++)
-            if(opponent.getLeaderCardsInHand().getCards().get(i).isActive())
-                addImage(leaders.get(i), "/leaderCards/"+opponent.getLeaderCardsInHand().getCards().get(i).getId()+".png");
+        List<LeaderCard> inHand = opponent.getLeaderCardsInHand().getCards();
+        for (int i = 0 ; i < inHand.size(); i++)
+            if(inHand.get(i).isActive())
+                addImage(leaders.get(i), "/leaderCards/"+inHand.get(i).getId()+".png");
+
+        int extraDepotIndex = 0;
+        for(int leaderCardIndex = 0; leaderCardIndex < inHand.size(); leaderCardIndex++) {
+            if(inHand.get(leaderCardIndex).isExtraDepotCard() && inHand.get(leaderCardIndex).isActive() ) {
+                for(int numOfResources=0; numOfResources<opponent.getWarehouse().getExtraDepotsQuantity()[extraDepotIndex]; numOfResources++) {
+                    addImage(extraDepots.get(2*leaderCardIndex+numOfResources), opponent.getWarehouse().getExtraDepotsTypes()[extraDepotIndex].toImage());
+                }
+                extraDepotIndex++;
+            }
+        }
 
         for(int i=0; i<strongboxLabel.size();i++)
             setLabelIntText(strongboxLabel.get(i),opponent.getStrongbox().getResources()[i]);
@@ -103,6 +130,21 @@ public class ShowOpponentPopup implements Popup {
         for(int i = 0; i<opponent.getProductionZone().getThirdSlot().size(); i++) {
             addImage(slot3.get(i),"/devCards/"+opponent.getProductionZone().getThirdSlot().get(i).getId()+".png");
         }
+
+        if(opponent.getFaithTrack().isFirstPopeFavorAchieved())
+            addImage(popeSpaces.get(0),"/punchBoard/yellow_front_tile.png");
+        else
+            addImage(popeSpaces.get(0),"/punchBoard/yellow_back_tile.png");
+
+        if(opponent.getFaithTrack().isSecondPopeFavorAchieved())
+            addImage(popeSpaces.get(1),"/punchBoard/orange_front_tile.png");
+        else
+            addImage(popeSpaces.get(1),"/punchBoard/orange_back_tile.png");
+
+        if(opponent.getFaithTrack().isThirdPopeFavorAchieved())
+            addImage(popeSpaces.get(2),"/punchBoard/red_front_tile.png");
+        else
+            addImage(popeSpaces.get(2),"/punchBoard/red_back_tile.png");
     }
 
 

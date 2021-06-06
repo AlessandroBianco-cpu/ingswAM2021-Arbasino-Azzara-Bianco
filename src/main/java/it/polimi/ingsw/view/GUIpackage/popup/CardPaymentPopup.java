@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.*;
-
+/**
+ * Popup that handles the payment for a new development card chosen
+ */
 public class CardPaymentPopup extends SceneObservable implements Popup {
 
     private Pane root;

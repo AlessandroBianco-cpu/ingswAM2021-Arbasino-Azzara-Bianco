@@ -22,6 +22,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.*;
 
+/**
+ * Popup that handles the production action
+ */
 public class ProductionPopup extends SceneObservable implements Popup {
 
     private Pane root;

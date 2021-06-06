@@ -17,6 +17,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.*;
 
+/**
+ * Scene that asks to the player to choose a number of resources to add for starting the game
+ */
 public class InitialResourcesScene extends UiObservable {
     private Pane root;
 
