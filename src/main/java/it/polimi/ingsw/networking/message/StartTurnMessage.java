@@ -1,6 +1,5 @@
 package it.polimi.ingsw.networking.message;
 
-
 /**
  * Packet sent from players to the players in order to tell them whose player the turn is
  */
