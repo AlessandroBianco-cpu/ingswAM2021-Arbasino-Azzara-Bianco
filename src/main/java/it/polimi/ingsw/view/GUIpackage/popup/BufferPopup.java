@@ -4,10 +4,10 @@ import it.polimi.ingsw.client.LightModel.LeaderCardsInHandLight;
 import it.polimi.ingsw.client.LightModel.WarehouseLight;
 import it.polimi.ingsw.client.LightModel.market.BufferLight;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.networking.message.ConvertWhiteMarbleMessage;
-import it.polimi.ingsw.networking.message.DiscardMarbleMessage;
-import it.polimi.ingsw.networking.message.StoreResourceInExtraDepotMessage;
-import it.polimi.ingsw.networking.message.StoreResourceInWarehouseMessage;
+import it.polimi.ingsw.networking.message.ConvertWhiteMarble;
+import it.polimi.ingsw.networking.message.DiscardMarble;
+import it.polimi.ingsw.networking.message.StoreResourceInExtraDepot;
+import it.polimi.ingsw.networking.message.StoreResourceInWarehouse;
 import it.polimi.ingsw.view.GUIpackage.SceneObservable;
 import it.polimi.ingsw.view.GUIpackage.SceneObserver;
 import javafx.event.Event;
@@ -134,7 +134,7 @@ public class BufferPopup extends SceneObservable implements Popup{
        for(Pane pane : extraLeaders)
            pane.setOnMouseClicked(event -> {
                if(chosenIndex != 0) {
-                   notifyNewMessageFromClient(new StoreResourceInExtraDepotMessage(chosenIndex));
+                   notifyNewMessageFromClient(new StoreResourceInExtraDepot(chosenIndex));
                    stage.close();
                }
            });
@@ -143,21 +143,21 @@ public class BufferPopup extends SceneObservable implements Popup{
        for(Pane pane : depots)
            pane.setOnMouseClicked(event -> {
                if ((chosenIndex != 0)) {
-                   notifyNewMessageFromClient(new StoreResourceInWarehouseMessage(chosenIndex, calculateDepot(pane.getId())));
+                   notifyNewMessageFromClient(new StoreResourceInWarehouse(chosenIndex, calculateDepot(pane.getId())));
                    stage.close();
                }
            });
 
        discardButton.setOnMouseClicked(event -> {
            if(chosenIndex != 0) {
-               notifyNewMessageFromClient(new DiscardMarbleMessage(chosenIndex));
+               notifyNewMessageFromClient(new DiscardMarble(chosenIndex));
                stage.close();
            }
        });
 
        convertButton.setOnMouseClicked(event -> {
            if(chosenIndex != 0) {
-               notifyNewMessageFromClient(new ConvertWhiteMarbleMessage(chosenIndex, parseTextField(resourceBox.getValue().toString())));
+               notifyNewMessageFromClient(new ConvertWhiteMarble(chosenIndex, parseTextField(resourceBox.getValue().toString())));
                stage.close();
            }
        });

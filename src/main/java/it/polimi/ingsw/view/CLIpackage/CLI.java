@@ -266,7 +266,7 @@ public class CLI extends UiObservable implements Runnable, View {
 
         boolean useLeaderDiscount = booleanRequest("Do you want to use a leader discount?" + printGreen("0") +" -> no" + printGreen("1") + " -> yes");
 
-        notifyMessage(new DevCardPaymentMessage(fromWarehouse, fromStrongBox, fromExtra, resourceType, useLeaderDiscount));
+        notifyMessage(new DevCardPayment(fromWarehouse, fromStrongBox, fromExtra, resourceType, useLeaderDiscount));
     }
 
     /**
@@ -318,7 +318,7 @@ public class CLI extends UiObservable implements Runnable, View {
             System.out.println("Wrong slot index, retype");
             position = getIntegerInput();
         }
-        notifyMessage(new InsertDevCardInDevSlotMessage(position));
+        notifyMessage(new InsertDevCardInDevSlot(position));
     }
 
     /**
@@ -362,24 +362,24 @@ public class CLI extends UiObservable implements Runnable, View {
             case "dis":
                 System.out.println(indexOfMarble);
                 index = getIntegerInput();
-                notifyMessage(new DiscardMarbleMessage(index));
+                notifyMessage(new DiscardMarble(index));
                 break;
             case "extra":
                 System.out.println(indexOfMarble);
                 index = getIntegerInput();
-                notifyMessage(new StoreResourceInExtraDepotMessage(index));
+                notifyMessage(new StoreResourceInExtraDepot(index));
                 break;
             case "war":
                 System.out.println(indexOfMarble);
                 index = getIntegerInput();
                 int depot = askWarehouseDepot("Where do you want to store the resource?");
-                notifyMessage(new StoreResourceInWarehouseMessage(index,depot));
+                notifyMessage(new StoreResourceInWarehouse(index,depot));
                 break;
             case "convert":
                 System.out.println(indexOfMarble);
                 index = getIntegerInput();
                 ResourceType res = askAResource("Choose the resource you want to convert to");
-                notifyMessage(new ConvertWhiteMarbleMessage(index,res));
+                notifyMessage(new ConvertWhiteMarble(index,res));
                 break;
             default:
                 System.out.println(typingErrorMessage);

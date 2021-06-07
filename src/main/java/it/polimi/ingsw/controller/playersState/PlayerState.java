@@ -14,10 +14,6 @@ public abstract class PlayerState {
         this.controller = controller;
     }
 
-    /**
-     * Performs, if possible, the action in the message sent from the client. If the action is not valid/possible, player will be notified about it.
-     * @param message message sent from the player to handle.
-     */
     public void performAction(Message message) {
 
     }

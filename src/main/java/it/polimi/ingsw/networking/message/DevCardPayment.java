@@ -11,7 +11,7 @@ import it.polimi.ingsw.model.ResourceType;
  *      - How many resources he wants to pay from the Strongbox
  *      - His will to use the discount of a leaderCard he could possess.
  */
-public class DevCardPaymentMessage extends Client2Server{
+public class DevCardPayment extends Client2Server{
     private static final long serialVersionUID = 7456174716735493810L;
 
     private final int fromWarehouse;
@@ -21,7 +21,7 @@ public class DevCardPaymentMessage extends Client2Server{
     private final ResourceType resourceType;
     private final boolean applyDiscount;
 
-    public DevCardPaymentMessage(int fromWarehouse, int fromStrongbox, int fromExtraDepot, ResourceType resourceType, boolean applyDiscount) {
+    public DevCardPayment(int fromWarehouse, int fromStrongbox, int fromExtraDepot, ResourceType resourceType, boolean applyDiscount) {
         this.fromWarehouse = fromWarehouse;
         this.fromExtraDepot = fromExtraDepot;
         this.fromStrongbox = fromStrongbox;
