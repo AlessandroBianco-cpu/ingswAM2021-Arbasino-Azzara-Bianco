@@ -24,9 +24,6 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.*;
 
-/**
- * Popup that handles the payment after a production action
- */
 public class ProductionPaymentPopup extends SceneObservable implements Popup {
 
     private Pane root;

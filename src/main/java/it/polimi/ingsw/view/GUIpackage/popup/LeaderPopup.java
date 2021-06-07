@@ -15,9 +15,6 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-/**
- * Popup that handles the leader actions (activate or discard)
- */
 public class LeaderPopup extends SceneObservable implements Popup{
     private Pane root;
     private ImageView activateButton;

@@ -7,6 +7,7 @@ import it.polimi.ingsw.networking.message.updateMessage.*;
 
 public interface View {
 
+
     void gameStarted();
 
     void registerClient(ClientAcceptedMessage m);

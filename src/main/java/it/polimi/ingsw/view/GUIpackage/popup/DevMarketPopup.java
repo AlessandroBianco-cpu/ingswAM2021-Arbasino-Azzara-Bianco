@@ -13,9 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-/**
- * Popup that handles interactions with the development cards market
- */
+
 public class DevMarketPopup extends SceneObservable implements Popup{
 
     private Pane root;

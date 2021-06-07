@@ -24,9 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Main scene of the game: displays the playerBoard after the creation and setting of the game
- */
 public class PlayerBoardScene extends UiObservable implements SceneObserver {
     private ModelLight gameModel;
     private final String owner;

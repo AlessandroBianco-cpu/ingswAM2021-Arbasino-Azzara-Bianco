@@ -16,9 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Popup that handles the placement of a bought card
- */
 public class PlacementCardPopup extends SceneObservable implements Popup {
 
     private Pane root;

@@ -26,9 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.*;
-/**
- * Popup that handles the storing of marbles received after a market action
- */
+
 public class BufferPopup extends SceneObservable implements Popup{
 
     private Pane root;

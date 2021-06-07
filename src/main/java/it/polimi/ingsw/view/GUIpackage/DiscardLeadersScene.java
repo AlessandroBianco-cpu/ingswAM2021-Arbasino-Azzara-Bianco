@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Scene that displays the leader cards distributed and ask to the player two of these to discard
+ * Scene that displays the god cards selected by the challenger and asks user to choose one
  */
 public class DiscardLeadersScene extends UiObservable {
     private Pane root;

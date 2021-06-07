@@ -619,6 +619,7 @@ public class CLI extends UiObservable implements Runnable, View {
         return  null;
     }
 
+
     // ------------------------ UPDATES ------------------------
     @Override
     public void updateStrongboxLight(StrongboxUpdateMessage m) {
@@ -641,7 +642,9 @@ public class CLI extends UiObservable implements Runnable, View {
     }
 
     @Override
-    public void updateOpponentsLeaderCardsInHand(OpponentsLeaderCardsInHandUpdateMessage m) { model.updateOpponentsLeaderInHands(m); }
+    public void updateOpponentsLeaderCardsInHand(OpponentsLeaderCardsInHandUpdateMessage m) {
+        model.updateOpponentsLeaderInHands(m);
+    }
 
     @Override
     public void updateDevCardResourcesToPay(CardPaymentResourceBufferUpdateMessage m) {
@@ -782,6 +785,12 @@ public class CLI extends UiObservable implements Runnable, View {
         return (ConsoleColors.GREEN_BOLD + string + ConsoleColors.RESET);
     }
 
+    /**
+     * Method used to print in red Uppercase
+     * @param string string to print
+     * @return the input string in green
+     */
+    public String printRedCaps(String string){return (ConsoleColors.RED_BOLD + string.toUpperCase() + ConsoleColors.RESET); }
 
     /**
      * Displays the game table

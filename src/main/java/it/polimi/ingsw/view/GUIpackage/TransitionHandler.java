@@ -4,9 +4,6 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * This class is used to handle the transition between scenes
- */
 public class TransitionHandler {
 
     private static Stage primaryStage;
