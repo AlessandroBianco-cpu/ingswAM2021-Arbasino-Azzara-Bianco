@@ -23,6 +23,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.NOTHING;
 
+/**
+ * Popup that manages all the swapping actions
+ */
 public class SwapPopup extends SceneObservable implements Popup {
 
     private Pane root;

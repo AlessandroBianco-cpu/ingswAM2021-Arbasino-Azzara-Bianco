@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Popup that shows  Lorenzo's information
+ */
 public class LorenzoPopup implements Popup {
 
     private Pane root;

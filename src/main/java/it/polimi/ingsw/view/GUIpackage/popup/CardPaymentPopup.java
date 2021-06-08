@@ -25,6 +25,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.*;
 
+/**
+ * Popup used to ask how to pay a chosen development card
+ */
 public class CardPaymentPopup extends SceneObservable implements Popup {
 
     private Pane root;

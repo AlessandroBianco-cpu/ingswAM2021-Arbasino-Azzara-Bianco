@@ -24,6 +24,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.*;
 
+/**
+ * Popup used to ask how to pay a chosen combo-production-slots
+ */
 public class ProductionPaymentPopup extends SceneObservable implements Popup {
 
     private Pane root;

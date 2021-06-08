@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="792.0" fitWidth="1184.0" layoutX="-20.0" layoutY="-50.0" pickOnBounds="true" preserveRatio="true" translateX="-55.0" translateY="-90.0">
          <image>
@@ -48,16 +50,8 @@
       <Pane id="slot22" layoutX="1005.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" translateX="-90.0" translateY="-90.0" />
       <Pane id="slot23" layoutX="1056.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" translateX="-90.0" translateY="-90.0" />
       <Pane id="slot24" layoutX="1100.0" layoutY="132.0" prefHeight="38.0" prefWidth="46.0" translateX="-90.0" translateY="-90.0" />
-      <Pane id="leaderCard1" layoutX="70.0" layoutY="130.0" prefHeight="230.0" prefWidth="140.0" translateX="-45.0" translateY="-90.0">
-         <children>
-            <Pane id="leader1Extra1" layoutX="27.0" layoutY="180.0" prefHeight="35.0" prefWidth="35.0" />
-            <Pane id="leader1Extra2" layoutX="80.0" layoutY="179.0" prefHeight="35.0" prefWidth="35.0" />
-         </children></Pane>
-      <Pane id="leaderCard2" layoutX="70.0" layoutY="425.0" prefHeight="230.0" prefWidth="140.0" translateX="-45.0" translateY="-90.0">
-         <children>
-            <Pane id="leader2Extra1" layoutX="27.0" layoutY="180.0" prefHeight="35.0" prefWidth="35.0" />
-            <Pane id="leader2Extra2" layoutX="80.0" layoutY="179.0" prefHeight="35.0" prefWidth="35.0" />
-         </children></Pane>
+      <Pane id="leaderCard1" layoutX="70.0" layoutY="130.0" prefHeight="230.0" prefWidth="140.0" translateX="-45.0" translateY="-90.0" />
+      <Pane id="leaderCard2" layoutX="70.0" layoutY="425.0" prefHeight="230.0" prefWidth="140.0" translateX="-45.0" translateY="-90.0" />
       <Pane id="slot1card1" layoutX="628.0" layoutY="440.0" prefHeight="229.7" prefWidth="150.0" translateX="-90.0" translateY="-90.0" />
       <Pane id="slot1card2" layoutX="628.0" layoutY="392.0" prefHeight="229.7" prefWidth="150.0" translateX="-90.0" translateY="-90.0" />
       <Pane id="slot1card3" layoutX="628.0" layoutY="344.0" prefHeight="229.7" prefWidth="150.0" translateX="-90.0" translateY="-90.0" />
@@ -110,5 +104,9 @@
          <font>
             <Font name="Avenir Book" size="13.0" />
          </font></Label>
+      <Pane id="firstExtra1" layoutX="48.0" layoutY="222.0" prefHeight="35.0" prefWidth="35.0" />
+      <Pane id="firstExtra2" layoutX="106.0" layoutY="222.0" prefHeight="35.0" prefWidth="35.0" />
+      <Pane id="secondExtra1" layoutX="52.0" layoutY="520.0" prefHeight="35.0" prefWidth="35.0" />
+      <Pane id="secondExtra2" layoutX="107.0" layoutY="520.0" prefHeight="35.0" prefWidth="35.0" />
    </children>
 </Pane>

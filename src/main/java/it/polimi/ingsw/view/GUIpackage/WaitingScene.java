@@ -8,7 +8,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 
 /**
- * Scene used to wait for other players'choices
+ * Scene used to wait for other players' choices
  */
 public class WaitingScene extends UiObservable {
     private Pane root;

@@ -15,6 +15,9 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+/**
+ * Popup that handles all the possibles actions for the relative leader card
+ */
 public class LeaderPopup extends SceneObservable implements Popup{
     private Pane root;
     private ImageView activateButton;

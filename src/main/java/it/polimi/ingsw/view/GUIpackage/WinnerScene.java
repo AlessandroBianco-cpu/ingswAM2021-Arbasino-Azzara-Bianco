@@ -7,6 +7,9 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
+/**
+ * Scene that print the winner player and credits
+ */
 public class WinnerScene extends UiObservable {
     private Pane root;
     private Text winnerText;

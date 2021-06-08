@@ -10,7 +10,6 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-
 /**
  * Scene used to get the number of players for the match
  */

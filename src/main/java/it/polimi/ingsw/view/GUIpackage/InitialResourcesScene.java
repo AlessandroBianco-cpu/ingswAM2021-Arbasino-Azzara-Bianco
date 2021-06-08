@@ -17,6 +17,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.*;
 
+/**
+ * Scene that displays the distributed cards and asks for discard
+ */
 public class InitialResourcesScene extends UiObservable {
     private Pane root;
 

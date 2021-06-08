@@ -92,6 +92,7 @@ public class GUI  extends Application implements View {
         primaryStage.setOnCloseRequest(event -> {
             System.out.println("Disconnected.");
             Platform.exit();
+            networkHandler.closeConnection();
         });
 
         primaryStage.show();

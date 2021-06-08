@@ -249,6 +249,5 @@ public class NetworkHandler implements Runnable, UiObserver {
         System.out.println("Connection established");
     }
 
-
 }
 

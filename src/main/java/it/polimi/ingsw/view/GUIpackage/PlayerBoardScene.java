@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main scene of the game, it implements all the actions which player can do
+ */
 public class PlayerBoardScene extends UiObservable implements SceneObserver {
     private ModelLight gameModel;
     private final String owner;
@@ -75,7 +78,6 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
         buttonsList.add(marketButton);
         buttonsList.add(endTurnButton);
         buttonsList.add(productionButton);
-
 
         strongboxLabel = new ArrayList<>();
         strongboxLabel.add((Label) root.lookup("#qtaCoin"));
