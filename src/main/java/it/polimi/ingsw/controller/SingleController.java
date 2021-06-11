@@ -81,6 +81,15 @@ public class SingleController implements Controller{
 
     }
 
+    //serve solo nel multiplayer
+    @Override
+    public void manageRejoining(String nickname) {
+        ;
+    }
+
+    @Override
+    public void manageDisconnectionInSetUp(String quitNickname) { virtualView.sendDisconnectionInSetUpGame(quitNickname); }
+
     /**
      * Handles player's turn shifts
      */
@@ -100,6 +109,10 @@ public class SingleController implements Controller{
         virtualView.updateWinner(winner);
 
     }
+
+    //this method is only used in multiplayer controller
+    @Override
+    public void manageAEndGameForQuitting() { }
 
     private boolean gameHasToRun(){
         return (!game.isLastRound()) && !((SinglePlayerGame) game).isLorenzoWinner();

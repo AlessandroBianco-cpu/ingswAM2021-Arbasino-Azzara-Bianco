@@ -25,6 +25,15 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
 
     private Map<String, ClientHandler> clients = new ConcurrentHashMap<>();
     private String currentPlayer;
+    private final EndGameObserver endGameObserver;
+    private final int lobbyID;
+    private final Object lock;
+
+    public VirtualView(EndGameObserver waitingRoom, int lobbyID) {
+        this.endGameObserver = waitingRoom;
+        this.lobbyID = lobbyID;
+        this.lock = new Object();
+    }
 
     /**
      * Adds the client and its nickname to the clients map
@@ -32,8 +41,13 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      * @param client recipient client
      */
     public void addClient(String name, ClientHandler client){
-        clients.put(name, client);
+        synchronized (lock) {
+            clients.put(name, client);
+            lock.notifyAll();
+        }
     }
+
+    public String getCurrentPlayer() { return currentPlayer; }
 
     /**
      * Sets the client as current player
@@ -70,27 +84,6 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         notifyPlayersNumber(num);
     }
 
-
-    /**
-     * This method handle the messages used for the nickname_setting
-     * @param currClient is che current ClientHandler
-     */
-    public void requestNickname(ClientHandler currClient) {
-
-        currClient.send(new SetNicknameMessage());
-        sendToEveryoneExceptCurrentPlayer(new WaitingMessage("Other players are choosing nickname"));
-        Message nicknameMessage = currClient.read();
-
-        while (! (nicknameMessage instanceof SettingNicknameMessage)) {
-            currClient.send(new ClientInputResponse("Remember you must set the nickname"));
-            System.out.println("[SERVER] player can't send setting_nickname message");
-            nicknameMessage = currClient.read();
-        }
-
-        String nickname = ((SettingNicknameMessage) nicknameMessage).getNickname();
-        notifyNickname(nickname);
-    }
-
     /**
      * This method handle the messages used for the initial_leader_discard
      */
@@ -107,7 +100,6 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         }
         notifyNewMessage(discardingMessage);
     }
-
 
     /**
      * This method handle the messages used for the initial_resources_setting
@@ -140,17 +132,6 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     /**
-     * Sends an error message during the nickname choice
-     * @param currClient player addressee
-     */
-    public void errorTakenNickname(ClientHandler currClient) {
-        currClient.send(new TakenNameMessage());
-        Message nicknameMessage = currClient.read();
-        String nickname = ((SettingNicknameMessage) nicknameMessage).getNickname();
-        notifyNickname(nickname);
-    }
-
-    /**
      * This method is used to wait for a message from the currentPlayer
      */
     public void catchMessages(){
@@ -159,8 +140,11 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     public void updateWinner(String winner) {
-        System.out.println("[SERVER] The winner is " + winner);
+        System.out.println("[LOBBY #"+lobbyID +"] The winner is " + winner);
         sendBroadcast(new WinnerMessage(winner));
+        System.out.println();
+        System.out.println("[LOBBY #"+lobbyID +"] All client-side sockets are now closed");
+        endGameObserver.manageEndGame(lobbyID);
     }
 
     /**
@@ -175,7 +159,6 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     public void endTurn(){
         clients.get(currentPlayer).setMyTurn(false);
     }
-
 
     /**
      * This two methods handle the sending of the response Server-side
@@ -195,14 +178,21 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         clients.get(currentPlayer).send(new ClientInputResponse());
     }
 
+    public void handlesWinningForQuitting(String nickname) {
+        System.out.println("[LOBBY #"+lobbyID +"] " +nickname+ " is the last player of lobby..");
+        updateWinner(nickname);
+    }
 
     /**
      * This method send a message to all clients
      * @param m is the message
      */
     public void sendBroadcast(Message m){
-        for(ClientHandler c : clients.values())
-            c.send(m);
+        synchronized (lock) {
+            for (ClientHandler c : clients.values())
+                c.send(m);
+            lock.notifyAll();
+        }
     }
 
     public void sendToEveryoneExceptCurrentPlayer(Message m){
@@ -212,10 +202,35 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         }
     }
 
+    public void sendToEveryoneExceptQuitPlayer(String playerNick) {
+        synchronized (lock) {
+            clients.remove(playerNick);
+            lock.notifyAll();
+        }
+        sendBroadcast(new PlayerIsQuittingMessage(playerNick + " left the game!"));
+    }
+
+    public void sendToEveryoneExceptRejoiningPlayer(ClientHandler ch) {
+        for(String s : clients.keySet())
+            if(!s.equals(ch.getUserNickname()))
+                clients.get(s).send(new PlayerIsRejoiningMessage(ch.getUserNickname() + " is trying to re-join in the match..."));
+    }
+
     public void sendToCurrentPlayer(Message m){clients.get(currentPlayer).send(m);}
 
-    @Override
-    public void updateMarketState(Market market) {
+    public void sendDisconnectionInSetUpGame(String quitPlayerNickname) {
+        synchronized (lock) {
+            clients.remove(quitPlayerNickname);
+            lock.notifyAll();
+        }
+        //send to other client a message that close theirs connections
+        sendBroadcast(new RemoveClientForErrors(quitPlayerNickname+" left the game in set-up phase, please reconnect in another match to play"));
+        endGameObserver.manageEndGame(lobbyID);
+    }
+
+    public void sendToRejoiningPlayer(String reJoiningNick, Object m) { clients.get(reJoiningNick).send(m); }
+
+    public MarketUpdateMessage createMarketUpdateMessage(Market market){
         ResourceType marbleLeft = market.getMarbleLeft().getResourceType();
         List<ResourceType> marbleList = new ArrayList<>();
 
@@ -223,75 +238,117 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
             for (int j=0; j<4; j++)
                 marbleList.add(market.getMarbleByIndexes(i,j).getResourceType());
 
-        sendBroadcast(new MarketUpdateMessage(marbleList,marbleLeft));
+        return new MarketUpdateMessage(marbleList, marbleLeft);
     }
 
     @Override
-    public void updateMarbleBuffer(List<Marble> marbleLinkedList) {
+    public void updateMarketState(Market market) {
+        sendBroadcast(createMarketUpdateMessage(market));
+    }
+
+    public MarbleBufferUpdateMessage createMarbleBufferUpdateMessage(List<Marble> marbleLinkedList){
         ParserForModel parser = new ParserForModel();
         List <MarbleLight> marbleLightList = new ArrayList<>();
         for(Marble m : marbleLinkedList){
             marbleLightList.add(parser.parserFromMarbleToLight(m));
         }
-        clients.get(currentPlayer).send(new MarbleBufferUpdateMessage(marbleLightList));
+
+        return new MarbleBufferUpdateMessage(marbleLightList);
     }
 
     @Override
-    public void updateLeaderCards(List<LeaderCard> leaderCards) {
-        //send to current
-        sendToCurrentPlayer(new LeaderInHandUpdateMessage(leaderCards, currentPlayer));
+    public void updateMarbleBuffer(List<Marble> marbleLinkedList) {
+        clients.get(currentPlayer).send(createMarbleBufferUpdateMessage(marbleLinkedList));
+    }
 
+    public LeaderInHandUpdateMessage createLeaderInHandUpdateMessage(String nickname, List<LeaderCard> leaderCards){
+        return new LeaderInHandUpdateMessage(leaderCards, nickname);
+    }
+
+    public OpponentsLeaderCardsInHandUpdateMessage createOpponentsLeaderCardsInHandUpdateMessage(String nickname, List<LeaderCard> leaderCards){
         List<LeaderCard> activeLeaders = new ArrayList<>();
         for (LeaderCard leaderCard : leaderCards)
             if (leaderCard.isActive())
                 activeLeaders.add(leaderCard);
 
-        sendToEveryoneExceptCurrentPlayer(new OpponentsLeaderCardsInHandUpdateMessage(activeLeaders, leaderCards.size(), currentPlayer));
+        return new OpponentsLeaderCardsInHandUpdateMessage(activeLeaders, leaderCards.size(), nickname);
     }
 
     @Override
-    public void updateStrongboxState(Strongbox strongbox) {
-        sendBroadcast(new StrongboxUpdateMessage(currentPlayer, strongbox.getNumResource(ResourceType.COIN),
-                                                 strongbox.getNumResource(ResourceType.SERVANT),
-                                                 strongbox.getNumResource(ResourceType.SHIELD),
-                                                 strongbox.getNumResource(ResourceType.STONE)));
+    public void updateLeaderCards(List<LeaderCard> leaderCards) {
+        //send to current
+        sendToCurrentPlayer(createLeaderInHandUpdateMessage(currentPlayer, leaderCards));
+        sendToEveryoneExceptCurrentPlayer(createOpponentsLeaderCardsInHandUpdateMessage(currentPlayer, leaderCards));
+    }
+
+    public StrongboxUpdateMessage createStrongboxUpdateMessage(String nickname, Strongbox strongbox){
+        return new StrongboxUpdateMessage(nickname, strongbox.getNumResource(ResourceType.COIN),
+                strongbox.getNumResource(ResourceType.SERVANT),
+                strongbox.getNumResource(ResourceType.SHIELD),
+                strongbox.getNumResource(ResourceType.STONE));
+    }
+
+    @Override
+    public void updateStrongboxState(Strongbox strongbox) { sendBroadcast(createStrongboxUpdateMessage(currentPlayer, strongbox)); }
+
+    public FaithTrackUpdateMessage createFaithTrackUpdateMessage(FaithTrack faithTrack){
+        return new FaithTrackUpdateMessage(faithTrack.getOwner(), faithTrack.getPosition(),
+                faithTrack.isFirstVaticanSectionPointsAchieved(),
+                faithTrack.isSecondVaticanSectionPointsAchieved(),
+                faithTrack.isThirdVaticanSectionPointsAchieved());
     }
 
     @Override
     public void updateFaithTrack(FaithTrack faithTrack) {
-        sendBroadcast(new FaithTrackUpdateMessage(faithTrack.getOwner(), faithTrack.getPosition(),
-                faithTrack.isFirstVaticanSectionPointsAchieved(),
-                faithTrack.isSecondVaticanSectionPointsAchieved(),
-                faithTrack.isThirdVaticanSectionPointsAchieved()));
+        sendBroadcast(createFaithTrackUpdateMessage(faithTrack));
+    }
+
+    public WarehouseUpdateMessage createWarehouseUpdateMessage(String nickname, Warehouse warehouse){
+        return new WarehouseUpdateMessage(nickname, warehouse.getDepots());
     }
 
     @Override
     public void updateWarehouseState(Warehouse warehouse) {
-        sendBroadcast(new WarehouseUpdateMessage(currentPlayer, warehouse.getDepots()));
+        sendBroadcast(createWarehouseUpdateMessage(currentPlayer, warehouse));
     }
 
+    public NicknamesUpdateMessage createNicknamesUpdateMessage(List<String> nicknames){
+        return new NicknamesUpdateMessage(nicknames);
+    }
 
     public void updatePlayersNickname(List<String> nicknames) {
-        sendBroadcast(new NicknamesUpdateMessage(nicknames));
+        sendBroadcast(createNicknamesUpdateMessage(nicknames));
+    }
+
+    public DevCardMarketUpdateMessage createDevCardMarketUpdateState(DevCardMarket devCardMarket){
+        return new DevCardMarketUpdateMessage(devCardMarket.getTopCards());
     }
 
     @Override
     public void updateDevCardMarketState(DevCardMarket devCardMarket) {
-        sendBroadcast(new DevCardMarketUpdateMessage(devCardMarket.getTopCards()));
+        sendBroadcast(createDevCardMarketUpdateState(devCardMarket));
+    }
+
+    public LorenzoUpdateMessage createLorenzoUpdateMessage(LorenzoIlMagnifico lorenzoIlMagnifico){
+        return new LorenzoUpdateMessage(lorenzoIlMagnifico.getPosition(), lorenzoIlMagnifico.getLastTokenExecuted());
     }
 
     @Override
     public void updateLorenzoState(LorenzoIlMagnifico lorenzoIlMagnifico) {
-        clients.get(currentPlayer).send(new LorenzoUpdateMessage(lorenzoIlMagnifico.getPosition(), lorenzoIlMagnifico.getLastTokenExecuted()));
+        clients.get(currentPlayer).send(createLorenzoUpdateMessage(lorenzoIlMagnifico));
     }
 
     @Override
     public void updateLorenzoPosition(LorenzoIlMagnifico lorenzoIlMagnifico) {
-        clients.get(currentPlayer).send(new LorenzoUpdateMessage(lorenzoIlMagnifico.getPosition(), null));
+        clients.get(currentPlayer).send(createLorenzoUpdateMessage(lorenzoIlMagnifico));
+    }
+
+    public ProductionZoneUpdateMessage createProductionZoneUpdateMessage(PersonalBoard personalBoard){
+        return new ProductionZoneUpdateMessage(personalBoard.getOwner().getNickname(), personalBoard.getProductionSlotByIndex(1), personalBoard.getProductionSlotByIndex(2), personalBoard.getProductionSlotByIndex(3), personalBoard.getTopExtraDevCardsInSlots());
     }
 
     @Override
     public void updateProductionZoneState(PersonalBoard personalBoard) {
-        sendBroadcast(new ProductionZoneUpdateMessage(personalBoard.getOwner().getNickname(), personalBoard.getProductionSlotByIndex(1), personalBoard.getProductionSlotByIndex(2), personalBoard.getProductionSlotByIndex(3), personalBoard.getTopExtraDevCardsInSlots()));
+        sendBroadcast(createProductionZoneUpdateMessage(personalBoard));
     }
 }

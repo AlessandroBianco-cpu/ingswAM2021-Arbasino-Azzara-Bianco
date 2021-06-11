@@ -41,10 +41,6 @@ class FaithTrackTest {
         assertEquals(24, faithTrack.getPosition()); //after this invocation should not go over 24
     }
 
-    @Test
-    void vaticanReport(){
-
-    }
 
     @Test
     void getConsistentPositionScore() {

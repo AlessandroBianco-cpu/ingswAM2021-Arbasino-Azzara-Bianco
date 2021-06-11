@@ -123,7 +123,7 @@ public class DevDeck extends Deck{
     }
     public void greenLevelThreeDeck(){
         costOne.add(new QuantityResource(SHIELD,6));
-        powerInputOne.add(new QuantityResource(SERVANT,2));
+        powerInputOne.add(new QuantityResource(COIN,2));
         powerOutputOne.add(new QuantityResource(STONE,3));
         powerOutputOne.add(new QuantityResource(FAITH,2));
         costTwo.add(new QuantityResource(SHIELD,5));
@@ -200,7 +200,7 @@ public class DevDeck extends Deck{
         costFour.add(new QuantityResource(COIN,3));
         costFour.add(new QuantityResource(STONE,3));
         powerInputFour.add(new QuantityResource(SERVANT,1));
-        powerOutputFour.add(new QuantityResource(STONE,1));
+        powerOutputFour.add(new QuantityResource(STONE,2));
         powerOutputFour.add(new QuantityResource(FAITH,1));
 
         DevCard cardOne = new DevCard(5,TWO_LEVEL,33,costOne, BLUE,powerInputOne,powerOutputOne);
@@ -400,7 +400,7 @@ public class DevDeck extends Deck{
     }
     public void purpleLevelThreeDeck(){
         costOne.add(new QuantityResource(SERVANT,6));
-        powerInputOne.add(new QuantityResource(STONE,1));
+        powerInputOne.add(new QuantityResource(STONE,2));
         powerOutputOne.add(new QuantityResource(COIN,3));
         powerOutputOne.add(new QuantityResource(FAITH,2));
         costTwo.add(new QuantityResource(SERVANT,5));

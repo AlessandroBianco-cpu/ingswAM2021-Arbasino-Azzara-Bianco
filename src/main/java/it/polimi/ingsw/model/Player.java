@@ -15,6 +15,7 @@ import java.util.List;
 public class Player extends PlayerItemsObservable implements LeaderCardPowerAdder {
 
     private String nickname;
+    private boolean active;
     private List<ResourceType> convertWhiteCards;
     private List<QuantityResource> discountCards;
     private PersonalBoard personalBoard;
@@ -26,6 +27,7 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
     private DevCardMarket devCardMarket;
 
     public Player(String nickname) {
+        this.active = true;
         this.convertWhiteCards = new ArrayList<>();
         this.nickname = nickname;
         buffer = new LinkedList<>();
@@ -41,6 +43,9 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         this.personalBoard = new PersonalBoard(this, game);
     }
 
+    public boolean isActive() { return active; }
+
+    public void setActive(boolean active) { this.active = active; }
 
     public String getNickname() {
         return this.nickname;

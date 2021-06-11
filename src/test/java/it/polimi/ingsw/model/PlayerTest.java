@@ -50,26 +50,6 @@ class PlayerTest {
 
         List<Integer> lista = new ArrayList<>();
         lista.add(0);
-        List<QuantityResource> qtList = player.getPersonalBoard().sumProductionPowerInputs(lista);
-        System.out.println("Resource to pay size "+ qtList.size());
-        for(QuantityResource q : qtList){
-            String string = "prova";
-            switch (q.getResourceType()){
-                case COIN:
-                    string = "coin";
-                    break;
-                case SERVANT:
-                    string = "servant";
-                    break;
-                case STONE:
-                    string = "stone";
-                    break;
-                case SHIELD:
-                    string = "shield";
-                    break;
-            }
-            System.out.println(string + q.getQuantity());
-        }
 
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(ResourceType.SERVANT,1));
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(ResourceType.COIN,1));
@@ -627,59 +607,6 @@ class PlayerTest {
         List<Integer> indexActivated = new ArrayList<>();
         for (int i = 0; i < 6; i++)
             indexActivated.add(i);
-
-
-        List<QuantityResource> qtList = player.getPersonalBoard().sumProductionPowerInputs(indexActivated);
-        System.out.println("Resource to pay size "+ qtList.size());
-        for(int i=0; i<8; i++) {
-
-            System.out.println((i+1)+" stampa");
-
-            for (QuantityResource q : qtList) {
-                String string = "prova";
-                switch (q.getResourceType()) {
-                    case COIN:
-                        string = "coin";
-                        break;
-                    case SERVANT:
-                        string = "servant";
-                        break;
-                    case STONE:
-                        string = "stone";
-                        break;
-                    case SHIELD:
-                        string = "shield";
-                        break;
-                }
-                System.out.println(string + " " + q.getQuantity());
-            }
-        }
-
-        List<QuantityResource> qtList1 = player.getPersonalBoard().sumProductionPowerInputs(indexActivated);
-        System.out.println("Resource to pay size "+ qtList.size());
-        for(int i=0; i<8; i++) {
-
-            System.out.println((i+1)+" stampa");
-
-            for (QuantityResource q : qtList1) {
-                String string = "prova";
-                switch (q.getResourceType()) {
-                    case COIN:
-                        string = "coin";
-                        break;
-                    case SERVANT:
-                        string = "servant";
-                        break;
-                    case STONE:
-                        string = "stone";
-                        break;
-                    case SHIELD:
-                        string = "shield";
-                        break;
-                }
-                System.out.println(string + " " + q.getQuantity());
-            }
-        }
 
         player.getPersonalBoard().setBasePowerInput(SHIELD, COIN);
         player.getPersonalBoard().setBasePowerOutput(STONE);

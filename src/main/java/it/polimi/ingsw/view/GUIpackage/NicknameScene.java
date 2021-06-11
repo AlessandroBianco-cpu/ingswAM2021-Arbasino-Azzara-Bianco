@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.GUIpackage;
 
-import it.polimi.ingsw.networking.message.SettingNicknameMessage;
+import it.polimi.ingsw.networking.message.LoginSettingMessage;
 import it.polimi.ingsw.observer.UiObservable;
 import it.polimi.ingsw.view.GUIpackage.popup.AlertPopup;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +17,8 @@ import java.io.IOException;
  */
 public class NicknameScene extends UiObservable {
     private Pane root;
-    private ImageView loginButton;
+    private ImageView joinButton;
+    private ImageView createButton;
 
     public NicknameScene(String message) {
         try {
@@ -26,21 +27,32 @@ public class NicknameScene extends UiObservable {
             e.printStackTrace();
         }
 
-        loginButton = (ImageView) root.lookup("#loginButton");
+        joinButton = (ImageView) root.lookup("#joinButton");
+        createButton = (ImageView) root.lookup("#createButton");
         Text text = (Text) root.lookup("#nicknameText");
         TextField nicknameTextField = (TextField) root.lookup("#nicknameBox");
         nicknameTextField.setText(null);
         text.setText(message);
 
         DropShadow shadow = new DropShadow();
-        loginButton.setOnMouseEntered(event -> loginButton.setEffect(shadow));
-        loginButton.setOnMouseExited(event -> loginButton.setEffect(null));
+        joinButton.setOnMouseEntered(event -> joinButton.setEffect(shadow));
+        joinButton.setOnMouseExited(event -> joinButton.setEffect(null));
+        createButton.setOnMouseEntered(event -> createButton.setEffect(shadow));
+        createButton.setOnMouseExited(event -> createButton.setEffect(null));
 
-        loginButton.setOnMouseClicked(event -> {
+        joinButton.setOnMouseClicked(event -> {
             String nickname = nicknameTextField.getText();
-
             if(nickname != null) {
-                notifyMessage(new SettingNicknameMessage(nickname));
+                notifyMessage(new LoginSettingMessage(nickname,true));
+            }
+            else
+                new AlertPopup().displayStringMessages("Please enter a valid nickname.");
+        });
+
+        createButton.setOnMouseClicked(event -> {
+            String nickname = nicknameTextField.getText();
+            if(nickname != null) {
+                notifyMessage(new LoginSettingMessage(nickname,false));
             }
             else
                 new AlertPopup().displayStringMessages("Please enter a valid nickname.");

@@ -9,10 +9,9 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.QuantityResource;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.networking.VirtualView;
-import it.polimi.ingsw.networking.message.ChooseLeaderMessage;
-import it.polimi.ingsw.networking.message.ChooseResourcesMessage;
-import it.polimi.ingsw.networking.message.Message;
+import it.polimi.ingsw.networking.message.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ public class MultiController implements Controller {
     private final UserInputManager uim;
     private final VirtualView virtualView;
 
-    private List<Player> activePlayers;
+    private List<Player> gamePlayers;
     private PlayerState currentState;
     private Player currentPlayer;
     private boolean currentPlayerWantsToEndTurn;
@@ -32,9 +31,10 @@ public class MultiController implements Controller {
         this.game = game;
         this.uim = uim;
         this.virtualView = virtualView;
-        this.activePlayers = activePlayers;
+        this.gamePlayers = activePlayers;
         this.currentState = new BeforeMainActionState(this);
         this.currentPlayerWantsToEndTurn = false;
+        this.currentPlayer = activePlayers.get(0);
     }
 
     /**
@@ -45,7 +45,7 @@ public class MultiController implements Controller {
         int stepNumber = -1;
         int numberOfResources = 0;
 
-        for (Player p : activePlayers) {
+        for (Player p : gamePlayers) {
             if (playersTurn % 2 != 0)
                 stepNumber++;
             else
@@ -81,7 +81,7 @@ public class MultiController implements Controller {
      */
     public void distributeLeaderCard() {
         //add four leader card for every active player in the game
-        for (Player player : activePlayers) {
+        for (Player player : gamePlayers) {
             player.addLeaderCard(game.getLeaderDeck().popFirstCard());
             player.addLeaderCard(game.getLeaderDeck().popFirstCard());
             player.addLeaderCard(game.getLeaderDeck().popFirstCard());
@@ -89,7 +89,7 @@ public class MultiController implements Controller {
         }
 
         //handle the discarding of leader card
-        for (Player p : activePlayers) {
+        for (Player p : gamePlayers) {
             virtualView.setCurrentPlayer(p.getNickname());
             virtualView.startTurn();
             //manda le nuove 4 carte del giocatore j-esimo
@@ -114,22 +114,34 @@ public class MultiController implements Controller {
 
     }
 
+    private int numOfActivePlayers() {
+        int count = 0;
+        for (Player p : gamePlayers) {
+            if (p.isActive())
+                count++;
+        }
+        return count;
+    }
+
     /**
      * Handles players turn shifts
      */
     public void play() {
 
-        while (activePlayers.size() > 1 && !game.isLastRound() ) {
-            for (Player player : activePlayers) {
-                currentPlayer = player;
+        while (numOfActivePlayers() > 1 && !game.isLastRound() ) {
+            if (currentPlayer.isActive())
                 performTurn(currentPlayer);
-            }
+            updateCurrentPlayer();
         }
 
         String winner = game.computeWinnerPlayer().getNickname();
         virtualView.updateWinner(winner);
-
     }
+
+    /**
+     * Updates the player that has to perform the turn
+     */
+    private void updateCurrentPlayer(){ currentPlayer = gamePlayers.get((gamePlayers.indexOf(currentPlayer) + 1) % gamePlayers.size()); }
 
     /**
      * Handles player's turn
@@ -144,13 +156,63 @@ public class MultiController implements Controller {
         virtualView.startTurn();
 
         //gestione della fase di inizio turno (il player non ha ancora eseguito nessuna azione)
-        while (currentPlayerWantsToEndTurn == false) {
+        while (!currentPlayerWantsToEndTurn) {
             virtualView.catchMessages();
             Message actionMessage = uim.getActionMessage();
             currentState.performAction(actionMessage);
         }
 
         virtualView.endTurn();
+    }
+
+    @Override
+    public void manageRejoining(String nickname) {
+
+        // manda a tutti i giocatori un messaggio per aprire una scena di riconnessione giocatore
+        // manda tutto al giocatore che sta joinando
+        virtualView.sendToRejoiningPlayer(nickname, virtualView.createNicknamesUpdateMessage(getPlayersNicknames()));
+        virtualView.sendToRejoiningPlayer(nickname, virtualView.createMarketUpdateMessage(game.getMarket()));
+        virtualView.sendToRejoiningPlayer(nickname, virtualView.createDevCardMarketUpdateState(game.getDevCardMarket()));
+
+        for (Player player : gamePlayers) {
+            virtualView.sendToRejoiningPlayer(nickname, virtualView.createWarehouseUpdateMessage(player.getNickname(), player.getPersonalBoard().getWarehouse()));
+            virtualView.sendToRejoiningPlayer(nickname, virtualView.createStrongboxUpdateMessage(player.getNickname(), player.getPersonalBoard().getStrongbox()));
+            virtualView.sendToRejoiningPlayer(nickname, virtualView.createFaithTrackUpdateMessage(player.getPersonalBoard().getFaithTrack()));
+            virtualView.sendToRejoiningPlayer(nickname, virtualView.createProductionZoneUpdateMessage(player.getPersonalBoard()));
+            if (!(player.getNickname().equals(nickname))){
+                virtualView.sendToRejoiningPlayer(nickname, virtualView.createOpponentsLeaderCardsInHandUpdateMessage(player.getNickname(), player.getLeaders())) ;
+            } else {
+                virtualView.sendToRejoiningPlayer(nickname, virtualView.createLeaderInHandUpdateMessage(player.getNickname(), player.getLeaders()));
+            }
+        }
+        GameStartedMessage gameStartedMessage = new GameStartedMessage();
+        virtualView.sendToRejoiningPlayer(nickname,gameStartedMessage);
+        StartTurnMessage startTurnMessage = new StartTurnMessage(currentPlayer.getNickname());
+        virtualView.sendToRejoiningPlayer(nickname, startTurnMessage);
+    }
+
+    private List<String> getPlayersNicknames(){
+        List<String> nicknames = new ArrayList<>();
+        for (Player p : gamePlayers){
+            nicknames.add(p.getNickname());
+        }
+        return nicknames;
+    }
+
+    @Override
+    public void manageAEndGameForQuitting() {
+        String nickname = "";
+        for (Player p : gamePlayers) {
+            if (p.isActive())
+                nickname = p.getNickname();
+
+        }
+        virtualView.handlesWinningForQuitting(nickname);
+    }
+
+    @Override
+    public void manageDisconnectionInSetUp(String quitNickname) {
+        virtualView.sendDisconnectionInSetUpGame(quitNickname);
     }
 
     @Override

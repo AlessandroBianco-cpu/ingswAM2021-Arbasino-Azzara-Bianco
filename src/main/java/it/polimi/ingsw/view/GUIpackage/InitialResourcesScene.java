@@ -18,7 +18,7 @@ import java.util.List;
 import static it.polimi.ingsw.model.ResourceType.*;
 
 /**
- * Scene that displays the distributed cards and asks for discard
+ * Scene that displays that you must choose many resources for start game
  */
 public class InitialResourcesScene extends UiObservable {
     private Pane root;

@@ -43,14 +43,12 @@ public class ResourcesStock implements ResourceSpot {
      * This method removes the given Resource to the appropriate location of the ResCounter
      * @param resource resource to remove
      */
-    public void decreaseStock(QuantityResource resource){
+    public void decreaseStock(QuantityResource resource) {
         resources.put(resource.getResourceType(), resources.get(resource.getResourceType()) - resource.getQuantity());
     }
 
     @Override
-    public boolean hasEnoughResources(QuantityResource quantityResource) {
-        return resources.get(quantityResource.getResourceType()) >= quantityResource.getQuantity();
-    }
+    public boolean hasEnoughResources(QuantityResource quantityResource) { return resources.get(quantityResource.getResourceType()) >= quantityResource.getQuantity(); }
 
     /**
      *

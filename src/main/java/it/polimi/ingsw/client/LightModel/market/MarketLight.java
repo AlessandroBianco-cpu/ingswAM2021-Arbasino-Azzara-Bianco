@@ -83,32 +83,4 @@ public class MarketLight {
                 return new WhiteMarbleLight();
         }
     }
-
-    /*
-    public static void main(String[] args) {
-        MarketLight market = new MarketLight();
-
-        List<ResourceType> resourcesInMarket = new LinkedList<>();
-
-        resourcesInMarket.add(ResourceType.NOTHING);
-        resourcesInMarket.add(ResourceType.COIN);
-        resourcesInMarket.add(ResourceType.STONE);
-        resourcesInMarket.add(ResourceType.SHIELD);
-        resourcesInMarket.add(ResourceType.SHIELD);
-        resourcesInMarket.add(ResourceType.SERVANT);
-        resourcesInMarket.add(ResourceType.SERVANT);
-        resourcesInMarket.add(ResourceType.NOTHING);
-        resourcesInMarket.add(ResourceType.STONE);
-        resourcesInMarket.add(ResourceType.COIN);
-        resourcesInMarket.add(ResourceType.NOTHING);
-        resourcesInMarket.add(ResourceType.FAITH);
-
-        ResourceType resourceLeft = ResourceType.NOTHING;
-
-        MarketUpdateMessage message = new MarketUpdateMessage(resourcesInMarket, resourceLeft);
-
-        market.updateMarketLight(message);
-        market.print();
-    }
-*/
 }

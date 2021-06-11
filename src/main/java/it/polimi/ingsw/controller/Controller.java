@@ -27,6 +27,12 @@ public interface Controller {
      */
     void play();
 
+    void manageRejoining(String nickname);
+
+    void manageAEndGameForQuitting();
+
+    void manageDisconnectionInSetUp(String quitNickname);
+
     void performTurn(Player currentPlayer);
 
     void setCurrentPlayerState(PlayerState state);

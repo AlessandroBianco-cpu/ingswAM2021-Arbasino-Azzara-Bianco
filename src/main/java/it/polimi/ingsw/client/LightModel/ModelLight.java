@@ -19,16 +19,13 @@ public class ModelLight {
     private String owner;
     private LorenzoLight lorenzo;
 
-
     public ModelLight() {
         this.marbleMarket = new MarketLight();
         this.devCardMarket = new DevCardMarketLight();
         this.players = new ArrayList<>();
     }
 
-    public void setOwner(String nickname){
-        owner = nickname;
-    }
+    public void setOwner(String nickname){ owner = nickname; }
 
     public void addPlayer(PlayerLight playerLight){
         players.add(playerLight);

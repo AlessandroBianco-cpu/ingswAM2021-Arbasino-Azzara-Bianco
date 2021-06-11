@@ -25,7 +25,6 @@ public class App {
 
                 server = new Server();
                 server.run();
-
             }
         } else //start GUI ClientApp
             Application.launch(GUI.class);

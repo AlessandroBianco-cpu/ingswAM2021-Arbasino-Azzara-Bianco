@@ -2,7 +2,6 @@ package it.polimi.ingsw.networking;
 
 import it.polimi.ingsw.networking.message.Message;
 import it.polimi.ingsw.networking.message.PingMessage;
-import it.polimi.ingsw.networking.message.WinnerMessage;
 import it.polimi.ingsw.networking.message.WrongTurnMessage;
 import it.polimi.ingsw.observer.ConnectionObservable;
 
@@ -17,8 +16,9 @@ import java.net.Socket;
 public class ClientHandler extends ConnectionObservable {
 
     private final Socket socket;
+    private String userNickname;
     private volatile boolean connected;
-    private boolean active;
+    private Thread readingThread;
     private boolean myTurn;
     private Message answer;
     private PingMessage pingMessage;
@@ -29,21 +29,14 @@ public class ClientHandler extends ConnectionObservable {
     public ClientHandler(Socket socket) {
         this.socket = socket;
         this.connected = true;
-        this.active = true;
         this.myTurn = false;
         this.answerReady = false;
         this.pingMessage = new PingMessage();
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public void setMyTurn (boolean myTurn) {
         this.myTurn = myTurn;
     }
-
-    public boolean isActive() { return active; }
 
     public boolean isConnected() {
         return connected;
@@ -57,8 +50,6 @@ public class ClientHandler extends ConnectionObservable {
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }
-        if(object instanceof WinnerMessage)
-            closeConnection();
     }
 
     /**
@@ -70,9 +61,14 @@ public class ClientHandler extends ConnectionObservable {
             socketOut.close();
             socketIn.close();
             socket.close();
-            System.out.println("[SERVER] Connection closed with client");
+            //readingThread.interrupt();
+            System.out.println("[SERVER] "+userNickname+"-socket connection closed server-side");
+            System.out.println();
         } catch (IOException e) {
+            System.out.println("[SERVER] ERRORE IN CHIUSURA DEL CLIENT: " +userNickname);
             e.printStackTrace();
+            System.out.println();
+            System.out.println();
         }
     }
 
@@ -106,7 +102,7 @@ public class ClientHandler extends ConnectionObservable {
      * Loops read from client: when a message is read, answerReady is set true. If the client is unreachable, server is notified
      */
     public void readFromClient() {
-        Thread t = new Thread(() -> {
+        readingThread = new Thread(() -> {
             while (connected) {
                 try {
                     socket.setSoTimeout(30000);
@@ -114,30 +110,28 @@ public class ClientHandler extends ConnectionObservable {
                     try {
                         fromClient = (Message) socketIn.readObject();
                     } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
+                        System.out.println("[SERVER] client killed");
                     }
                     if( !(fromClient instanceof PingMessage) ) {
                         if (myTurn) {
-                            System.out.println("[SERVER] I read a new message from current player");
                             answer = fromClient;
                             answerReady = true;
                             synchronized (this) {
                                 notifyAll();
                             }
                         } else {
-                            System.out.println("[SERVER] I send a wrongTurn message");
                             send(new WrongTurnMessage());
                         }
                     }
                 } catch (IOException | NullPointerException | IllegalArgumentException e) {
-                    System.out.println("[SERVER] Client unreachable");
-                    e.printStackTrace();
+                    System.out.println("[SERVER] "+userNickname+"-socket connection closed client-side");
+                    closeConnection();
                     notifyDisconnection(this);
                     break;
                 }
             }
         });
-        t.start();
+        readingThread.start();
     }
 
     /**
@@ -158,7 +152,6 @@ public class ClientHandler extends ConnectionObservable {
         return answer;
     }
 
-
     /**
      * Initializes socket and starts ping management
      */
@@ -168,6 +161,7 @@ public class ClientHandler extends ConnectionObservable {
             socketOut = new ObjectOutputStream(socket.getOutputStream());
             socketIn = new ObjectInputStream(socket.getInputStream());
             System.out.println("[SERVER] New ClientSockets created");
+            System.out.println();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -175,5 +169,8 @@ public class ClientHandler extends ConnectionObservable {
         pingToClient();
     }
 
+    public String getUserNickname() { return userNickname; }
 
+    public void setUserNickname(String userNickname) { this.userNickname = userNickname; }
 }
+

@@ -39,7 +39,6 @@ public class GUI  extends Application implements View {
     private NetworkHandler networkHandler;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-
     @Override
     public void start(Stage primaryStage) {
         Font.loadFont(getClass().getResourceAsStream("/fonts/AvenirBook.ttf"), 28);
@@ -71,7 +70,7 @@ public class GUI  extends Application implements View {
             fadeIn.play();
             fadeIn.setOnFinished((e) -> {
                 try {
-                    Thread.sleep(2500);
+                    Thread.sleep(2000);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
@@ -90,13 +89,14 @@ public class GUI  extends Application implements View {
         primaryStage.getIcons().add(new Image("/punchBoard/inkwell.png"));
 
         primaryStage.setOnCloseRequest(event -> {
-            System.out.println("Disconnected.");
+            System.out.println("Disconnected GUI");
             Platform.exit();
-            networkHandler.closeConnection();
+            System.exit(0);
+            //if (owner != null)
+               // networkHandler.closeConnection();
         });
 
         primaryStage.show();
-
     }
 
     /**
@@ -116,6 +116,9 @@ public class GUI  extends Application implements View {
         model.setOwner(owner);
     }
 
+    /**
+     * Sets the scene that asks for match number of player
+     */
     @Override
     public void askPlayersNumber() {
         NumPlayersScene numPlayersScene = new NumPlayersScene();
@@ -124,15 +127,20 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toNumPlayersScene);
     }
 
+    /**
+     * Sets the scene that asks for nickname login
+     */
     @Override
-    public void askNickname() {
+    public void askLogin() {
         NicknameScene nicknameScene = new NicknameScene("Enter your nickname");
         nicknameScene.addObserver(networkHandler);
         Platform.runLater(() -> TransitionHandler.setNicknameScene(nicknameScene));
         Platform.runLater(TransitionHandler::toNicknameScene);
     }
 
-
+    /**
+     * Sets the scene that asks for initial leader discard
+     */
     @Override
     public void askInitialDiscard() {
         DiscardLeadersScene discardLeadersScene = new DiscardLeadersScene(model.getPlayerByNickname(owner).getLeaderCardsInHand().getCards());
@@ -141,6 +149,9 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toDiscardLeadersScene);
     }
 
+    /**
+     * Sets the scene that asks for initial resources choose
+     */
     @Override
     public void askInitialResource() {
         InitialResourcesScene initialResourcesScene = new InitialResourcesScene(resToAdd);
@@ -149,6 +160,9 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toInitialResourcesScene);
     }
 
+    /**
+     * Sets the scene that asks for ip address and port
+     */
     @Override
     public void gameStarted() {
         playerBoardScene = new PlayerBoardScene(model,owner);
@@ -158,6 +172,9 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toPlayerBoardScene);
     }
 
+    /**
+     * Sets a nickname scene with a different message
+     */
     @Override
     public void displayTakenNickname() {
         NicknameScene nicknameScene = new NicknameScene("Nickname already chosen by other player");
@@ -166,11 +183,16 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toNicknameScene);
     }
 
+    /**
+     * Displays a popup when server interrupt the connection
+     */
     @Override
-    public void displayNetworkError() {
-        new AlertPopup().displayStringMessages("Networking error!");
-    }
+    public void displayNetworkError() { new AlertPopup().displayStringMessages("Networking error! Connection closed server-side"); }
 
+    /**
+     * Handles the displaying of messages sent from server, if there is a popup open, re-open it updated
+     * @param message is the string message to print in player console-log
+     */
     @Override
     public void displayStringMessages(String message) {
         if(gameCreated) {
@@ -188,6 +210,9 @@ public class GUI  extends Application implements View {
         }
     }
 
+    /**
+     * Sets the scene of a generally waiting with a text message
+     */
     @Override
     public void waitingOtherPlayers(String message) {
         WaitingScene waitingScene = new WaitingScene(message);
@@ -197,14 +222,17 @@ public class GUI  extends Application implements View {
     }
 
     @Override
-    public void updateMarketLight(MarketUpdateMessage m) {
-        model.getMarbleMarket().updateMarketLight(m);
-    }
+    public void updateMarketLight(MarketUpdateMessage m) { model.getMarbleMarket().updateMarketLight(m); }
 
+    /**
+     * Graphic update of personal strongbox (if game is already created)
+     * @param m is the update message
+     */
     @Override
     public void updateStrongboxLight(StrongboxUpdateMessage m) {
         model.updatePlayerStrongbox(m);
-        Platform.runLater(() -> playerBoardScene.displayStrongbox(model.getPlayerByNickname(owner).getStrongbox()));
+        if (gameCreated)
+            Platform.runLater(() -> playerBoardScene.displayStrongbox(model.getPlayerByNickname(owner).getStrongbox()));
     }
 
     @Override
@@ -258,6 +286,10 @@ public class GUI  extends Application implements View {
         Platform.runLater(() -> playerBoardScene.displayPlaceNewCard((PlacementCardPopup) currentPopup));
     }
 
+    /**
+     * Graphic update of personal faithTrack (if game is already created)
+     * @param m is the update message
+     */
     @Override
     public void updateFaithTrack(FaithTrackUpdateMessage m) {
         model.updatePlayerFaithTrack(m);
@@ -283,7 +315,8 @@ public class GUI  extends Application implements View {
     public void updateProductionZone(ProductionZoneUpdateMessage m) {
         model.updateProductionZone(m);
         thereIsPopup = false;
-        displayProductionZone();
+        if (gameCreated)
+            displayProductionZone();
     }
 
     @Override
@@ -291,6 +324,9 @@ public class GUI  extends Application implements View {
         model.updatePlayersNickname(m);
     }
 
+    /**
+     * Sets a scene which displays the winner and credits
+     */
     @Override
     public void displayWinner(String winnerMessage) {
         WinnerScene winnerScene = new WinnerScene(winnerMessage);
@@ -299,6 +335,9 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toWinnerScene);
     }
 
+    /**
+     * Display a popup or a text in player's console-log
+     */
     @Override
     public void displayWrongTurn() {
         if(gameCreated)
@@ -307,26 +346,47 @@ public class GUI  extends Application implements View {
             new AlertPopup().displayStringMessages("It's not your turn.");
     }
 
+    /**
+     * Graphic update of marbles buffer
+     */
     @Override
     public void displayBuffer() {
         Platform.runLater(() -> playerBoardScene.displayBuffer((BufferPopup) currentPopup));
     }
 
+    /**
+     * Graphic update of resource to pay for a new card
+     */
     @Override
     public void displayResourcesToPayForCard() { Platform.runLater(() -> playerBoardScene.displayResourcesToPay((CardPaymentPopup) currentPopup)); }
 
+    /**
+     * Graphic update of resource to pay for production
+     */
     @Override
     public void displayProductionResourcesPayment() { Platform.runLater(() -> playerBoardScene.displayProductionPayment((ProductionPaymentPopup) currentPopup)); }
 
+    /**
+     * Graphic update of leader cards
+     */
     @Override
     public void displayLeaderCards() { Platform.runLater(() -> playerBoardScene.displayLeaders()); }
 
+    /**
+     * Graphic update of personal warehouse
+     */
     @Override
     public void displayWarehouse() { Platform.runLater(() -> playerBoardScene.displayWarehouse()); }
 
+    /**
+     * Graphic update of personal development slots
+     */
     @Override
     public void displayProductionZone() { Platform.runLater(() -> playerBoardScene.displayProductionZone()); }
 
+    /**
+     * Displays a message in console-log
+     */
     @Override
     public void displayStartTurn(StartTurnMessage m) {
         if(gameCreated)
@@ -334,6 +394,25 @@ public class GUI  extends Application implements View {
                 Platform.runLater(() -> playerBoardScene.displayInConsole("It's your turn"));
             else
                 Platform.runLater(() -> playerBoardScene.displayInConsole(m.getMessage()));
+    }
+
+    /**
+     * This method is called only if a player quit/re-join
+     * @param message is a message to print in the popup
+     */
+    @Override
+    public void displayPlayersNumChange(String message,boolean join) {
+        Platform.runLater(() -> playerBoardScene.displayInPopup(message));
+    }
+    /**
+     * Displays a popup with a string error
+     */
+    @Override
+    public void quittingForProblem(String message) {
+        EndScene endScene = new EndScene(message);
+        endScene.addObserver(networkHandler);
+        Platform.runLater(() -> TransitionHandler.setEndScene(endScene));
+        Platform.runLater(TransitionHandler::toEndScene);
     }
 
     @Override
@@ -355,4 +434,5 @@ public class GUI  extends Application implements View {
     public void updateLorenzoLight(LorenzoUpdateMessage m) {
         model.updateLorenzo(m);
     }
+
 }

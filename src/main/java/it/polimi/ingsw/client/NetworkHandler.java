@@ -43,6 +43,12 @@ public class NetworkHandler implements Runnable, UiObserver {
         else if(inputObject instanceof StartTurnMessage)
             view.displayStartTurn((StartTurnMessage) inputObject);
 
+        else if(inputObject instanceof PlayerIsQuittingMessage)
+            view.displayPlayersNumChange(((PlayerIsQuittingMessage) inputObject).getMessage(),false);
+
+        else if(inputObject instanceof PlayerIsRejoiningMessage)
+            view.displayPlayersNumChange(((PlayerIsRejoiningMessage) inputObject).getMessage(),true);
+
         else if(inputObject instanceof WaitingMessage)
             view.waitingOtherPlayers(((WaitingMessage) inputObject).getMessage());
 
@@ -108,13 +114,16 @@ public class NetworkHandler implements Runnable, UiObserver {
             view.askPlayersNumber();
 
         else if (inputObject instanceof SetNicknameMessage)
-            view.askNickname();
+            view.askLogin();
 
         else if (inputObject instanceof SetLeadersMessage)
             view.askInitialDiscard();
 
         else if (inputObject instanceof TakenNameMessage)
             view.displayTakenNickname();
+
+        else if (inputObject instanceof RemoveClientForErrors)
+            view.quittingForProblem(((RemoveClientForErrors)inputObject).getMessage());
 
         else if (inputObject instanceof S2CPlayersNumberMessage){
             view.updatePlayersNumber(((S2CPlayersNumberMessage) inputObject).getNum());
@@ -182,8 +191,8 @@ public class NetworkHandler implements Runnable, UiObserver {
                     socket.setSoTimeout(30000);
                     Object inputObject = socketIn.readObject();
                     manageInputFromServer(inputObject);
-                    // close socket if winMessage is received
-                    if (inputObject instanceof WinnerMessage)
+                    // close socket if winMessage is received or server is full or a player left game in initial set-up phase
+                    if((inputObject instanceof WinnerMessage) || (inputObject instanceof RemoveClientForErrors))
                         break;
                 } catch (IOException | ClassNotFoundException e) {
                     view.displayNetworkError();
@@ -218,10 +227,12 @@ public class NetworkHandler implements Runnable, UiObserver {
     public synchronized void closeConnection() {
         connected = false;
         try {
-            System.out.println("I'm closing client-side");
+            System.out.println("Closing client-side connection...");
             socketOut.close();
             socketIn.close();
             socket.close();
+            System.out.println("Connection closed.");
+
         } catch (IOException e) {
             e.printStackTrace();
         }

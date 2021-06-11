@@ -33,8 +33,8 @@ public class NumPlayersScene extends UiObservable {
         readyButton.setOnMouseEntered(event -> readyButton.setEffect(shadow));
         readyButton.setOnMouseExited(event -> readyButton.setEffect(null));
 
-        choiceBox.setStyle("-fx-font-style: 'Avenir Book'");
-        choiceBox.setStyle("-fx-font-size: 14;");
+        choiceBox.setStyle("-fx-font: normal 14 'Avenir Book'");
+
         choiceBox.setValue("Single Player");
 
         choiceBox.getItems().add("Single Player");

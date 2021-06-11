@@ -23,7 +23,7 @@ public class CLI extends UiObservable implements Runnable, View {
     private final Scanner in;
     private String owner;
     private boolean gameCreated = false;
-    private int yourTurnMessageCounter = 0;
+    private boolean gameStarted = false;
     private ModelLight model = new ModelLight();
 
     //variables sent from Server
@@ -63,6 +63,7 @@ public class CLI extends UiObservable implements Runnable, View {
 
     @Override
     public void gameStarted() {
+        gameStarted = true;
         readInput();
     }
 
@@ -325,10 +326,11 @@ public class CLI extends UiObservable implements Runnable, View {
      * Asks the user his nickname and gets the input
      */
     @Override
-    public void askNickname() {
+    public void askLogin() {
         System.out.print("Enter your nickname: ");
         String nickname = in.nextLine();
-        notifyMessage(new SettingNicknameMessage(nickname));
+        boolean join = booleanRequest("Insert 1 to join in a match, 0 to create a new one");
+        notifyMessage(new LoginSettingMessage(nickname,join));
     }
 
     /**
@@ -622,19 +624,13 @@ public class CLI extends UiObservable implements Runnable, View {
 
     // ------------------------ UPDATES ------------------------
     @Override
-    public void updateStrongboxLight(StrongboxUpdateMessage m) {
-        model.updatePlayerStrongbox(m);
-    }
+    public void updateStrongboxLight(StrongboxUpdateMessage m) { model.updatePlayerStrongbox(m); }
 
     @Override
-    public void updateFaithTrack(FaithTrackUpdateMessage m) {
-        model.updatePlayerFaithTrack(m);
-    }
+    public void updateFaithTrack(FaithTrackUpdateMessage m) { model.updatePlayerFaithTrack(m); }
 
     @Override
-    public void updateDevCardMarket(DevCardMarketUpdateMessage m) {
-        model.updateDevCardMarket(m);
-    }
+    public void updateDevCardMarket(DevCardMarketUpdateMessage m) { model.updateDevCardMarket(m); }
 
     @Override
     public void updateLeaderCardsInHand(LeaderInHandUpdateMessage m) {
@@ -642,43 +638,40 @@ public class CLI extends UiObservable implements Runnable, View {
     }
 
     @Override
-    public void updateOpponentsLeaderCardsInHand(OpponentsLeaderCardsInHandUpdateMessage m) {
-        model.updateOpponentsLeaderInHands(m);
-    }
+    public void updateOpponentsLeaderCardsInHand(OpponentsLeaderCardsInHandUpdateMessage m) { model.updateOpponentsLeaderInHands(m); }
 
     @Override
     public void updateDevCardResourcesToPay(CardPaymentResourceBufferUpdateMessage m) {
         model.updateResourcesToPay(m);
-        displayResourcesToPayForCard();
+        if(gameStarted)
+            displayResourcesToPayForCard();
     }
 
     @Override
     public void updateProductionResourcesToPay(ProductionResourceBufferUpdateMessage m) {
         model.updateResourcesToPay(m);
-        displayProductionResourcesPayment();
+        if (gameStarted)
+            displayProductionResourcesPayment();
     }
 
     @Override
     public void updateProductionZone(ProductionZoneUpdateMessage m) {
         model.updateProductionZone(m);
-        if (m.getNickname().equals(owner))
+        if (m.getNickname().equals(owner) && gameStarted)
             model.printProductionZone(owner);
     }
 
     @Override
-    public void updateWarehouseLight(WarehouseUpdateMessage m) {
-        model.updateWarehouse(m);
-    }
+    public void updateWarehouseLight(WarehouseUpdateMessage m) { model.updateWarehouse(m); }
 
     @Override
-    public void updateMarketLight(MarketUpdateMessage m) {
-        model.getMarbleMarket().updateMarketLight(m);
-    }
+    public void updateMarketLight(MarketUpdateMessage m) { model.getMarbleMarket().updateMarketLight(m); }
 
     @Override
     public void updateBuffer(MarbleBufferUpdateMessage m) {
         model.getPlayerByNickname(owner).updateBuffer(m.getBuffer());
-        displayBuffer();
+        if (gameStarted)
+            displayBuffer();
     }
 
     /**
@@ -698,7 +691,8 @@ public class CLI extends UiObservable implements Runnable, View {
     @Override
     public void updatePlayersNumber(int num) {
         playersNumber = num;
-        displayNumberOfPlayers(playersNumber);
+        if (gameCreated)
+            displayNumberOfPlayers(playersNumber);
     }
 
     @Override
@@ -719,6 +713,7 @@ public class CLI extends UiObservable implements Runnable, View {
 
     @Override
     public void updateLorenzoLight(LorenzoUpdateMessage m) {
+        System.out.println();
         model.updateLorenzo(m);
         model.printLorenzo();
     }
@@ -795,12 +790,11 @@ public class CLI extends UiObservable implements Runnable, View {
     /**
      * Displays the game table
      */
-    private void displayTable(){
-        if(gameCreated){
-            displayMarket();
-            System.out.println();
-            displayDevCardsAvailable();
-        }
+    private void displayTable() {
+        System.out.println();
+        displayMarket();
+        System.out.println();
+        displayDevCardsAvailable();
     }
 
     @Override
@@ -856,8 +850,11 @@ public class CLI extends UiObservable implements Runnable, View {
     @Override
     public void displayTakenNickname() {
         System.out.println("This nickname is already taken. Please try again.");
+        askLogin();
     }
 
+    @Override
+    public void quittingForProblem(String message) { displayStringMessages(message); }
 
     private void displayMarket(){
         model.getMarbleMarket().print();
@@ -883,6 +880,11 @@ public class CLI extends UiObservable implements Runnable, View {
         System.out.println(message);
     }
 
+    @Override
+    public void displayPlayersNumChange(String message, boolean join) {
+        displayStringMessages(message);
+    }
+
     /**
      * Warns the user that a network error has occurred
      */
@@ -892,11 +894,8 @@ public class CLI extends UiObservable implements Runnable, View {
         System.exit(0);
     }
 
-
     @Override
-    public void waitingOtherPlayers(String message) {
-        System.out.println(message);
-    }
+    public void waitingOtherPlayers(String message) { System.out.println(message); }
 
     /**
      * Prints the winner's nickname
@@ -904,6 +903,7 @@ public class CLI extends UiObservable implements Runnable, View {
      */
     @Override
     public void displayWinner(String winnerMessage) {
+        System.out.println();
         System.out.println("The winner is " + winnerMessage + "!");
         endGame();
     }
@@ -914,18 +914,15 @@ public class CLI extends UiObservable implements Runnable, View {
      */
     @Override
     public void displayStartTurn(StartTurnMessage m) {
+        System.out.println();
         if (m.getCurrentPlayerNickname().equals(owner)) {
             System.out.println("It's" + ConsoleColors.GREEN_BOLD + " your" + ConsoleColors.RESET + " turn");
-            yourTurnMessageCounter++;
-            if(yourTurnMessageCounter>1)
+            if(gameStarted)
                 displayTable();
         }
         else
             System.out.println(m.getMessage());
     }
-
-    //----------
-
 
 }
 

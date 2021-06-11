@@ -78,7 +78,7 @@ public abstract class Game implements VaticanReporter {
         return lastRound;
     }
 
-    public Player computeWinnerPlayer(){
+    public Player computeWinnerPlayer() {
         int max = 0, maxResources = 0;
         int currentScore;
         Player currentPlayer;

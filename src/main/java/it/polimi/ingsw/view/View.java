@@ -12,7 +12,7 @@ public interface View {
 
     void registerClient(ClientAcceptedMessage m);
     void askPlayersNumber();
-    void askNickname();
+    void askLogin();
     void askInitialDiscard();
     void askInitialResource();
 
@@ -20,6 +20,8 @@ public interface View {
     void displayTakenNickname();
     void displayNetworkError();  //client-side
     void displayStringMessages(String message);
+    void displayPlayersNumChange(String message,boolean join);
+    void quittingForProblem(String message);
 
     //Update User Interface
     void waitingOtherPlayers(String message);

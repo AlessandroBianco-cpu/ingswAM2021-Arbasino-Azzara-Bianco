@@ -33,6 +33,7 @@ public class ShowOpponentPopup implements Popup {
     private String title;
     private List<Label> strongboxLabel;
     private List<Pane> faithTrack;
+    private Pane inkwell;
 
     public ShowOpponentPopup(PlayerLight opponent) {
         title = opponent.getNickname()+"'s PlayerBoard";
@@ -48,6 +49,7 @@ public class ShowOpponentPopup implements Popup {
         strongboxLabel.add((Label) root.lookup("#qtaServant"));
         strongboxLabel.add((Label) root.lookup("#qtaShield"));
         strongboxLabel.add((Label) root.lookup("#qtaStone"));
+        inkwell = (Pane) root.lookup("#inkwell");
 
         depots = new ArrayList<>();
         depots.add((Pane) root.lookup("#firstDepot"));
@@ -100,13 +102,13 @@ public class ShowOpponentPopup implements Popup {
         int extraDepotIndex = 0;
         List<LeaderCard> activeCards = opponent.getLeaderCardsInHand().getActiveCards();
         for(int i = 0; i < activeCards.size(); i++) {
-                addImage(leaders.get(i), "/leaderCards/" + activeCards.get(i).getId() + ".png");
-                if (activeCards.get(i).isExtraDepotCard()) {
-                    for (int numOfResources = 0; numOfResources < opponent.getWarehouse().getExtraDepotsQuantity()[extraDepotIndex]; numOfResources++) {
-                        addImage(extraDepots.get(2 * i + numOfResources), opponent.getWarehouse().getExtraDepotsTypes()[extraDepotIndex].toImage());
-                    }
-                    extraDepotIndex++;
+            addImage(leaders.get(i), "/leaderCards/" + activeCards.get(i).getId() + ".png");
+            if (activeCards.get(i).isExtraDepotCard()) {
+                for (int numOfResources = 0; numOfResources < opponent.getWarehouse().getExtraDepotsQuantity()[extraDepotIndex]; numOfResources++) {
+                    addImage(extraDepots.get(2 * i + numOfResources), opponent.getWarehouse().getExtraDepotsTypes()[extraDepotIndex].toImage());
                 }
+                extraDepotIndex++;
+            }
         }
 
         for(int i=0; i<strongboxLabel.size();i++)

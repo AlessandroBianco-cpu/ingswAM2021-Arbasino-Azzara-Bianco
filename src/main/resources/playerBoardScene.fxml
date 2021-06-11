@@ -133,14 +133,15 @@
             <Image url="@buttons/showButton.png" />
          </image>
       </ImageView>
-      <ImageView id="endButton" fitHeight="22.0" fitWidth="96.0" layoutX="30.0" layoutY="679.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@buttons/endTurnButton.png" />
-         </image>
-      </ImageView>
       <Pane id="firstExtra1" layoutX="97.0" layoutY="308.0" prefHeight="35.0" prefWidth="35.0" />
       <Pane id="firstExtra2" layoutX="155.0" layoutY="308.0" prefHeight="35.0" prefWidth="35.0" />
       <Pane id="secondExtra1" layoutX="92.0" layoutY="608.0" prefHeight="35.0" prefWidth="35.0" />
       <Pane id="secondExtra2" layoutX="148.0" layoutY="608.0" prefHeight="35.0" prefWidth="35.0" />
+      <ImageView id="endButton" fitHeight="35.0" fitWidth="160.0" layoutX="60.0" layoutY="660.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@buttons/endTurnButton.png" />
+         </image>
+      </ImageView>
+      <Pane id="inkwell" layoutX="1080.0" layoutY="210.0" prefHeight="70.0" prefWidth="70.0" />
    </children>
 </Pane>

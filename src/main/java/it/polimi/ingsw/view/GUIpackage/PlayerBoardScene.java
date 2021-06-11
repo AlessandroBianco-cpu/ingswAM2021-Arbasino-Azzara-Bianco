@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.LightModel.ProductionZoneLight;
 import it.polimi.ingsw.client.LightModel.ResourceLight;
 import it.polimi.ingsw.client.LightModel.StrongboxLight;
 import it.polimi.ingsw.model.Cards.LeaderCard;
-import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.networking.message.EndTurnMessage;
 import it.polimi.ingsw.networking.message.Message;
 import it.polimi.ingsw.observer.UiObservable;
@@ -46,6 +45,7 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
     private final List<Pane> extraDepots;
     private final List<Pane> popeSpaces;
     private final ChoiceBox showChoice;
+    private final Pane inkwell;
     private final Text consoleText;
     private final List<Label> strongboxLabel;
     private final List<Pane> faithTrack;
@@ -67,6 +67,7 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
         marketButton = (ImageView) root.lookup("#marketButton");
         showButton = (ImageView) root.lookup("#showButton");
         productionButton = (ImageView) root.lookup("#productionButton");
+        inkwell = (Pane) root.lookup("#inkwell");
 
         showChoice = (ChoiceBox) root.lookup("#showChoice");
         consoleText = (Text) root.lookup("#consoleText");
@@ -151,16 +152,13 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
 
         //initial playerBoard setting
         addImage(faithTrack.get(gameModel.getPlayerByNickname(owner).getFaithTrack().getPosition()), "/punchBoard/blackCross.png");
-        addImage(leaders.get(0), "/leaderCards/" + model.getPlayerByNickname(owner).getLeaderCardsInHand().getCards().get(0).getId() + ".png");
-        addImage(leaders.get(1), "/leaderCards/" + model.getPlayerByNickname(owner).getLeaderCardsInHand().getCards().get(1).getId() + ".png");
+        displayWarehouse();
+        displayStrongbox(gameModel.getPlayerByNickname(owner).getStrongbox());
+        displayProductionZone();
+        updatePopeTiles();
+        displayLeaders();
 
         showChoice.setStyle("-fx-font: normal 14 'Avenir Book'");
-
-        for (int i = 0; i < 6; i++) {
-            if (! (gameModel.getPlayerByNickname(owner).getWarehouse().getDepots()[i].getResource().equals(ResourceType.NOTHING)) ) {
-                addImage(depots.get(i), gameModel.getPlayerByNickname(owner).getWarehouse().getDepots()[i].toImage());
-            }
-        }
 
         for(Pane pane : leaders)
             pane.setOnMouseClicked(event -> {
@@ -232,6 +230,25 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
 
     }
 
+
+    private void updatePopeTiles() {
+        if(gameModel.getPlayerByNickname(owner).getFaithTrack().isFirstPopeFavorAchieved())
+            addImage(popeSpaces.get(0),"/punchBoard/yellow_front_tile.png");
+        else
+            addImage(popeSpaces.get(0),"/punchBoard/yellow_back_tile.png");
+
+        if(gameModel.getPlayerByNickname(owner).getFaithTrack().isSecondPopeFavorAchieved())
+            addImage(popeSpaces.get(1),"/punchBoard/orange_front_tile.png");
+        else
+            addImage(popeSpaces.get(1),"/punchBoard/orange_back_tile.png");
+
+        if(gameModel.getPlayerByNickname(owner).getFaithTrack().isThirdPopeFavorAchieved())
+            addImage(popeSpaces.get(2),"/punchBoard/red_front_tile.png");
+        else
+            addImage(popeSpaces.get(2),"/punchBoard/red_back_tile.png");
+
+    }
+
     public void displayProductionZone() {
 
         for(int i = 0; i<3; i++) {
@@ -288,21 +305,7 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
 
         addImage(faithTrack.get(pos), "/punchBoard/blackCross.png");
 
-        if(gameModel.getPlayerByNickname(owner).getFaithTrack().isFirstPopeFavorAchieved())
-            addImage(popeSpaces.get(0),"/punchBoard/yellow_front_tile.png");
-        else
-            addImage(popeSpaces.get(0),"/punchBoard/yellow_back_tile.png");
-
-        if(gameModel.getPlayerByNickname(owner).getFaithTrack().isSecondPopeFavorAchieved())
-            addImage(popeSpaces.get(1),"/punchBoard/orange_front_tile.png");
-        else
-            addImage(popeSpaces.get(1),"/punchBoard/orange_back_tile.png");
-
-        if(gameModel.getPlayerByNickname(owner).getFaithTrack().isThirdPopeFavorAchieved())
-            addImage(popeSpaces.get(2),"/punchBoard/red_front_tile.png");
-        else
-            addImage(popeSpaces.get(2),"/punchBoard/red_back_tile.png");
-
+        updatePopeTiles();
     }
 
     public void displayLeaders() {
@@ -359,6 +362,10 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
             label.setText(""+toSet);
         else
             label.setText(""+0);
+    }
+
+    public void displayInPopup (String message) {
+            new AlertPopup().displayStringMessages(message);
     }
 
     @Override
