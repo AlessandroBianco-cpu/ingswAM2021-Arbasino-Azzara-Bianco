@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -15,7 +14,7 @@
          </image>
       </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fafafa5e" height="200.0" layoutX="332.0" layoutY="450.0" stroke="#d8b32d" strokeType="INSIDE" strokeWidth="5.0" width="534.0" />
-      <TextField id="nicknameBox" layoutX="440.0" layoutY="555.0" prefHeight="51.0" prefWidth="241.0" promptText="nickname">
+      <TextField id="nicknameBox" layoutX="392.0" layoutY="550.0" prefHeight="51.0" prefWidth="241.0" promptText="nickname">
          <font>
             <Font name="Avenir Next Bold" size="20.0" />
          </font></TextField>
@@ -24,9 +23,14 @@
             <Font name="Avenir Next Bold" size="24.0" />
          </font>
       </Text>
-      <ImageView id="loginButton" fitHeight="40.0" fitWidth="142.0" layoutX="701.0" layoutY="566.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="createButton" fitHeight="35.0" fitWidth="140.0" layoutX="680.0" layoutY="535.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@buttons/loginButton.png" />
+            <Image url="@buttons/createButton.png" />
+         </image>
+      </ImageView>
+      <ImageView id="joinButton" fitHeight="35.0" fitWidth="140.0" layoutX="680.0" layoutY="585.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@buttons/joinButton.png" />
          </image>
       </ImageView>
    </children>
