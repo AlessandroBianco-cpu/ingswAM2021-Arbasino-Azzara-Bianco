@@ -61,7 +61,6 @@ public class WaitingRoom implements EndGameObserver {
      * @param client current client
      */
     public void addClientToList(ClientHandler client) {
-        client.send(new WaitingMessage("Server's adding you on waiting room..."));
         loginUser(client);
         String selectedNickname = client.getUserNickname();
 

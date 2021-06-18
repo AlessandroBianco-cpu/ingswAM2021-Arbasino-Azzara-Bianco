@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.GUIpackage;
 
 
 import it.polimi.ingsw.observer.UiObservable;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
@@ -39,6 +40,10 @@ public class ConnectionScene extends UiObservable {
                 notifyConnection(ipText.getText(), portText.getText());
             } else
                 notifyConnection("127.0.0.1", "12345");
+
+            WaitingScene waitingScene = new WaitingScene("Server is trying to add you in waiting room");
+            Platform.runLater(() -> TransitionHandler.setWaitingScene(waitingScene));
+            Platform.runLater(TransitionHandler::toWaitingScene);
         });
     }
 

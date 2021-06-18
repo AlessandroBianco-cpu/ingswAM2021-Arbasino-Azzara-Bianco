@@ -756,6 +756,7 @@ public class CLI extends UiObservable implements Runnable, View {
                         "                                                                                                                \n" +
                         "                                                                                                                \n" +
                         "\n" + ConsoleColors.RESET);
+        System.out.println("Server's adding you on waiting room...");
     }
 
     /**
