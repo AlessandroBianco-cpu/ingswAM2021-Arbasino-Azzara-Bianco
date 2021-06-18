@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.LightModel;
 
+import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.networking.message.updateMessage.WarehouseUpdateMessage;
 import it.polimi.ingsw.utils.ConsoleColors;
 
@@ -96,6 +97,15 @@ public class WarehouseLight {
         extraResourcesQuantity[1] = secondExtraDepotQuantity;
 
         return extraResourcesQuantity;
+    }
+
+    public int getExtraDepotsIndexByType(ResourceType resource){
+        if(resource == firstExtraDepot.getResource())
+            return 0;
+        else if (resource == secondExtraDepot.getResource())
+            return 1;
+        else
+            return -1;
     }
 
     // ------------------------ PRINTERS ------------------------

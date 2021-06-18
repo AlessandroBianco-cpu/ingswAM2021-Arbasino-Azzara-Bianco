@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Player extends PlayerItemsObservable implements LeaderCardPowerAdder {
 
-    private String nickname;
+    private final String nickname;
     private boolean active;
     private List<ResourceType> convertWhiteCards;
     private List<QuantityResource> discountCards;
@@ -104,10 +104,6 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         return true;
     }
 
-    public List<ResourceType> getConvertWhiteCards() {
-        return convertWhiteCards;
-    }
-
     public void initialDiscardLeaderCard(int index) {
         leaders.remove(index);
     }
@@ -143,7 +139,7 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
             if(marble.convertResource().canAddToFaithTrack()){
                 moveForwardNPositions(1);
             }else if(marble.isWhiteMarble() && convertWhiteCards.size() == 0){
-                ; /* if the marble can't be converted gets automatically "discarded" */
+                 // if the marble can't be converted gets automatically "discarded"
             }else{
                 buffer.add(marble);
             }
@@ -193,10 +189,6 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
             return true;
         }
         return false;
-    }
-
-    public boolean canActivateProductionAction() {
-        return personalBoard.canActivateProductionAction();
     }
 
     /**
@@ -279,10 +271,6 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         return canBuyIndexes;
     }
 
-    public List<Integer> getSlotIndexesPlayerCanPlaceDevCard(DevCard devCard) {
-        return personalBoard.getSlotIndexesPlayerCanPlaceDevCard(devCard);
-    }
-
     public void increaseVictoryPoints(int amount){
         victoryPoints += amount;
     }
@@ -311,13 +299,13 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
     public boolean canAddResourceInWarehouseFromBuffer(int bufferIndex, int shelf){
         if (bufferIndex < 0 || (bufferIndex > buffer.size()-1))
             return false;
-        Marble toConvert = ((LinkedList<Marble>)buffer).get(bufferIndex);
+        Marble toConvert = buffer.get(bufferIndex);
         return canAddResourceInWarehouse(toConvert.getResourceType(), shelf);
     }
 
     public void addResourceInWarehouseFromBuffer(int bufferIndex, int shelf){
-        Marble toConvert = ((LinkedList<Marble>)buffer).get(bufferIndex);
-        ((LinkedList<Marble>)buffer).remove(bufferIndex);
+        Marble toConvert = buffer.get(bufferIndex);
+        buffer.remove(bufferIndex);
         addResourceInWarehouse(toConvert.convertResource(),shelf);
         notifyMarbleBuffer(buffer);
     }
@@ -331,13 +319,13 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
     public boolean canAddResourceInExtraDepotFromBuffer(int bufferIndex){
         if (bufferIndex < 0 || (bufferIndex > buffer.size()-1))
             return false;
-        Marble toConvert = ((LinkedList<Marble>)buffer).get(bufferIndex);
+        Marble toConvert = buffer.get(bufferIndex);
         return canAddResourceInExtraDepot(toConvert.getResourceType());
     }
 
     public void addResourceInExtraDepotFromBuffer(int bufferIndex){
-        Marble toConvert = ((LinkedList<Marble>)buffer).get(bufferIndex);
-        ((LinkedList<Marble>)buffer).remove(bufferIndex);
+        Marble toConvert = buffer.get(bufferIndex);
+        buffer.remove(bufferIndex);
         personalBoard.addResourceInExtraDepot(toConvert.convertResource());
         notifyMarbleBuffer(buffer);
     }
@@ -362,10 +350,11 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
      * @param bufferIndex index of the marble to evaluate
      * @return true or false
      */
-    public boolean canConvertWhiteMarble(int bufferIndex){
+    public boolean canConvertWhiteMarble(ResourceType resourceToConvert, int bufferIndex){
         if (bufferIndex < 0 || (bufferIndex > buffer.size()-1))
             return false;
-        return !(buffer.get(bufferIndex).getResourceType().canAddToSupply());
+        return ( !(buffer.get(bufferIndex).getResourceType().canAddToSupply())
+            && convertWhiteCards.contains(resourceToConvert));
     }
 
     public void convertWhiteMarble(ResourceType resourceType, int bufferIndex){

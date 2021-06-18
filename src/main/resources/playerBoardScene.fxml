@@ -17,7 +17,7 @@
             <Image url="@pb_ultimate.png" />
          </image>
       </ImageView>
-      <ChoiceBox id="showChoice" layoutX="1033.0" layoutY="22.0" prefWidth="150.0" />
+      <ChoiceBox id="showChoice" layoutX="1020.0" layoutY="18.0" prefHeight="33.0" prefWidth="160.0" />
       <Pane id="firstDepot" layoutX="375.0" layoutY="355.0" prefHeight="40.0" prefWidth="40.0" />
       <Pane id="secondDepot1" layoutX="340.0" layoutY="410.0" prefHeight="40.0" prefWidth="40.0" />
       <Pane id="secondDepot2" layoutX="406.0" layoutY="410.0" prefHeight="40.0" prefWidth="40.0" />
@@ -50,7 +50,7 @@
       <Pane id="slot23" layoutX="1056.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" />
       <Pane id="slot24" layoutX="1100.0" layoutY="132.0" prefHeight="38.0" prefWidth="46.0" />
       <Pane id="leaderCard1" layoutX="70.0" layoutY="130.0" prefHeight="230.0" prefWidth="140.0" />
-      <Pane id="leaderCard2" layoutX="70.0" layoutY="425.0" prefHeight="230.0" prefWidth="140.0" />
+      <Pane id="leaderCard2" layoutX="70.0" layoutY="410.0" prefHeight="230.0" prefWidth="140.0" />
       <Pane id="slot1card1" layoutX="628.0" layoutY="440.0" prefHeight="229.7" prefWidth="150.0" />
       <Pane id="slot1card2" layoutX="628.0" layoutY="392.0" prefHeight="229.7" prefWidth="150.0" />
       <Pane id="slot1card3" layoutX="628.0" layoutY="344.0" prefHeight="229.7" prefWidth="150.0" />
@@ -135,9 +135,9 @@
       </ImageView>
       <Pane id="firstExtra1" layoutX="97.0" layoutY="308.0" prefHeight="35.0" prefWidth="35.0" />
       <Pane id="firstExtra2" layoutX="155.0" layoutY="308.0" prefHeight="35.0" prefWidth="35.0" />
-      <Pane id="secondExtra1" layoutX="92.0" layoutY="608.0" prefHeight="35.0" prefWidth="35.0" />
-      <Pane id="secondExtra2" layoutX="148.0" layoutY="608.0" prefHeight="35.0" prefWidth="35.0" />
-      <ImageView id="endButton" fitHeight="35.0" fitWidth="160.0" layoutX="60.0" layoutY="660.0" pickOnBounds="true" preserveRatio="true">
+      <Pane id="secondExtra1" layoutX="92.0" layoutY="595.0" prefHeight="35.0" prefWidth="35.0" />
+      <Pane id="secondExtra2" layoutX="148.0" layoutY="595.0" prefHeight="35.0" prefWidth="35.0" />
+      <ImageView id="endButton" fitHeight="35.0" fitWidth="160.0" layoutX="60.0" layoutY="665.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@buttons/endTurnButton.png" />
          </image>

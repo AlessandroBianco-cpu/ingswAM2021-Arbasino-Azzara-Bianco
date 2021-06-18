@@ -11,17 +11,22 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.networking.message.GameStartedMessage;
 import it.polimi.ingsw.networking.message.S2CPlayersNumberMessage;
 import it.polimi.ingsw.networking.message.WaitingMessage;
+import it.polimi.ingsw.networking.message.updateMessage.FirstPlayerMessage;
 import it.polimi.ingsw.observer.ConnectionObserver;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+/**
+ * This method mage the setting of number of players and the setting up, then creates a controller to start the new game
+ */
 public class Lobby implements ConnectionObserver {
 
     private final VirtualView virtualView;
     private final UserInputManager userInputManager;
     private final EndGameObserver endGameObserver;
 
-    private Map<ClientHandler,String> clientNames;
     private List<ClientHandler> clients;
     private Controller controller;
     private List<Player> gamePlayers;
@@ -36,7 +41,6 @@ public class Lobby implements ConnectionObserver {
         virtualView = new VirtualView(waitingRoom, ID);
         userInputManager = new UserInputManager();
         this.endGameObserver = waitingRoom;
-        clientNames = new HashMap<>();
         clients = new ArrayList<>();
         gamePlayers = new ArrayList<>();
         this.ID = ID;
@@ -61,11 +65,11 @@ public class Lobby implements ConnectionObserver {
      */
     public synchronized void deregisterConnection(ClientHandler client) {
         System.out.println("[SERVER] Unregistering client...");
-        System.out.println();
+        virtualView.removeClient(client.getUserNickname(),client);
         gamePlayers.remove(getPlayerByNickname(client.getUserNickname()));
-        clientNames.remove(client);
         clients.remove(client);
-        System.out.println("[SERVER] "+clientNames.get(client)+"'s client unregistered!");
+        System.out.println("[SERVER] "+client.getUserNickname()+"'s client unregistered!");
+        System.out.println();
     }
 
     /**
@@ -106,9 +110,9 @@ public class Lobby implements ConnectionObserver {
                 updateDisconnectionInSettingPhase(client);
             else if (lobbyIsReady)
                 updateDisconnectionInStartedGame(client);
-                //se si disconnette e siamo nella waiting room ad aspettare altri players
-            else if (client.isConnected())
-                updateDisconnectionInWaitingRoom(client); //forse devo anche coprire quando si stacca in loginPhase
+                //if we are waiting for other player and someone disconnects
+            else
+                updateDisconnectionInWaitingRoom(client);
         }
     }
 
@@ -134,7 +138,6 @@ public class Lobby implements ConnectionObserver {
             client.addObserver(this);
             clients.add(client);
             String nick = client.getUserNickname();
-            clientNames.put(client, nick);
             virtualView.addClient(nick, client);
             gamePlayers.add(new Player(nick));
 
@@ -228,6 +231,7 @@ public class Lobby implements ConnectionObserver {
         controller.distributeLeaderCard();
         System.out.println("[LOBBY #"+ID+"] Leader cards chosen by the player");
 
+        virtualView.sendToCurrentPlayer(new FirstPlayerMessage(singlePlayer.getNickname()));
         System.out.println("[LOBBY #"+ID+"] Single player game starts");
         virtualView.sendToCurrentPlayer(new GameStartedMessage());
         lobbyIsSettingUp = false;
@@ -273,13 +277,17 @@ public class Lobby implements ConnectionObserver {
         // distribution of initial resources
         controller.distributeInitialResource();
         System.out.println("[LOBBY #"+ID+"] Initial resources chosen by all players");
-
+        virtualView.sendBroadcast(new FirstPlayerMessage(sortedPlayers.get(0).getNickname()));
         virtualView.sendBroadcast(new GameStartedMessage());
         System.out.println("[LOBBY #"+ID+"] Set-Up completed, game starts");
         lobbyIsSettingUp = false;
         controller.play();
     }
 
+    /**
+     * Handle the disconnection of a player in an already started match
+     * @param disconnectedClient is the clientHandler of the disconnected player
+     */
     private void updateDisconnectionInStartedGame(ClientHandler disconnectedClient) {
         getPlayerByNickname(disconnectedClient.getUserNickname()).setActive(false);
         virtualView.sendToEveryoneExceptQuitPlayer(disconnectedClient.getUserNickname());
@@ -296,20 +304,30 @@ public class Lobby implements ConnectionObserver {
            controller.play();
     }
 
+    /**
+     * Handle the disconnection of a player in setUp phase
+     * @param disconnectedClient is the clientHandler of the disconnected player
+     */
     private void updateDisconnectionInSettingPhase(ClientHandler disconnectedClient) {
-        System.out.println("[LOBBY #"+ID+"] Closing lobby: disconnection in set-up phase");
-        System.out.println("");
+        System.out.println("[LOBBY #"+ID+"] Closing lobby: a client disconnects in set-up phase");
+        System.out.println();
+        deregisterConnection(disconnectedClient);
         controller.manageDisconnectionInSetUp(disconnectedClient.getUserNickname()); }
 
     /**
      * Handles the disconnection of a client in waiting room with other clients
-     * @param disconnectedClient is the client to disconnect
+     * @param disconnectedClient is the clientHandler of the disconnected player
      */
     private void updateDisconnectionInWaitingRoom(ClientHandler disconnectedClient) {
-        System.out.println("[LOBBY #"+ID+"] Closing "+clientNames.get(disconnectedClient)+" connection...");
+        System.out.println("[LOBBY #"+ID+"] Removing "+disconnectedClient.getUserNickname()+" from lobby...");
         System.out.println();
         deregisterConnection(disconnectedClient);
-        endGameObserver.managePreGameDisconnection(disconnectedClient);
+        if(clients.size() == 0) {
+            endGameObserver.manageEndGame(ID);
+        }
+        else  {
+            endGameObserver.managePreGameDisconnection(disconnectedClient);
+        }
     }
 
     /**

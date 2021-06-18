@@ -28,7 +28,7 @@ public class NetworkHandler implements Runnable, UiObserver {
     }
 
     /**
-     * Server messages manager
+     * Manages all types of messages sent from Server
      * @param inputObject message from server
      */
     private void manageInputFromServer(Object inputObject) {
@@ -118,6 +118,9 @@ public class NetworkHandler implements Runnable, UiObserver {
 
         else if (inputObject instanceof SetLeadersMessage)
             view.askInitialDiscard();
+
+        else if (inputObject instanceof FirstPlayerMessage)
+            view.updateFirstPlayer((FirstPlayerMessage) inputObject);
 
         else if (inputObject instanceof TakenNameMessage)
             view.displayTakenNickname();
@@ -252,7 +255,6 @@ public class NetworkHandler implements Runnable, UiObserver {
             synchronized (this) {
                 notifyAll();
             }
-
         } catch (IOException | IllegalArgumentException e) {
             System.out.println("Server unreachable");
             System.exit(0);

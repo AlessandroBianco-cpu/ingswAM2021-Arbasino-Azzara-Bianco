@@ -20,6 +20,6 @@ public abstract class ProductionSlot {
      */
     public int numberOfCardsSatisfyingCardRequirement(CardRequirement cardRequirement){
         return 0;
-    };
+    }
 
 }

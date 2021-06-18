@@ -1,9 +1,6 @@
 package it.polimi.ingsw.view.GUIpackage;
 
-import it.polimi.ingsw.client.LightModel.ModelLight;
-import it.polimi.ingsw.client.LightModel.ProductionZoneLight;
-import it.polimi.ingsw.client.LightModel.ResourceLight;
-import it.polimi.ingsw.client.LightModel.StrongboxLight;
+import it.polimi.ingsw.client.LightModel.*;
 import it.polimi.ingsw.model.Cards.LeaderCard;
 import it.polimi.ingsw.networking.message.EndTurnMessage;
 import it.polimi.ingsw.networking.message.Message;
@@ -114,8 +111,10 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
             showChoice.setValue("LorenzoIlMagnifico");
             showChoice.getItems().add("LorenzoIlMagnifico");
         } else {
-            for (String s : model.getOpponentsNicknames())
+            for (String s : model.getOpponentsNicknames()) {
                 showChoice.getItems().add(s);
+            }
+            showChoice.setValue(model.getOpponentsNicknames().get(0));
         }
 
         slot1 = new ArrayList<>();
@@ -146,6 +145,9 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
         extraDepots.add((Pane) root.lookup("#secondExtra1"));
         extraDepots.add((Pane) root.lookup("#secondExtra2"));
 
+        if(model.getPlayerByNickname(owner).hasInkwell())
+            addImage(inkwell,"/punchBoard/inkwell.png");
+
         faithTrack = new ArrayList<>();
         for (int i = 0; i < 25; i++)
             faithTrack.add((Pane) root.lookup("#slot" + i));
@@ -158,7 +160,7 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
         updatePopeTiles();
         displayLeaders();
 
-        showChoice.setStyle("-fx-font: normal 14 'Avenir Book'");
+        showChoice.setStyle("-fx-font: normal 16 'Avenir Book'");
 
         for(Pane pane : leaders)
             pane.setOnMouseClicked(event -> {
@@ -217,16 +219,7 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
                 addImage(depots.get(i), resources[i].toImage());
         }
 
-        int extraDepotIndex = 0;
-        List<LeaderCard> inHand = gameModel.getPlayerByNickname(owner).getLeaderCardsInHand().getCards();
-        for(int leaderCardIndex = 0; leaderCardIndex < inHand.size(); leaderCardIndex++) {
-            if(inHand.get(leaderCardIndex).isExtraDepotCard() && inHand.get(leaderCardIndex).isActive() ) {
-                for(int numOfResources=0; numOfResources<gameModel.getPlayerByNickname(owner).getWarehouse().getExtraDepotsQuantity()[extraDepotIndex]; numOfResources++) {
-                    addImage(extraDepots.get(2*leaderCardIndex+numOfResources), gameModel.getPlayerByNickname(owner).getWarehouse().getExtraDepotsTypes()[extraDepotIndex].toImage());
-                }
-                extraDepotIndex++;
-            }
-        }
+        leaderGraphicUpdate();
 
     }
 
@@ -324,14 +317,23 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
                 leaders.get(i).setEffect(borderEffect);
         }
 
-        int extraDepotIndex = 0;
+        leaderGraphicUpdate();
+
+    }
+
+
+    private  void leaderGraphicUpdate() {
         List<LeaderCard> inHand = gameModel.getPlayerByNickname(owner).getLeaderCardsInHand().getCards();
-        for(int leaderCardIndex = 0; leaderCardIndex < inHand.size(); leaderCardIndex++) {
-            if(inHand.get(leaderCardIndex).isExtraDepotCard()) {
-                for(int numOfResources=0; numOfResources<gameModel.getPlayerByNickname(owner).getWarehouse().getExtraDepotsQuantity()[extraDepotIndex]; numOfResources++) {
-                    addImage(extraDepots.get(2*leaderCardIndex+numOfResources), gameModel.getPlayerByNickname(owner).getWarehouse().getExtraDepotsTypes()[extraDepotIndex].toImage());
+        for (int leaderCardIndex = 0; leaderCardIndex < inHand.size(); leaderCardIndex++) {
+            LeaderCard current = inHand.get(leaderCardIndex);
+            ParserForModel parser = new ParserForModel();
+            if (current.isExtraDepotCard() && current.isActive()) {
+                int extraDepotIndex = gameModel.getPlayerByNickname(owner).getWarehouse().getExtraDepotsIndexByType(current.getAbilityResource());
+                if(extraDepotIndex != -1){
+                for (int numOfResources = 0; numOfResources < gameModel.getPlayerByNickname(owner).getWarehouse().getExtraDepotsQuantity()[extraDepotIndex]; numOfResources++) {
+                    addImage(extraDepots.get(2 * leaderCardIndex + numOfResources), gameModel.getPlayerByNickname(owner).getWarehouse().getExtraDepotsTypes()[extraDepotIndex].toImage());
+                    }
                 }
-                extraDepotIndex++;
             }
         }
     }

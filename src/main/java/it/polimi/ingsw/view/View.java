@@ -5,6 +5,10 @@ import it.polimi.ingsw.networking.message.PlacementDevCardMessage;
 import it.polimi.ingsw.networking.message.StartTurnMessage;
 import it.polimi.ingsw.networking.message.updateMessage.*;
 
+/**
+ * Is the main interface for client-side, all these methods are called from the ClientNetworkHandler after
+ * the dispatching of message received from server
+ */
 public interface View {
 
 
@@ -39,6 +43,7 @@ public interface View {
     void updateProductionResourcesToPay(ProductionResourceBufferUpdateMessage m);
     void updateBuffer(MarbleBufferUpdateMessage m);
     void updatePlaceNewCard(PlacementDevCardMessage m);
+    void updateFirstPlayer (FirstPlayerMessage m);
 
     void displayWinner(String winnerMessage);
     void displayWrongTurn();

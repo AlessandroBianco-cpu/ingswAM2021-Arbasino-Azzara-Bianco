@@ -26,7 +26,7 @@ public class SingleController implements Controller{
     private Player currentPlayer;
     private PlayerState currentState;
     private boolean currentPlayerWantsToEndTurn;
-    private LorenzoIlMagnifico lorenzoIlMagnifico;
+    private final LorenzoIlMagnifico lorenzoIlMagnifico;
 
     public SingleController(Game game, UserInputManager uim, VirtualView virtualView, Player singlePlayer) {
         this.game = game;
@@ -77,15 +77,14 @@ public class SingleController implements Controller{
         }
 
         virtualView.updateLeaderCards(currentPlayer.getLeaders());
+        virtualView.updateStrongboxState(currentPlayer.getPersonalBoard().getStrongbox()); //is only for print initial 50 resources
         virtualView.endTurn();
 
     }
 
-    //serve solo nel multiplayer
+    //this method is only used in  the multiplayer Controller
     @Override
-    public void manageRejoining(String nickname) {
-        ;
-    }
+    public void manageRejoining(String nickname) { }
 
     @Override
     public void manageDisconnectionInSetUp(String quitNickname) { virtualView.sendDisconnectionInSetUpGame(quitNickname); }
@@ -165,11 +164,6 @@ public class SingleController implements Controller{
     }
 
     @Override
-    public void sendGenericErrorToCurrentPlayer() {
-        virtualView.handleClientInputError();
-    }
-
-    @Override
     public List<Marble> insertMarbleInCol(int colIndex) {
         return currentPlayer.insertMarbleInCol(colIndex);
     }
@@ -180,9 +174,7 @@ public class SingleController implements Controller{
     }
 
     @Override
-    public boolean canUseDevCards(List<Integer> productionSlotsIndexes){
-        return currentPlayer.canUseDevCards(productionSlotsIndexes);
-    }
+    public boolean canUseDevCards(List<Integer> productionSlotsIndexes){ return currentPlayer.canUseDevCards(productionSlotsIndexes); }
 
     @Override
     public boolean canActivateLeaderCard(int index) {
@@ -200,9 +192,7 @@ public class SingleController implements Controller{
     }
 
     @Override
-    public boolean swap(int indexFrom, int indexTo) {
-        return currentPlayer.getPersonalBoard().swap(indexFrom, indexTo);
-    }
+    public boolean swap(int indexFrom, int indexTo) { return currentPlayer.getPersonalBoard().swap(indexFrom, indexTo); }
 
     @Override
     public boolean canMoveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity) {
@@ -290,8 +280,8 @@ public class SingleController implements Controller{
     }
 
     @Override
-    public boolean canConvertWhiteMarble(int bufferIndex) {
-        return currentPlayer.canConvertWhiteMarble(bufferIndex);
+    public boolean canConvertWhiteMarble(ResourceType resourceToConvert, int bufferIndex) {
+        return currentPlayer.canConvertWhiteMarble(resourceToConvert, bufferIndex);
     }
 
     @Override
@@ -330,14 +320,10 @@ public class SingleController implements Controller{
     }
 
     @Override
-    public int getDiscountAmount(ResourceType resourceToDiscount) {
-        return currentPlayer.getDiscountAmount(resourceToDiscount);
-    }
+    public int getDiscountAmount(ResourceType resourceToDiscount) { return currentPlayer.getDiscountAmount(resourceToDiscount); }
 
     @Override
-    public void setBasePowerInput(ResourceType firstInput, ResourceType secondInput) {
-        currentPlayer.getPersonalBoard().setBasePowerInput(firstInput,secondInput);
-    }
+    public void setBasePowerInput(ResourceType firstInput, ResourceType secondInput) { currentPlayer.getPersonalBoard().setBasePowerInput(firstInput,secondInput); }
 
     @Override
     public void setBasePowerOutput(ResourceType output) {

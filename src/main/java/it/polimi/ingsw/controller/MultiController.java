@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.QuantityResource;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.networking.VirtualView;
 import it.polimi.ingsw.networking.message.*;
+import it.polimi.ingsw.networking.message.updateMessage.FirstPlayerMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,6 @@ public class MultiController implements Controller {
         }
     }
 
-
     /**
      * This method is used to distribute 4 leader cards per player. Each player has to discard 2 of the cards
      */
@@ -92,7 +92,7 @@ public class MultiController implements Controller {
         for (Player p : gamePlayers) {
             virtualView.setCurrentPlayer(p.getNickname());
             virtualView.startTurn();
-            //manda le nuove 4 carte del giocatore j-esimo
+            //send the leader cards
             virtualView.updateLeaderCards(p.getLeaders());
             virtualView.requestInitialDiscard();
             ChooseLeaderMessage initialDiscarding = (ChooseLeaderMessage) uim.getActionMessage();
@@ -109,11 +109,16 @@ public class MultiController implements Controller {
             }
             
             virtualView.updateLeaderCards(p.getLeaders());
+
+            virtualView.updateStrongboxState(p.getPersonalBoard().getStrongbox()); //is only for print initial 50 resources
             virtualView.endTurn();
         }
 
     }
 
+    /**
+     * @return the number of active player
+     */
     private int numOfActivePlayers() {
         int count = 0;
         for (Player p : gamePlayers) {
@@ -141,7 +146,9 @@ public class MultiController implements Controller {
     /**
      * Updates the player that has to perform the turn
      */
-    private void updateCurrentPlayer(){ currentPlayer = gamePlayers.get((gamePlayers.indexOf(currentPlayer) + 1) % gamePlayers.size()); }
+    private void updateCurrentPlayer() {
+        currentPlayer = gamePlayers.get((gamePlayers.indexOf(currentPlayer) + 1) % gamePlayers.size());
+    }
 
     /**
      * Handles player's turn
@@ -149,30 +156,32 @@ public class MultiController implements Controller {
      */
     public void performTurn(Player currentPlayer) {
 
-        //viene settato il giocatore corrente nella virtual view:essa gestirà l'invio del messaggio all'utente
+        //set the current player in VirtualView
         virtualView.setCurrentPlayer(currentPlayer.getNickname());
         setCurrentPlayerState(new BeforeMainActionState(this));
         setCurrentPlayerWantToEndTurn(false);
         virtualView.startTurn();
 
-        //gestione della fase di inizio turno (il player non ha ancora eseguito nessuna azione)
+        //handles the start of a turn
         while (!currentPlayerWantsToEndTurn) {
             virtualView.catchMessages();
             Message actionMessage = uim.getActionMessage();
             currentState.performAction(actionMessage);
         }
-
         virtualView.endTurn();
     }
 
+    /**
+     * This method handles the rejoining of an inactive player
+     * @param nickname is the nickname of rejoining player
+     */
     @Override
     public void manageRejoining(String nickname) {
-
-        // manda a tutti i giocatori un messaggio per aprire una scena di riconnessione giocatore
-        // manda tutto al giocatore che sta joinando
+        // send messages to update the re-joining client
         virtualView.sendToRejoiningPlayer(nickname, virtualView.createNicknamesUpdateMessage(getPlayersNicknames()));
         virtualView.sendToRejoiningPlayer(nickname, virtualView.createMarketUpdateMessage(game.getMarket()));
         virtualView.sendToRejoiningPlayer(nickname, virtualView.createDevCardMarketUpdateState(game.getDevCardMarket()));
+        virtualView.sendToRejoiningPlayer(nickname, new FirstPlayerMessage(gamePlayers.get(0).getNickname()));
 
         for (Player player : gamePlayers) {
             virtualView.sendToRejoiningPlayer(nickname, virtualView.createWarehouseUpdateMessage(player.getNickname(), player.getPersonalBoard().getWarehouse()));
@@ -199,6 +208,9 @@ public class MultiController implements Controller {
         return nicknames;
     }
 
+    /**
+     * Manage the closing of lobby when only one player is active
+     */
     @Override
     public void manageAEndGameForQuitting() {
         String nickname = "";
@@ -240,11 +252,6 @@ public class MultiController implements Controller {
     }
 
     @Override
-    public void sendGenericErrorToCurrentPlayer() {
-        virtualView.handleClientInputError();
-    }
-
-    @Override
     public List<Marble> insertMarbleInCol(int colIndex) {
         return currentPlayer.insertMarbleInCol(colIndex);
     }
@@ -255,9 +262,7 @@ public class MultiController implements Controller {
     }
 
     @Override
-    public boolean canUseDevCards(List<Integer> productionSlotsIndexes){
-        return currentPlayer.canUseDevCards(productionSlotsIndexes);
-    }
+    public boolean canUseDevCards(List<Integer> productionSlotsIndexes){ return currentPlayer.canUseDevCards(productionSlotsIndexes); }
 
     @Override
     public boolean canActivateLeaderCard(int index) {
@@ -275,54 +280,34 @@ public class MultiController implements Controller {
     }
 
     @Override
-    public boolean swap(int indexFrom, int indexTo) {
-        return currentPlayer.getPersonalBoard().swap(indexFrom, indexTo);
-    }
+    public boolean swap(int indexFrom, int indexTo) { return currentPlayer.getPersonalBoard().swap(indexFrom, indexTo); }
 
     @Override
-    public boolean canMoveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity) {
-        return currentPlayer.getPersonalBoard().canMoveFromWarehouseToExtraDepot(depotFrom, extraDepotTo, quantity);
-    }
+    public boolean canMoveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity) { return currentPlayer.getPersonalBoard().canMoveFromWarehouseToExtraDepot(depotFrom, extraDepotTo, quantity); }
 
     @Override
-    public void moveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity) {
-        currentPlayer.getPersonalBoard().moveFromWarehouseToExtraDepot(depotFrom, extraDepotTo, quantity);
-    }
+    public void moveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity) { currentPlayer.getPersonalBoard().moveFromWarehouseToExtraDepot(depotFrom, extraDepotTo, quantity); }
 
     @Override
-    public boolean canMoveFromExtraDepotToWarehouse(int extraDepotFrom, int depotTo, int quantity) {
-        return currentPlayer.getPersonalBoard().canMoveFromExtraDepotToWarehouse(extraDepotFrom, depotTo, quantity);
-    }
+    public boolean canMoveFromExtraDepotToWarehouse(int extraDepotFrom, int depotTo, int quantity) { return currentPlayer.getPersonalBoard().canMoveFromExtraDepotToWarehouse(extraDepotFrom, depotTo, quantity); }
 
     @Override
-    public void moveFromExtraDepotToWarehouse(int extraDepotFrom, int depotTo, int quantity) {
-        currentPlayer.getPersonalBoard().moveFromExtraDepotToWarehouse(extraDepotFrom, depotTo, quantity);
-    }
+    public void moveFromExtraDepotToWarehouse(int extraDepotFrom, int depotTo, int quantity) { currentPlayer.getPersonalBoard().moveFromExtraDepotToWarehouse(extraDepotFrom, depotTo, quantity); }
 
     @Override
-    public boolean canBuyDevCardFromMarket(int devCardMarketIndex) {
-        return currentPlayer.canBuyDevCardFromMarket(devCardMarketIndex);
-    }
+    public boolean canBuyDevCardFromMarket(int devCardMarketIndex) { return currentPlayer.canBuyDevCardFromMarket(devCardMarketIndex); }
 
     @Override
-    public List<QuantityResource> getResourceToPayForProduction(List<Integer> activeSlots) {
-        return currentPlayer.getPersonalBoard().sumProductionPowerInputs(activeSlots);
-    }
+    public List<QuantityResource> getResourceToPayForProduction(List<Integer> activeSlots) { return currentPlayer.getPersonalBoard().sumProductionPowerInputs(activeSlots); }
 
     @Override
-    public boolean playerHasEnoughResourcesInWarehouse(QuantityResource inWarehouse) {
-        return currentPlayer.getPersonalBoard().warehouseHasEnoughResources(inWarehouse);
-    }
+    public boolean playerHasEnoughResourcesInWarehouse(QuantityResource inWarehouse) { return currentPlayer.getPersonalBoard().warehouseHasEnoughResources(inWarehouse); }
 
     @Override
-    public boolean playerHasEnoughResourcesInStrongbox(QuantityResource inStrongbox) {
-        return currentPlayer.getPersonalBoard().strongboxHasEnoughResources(inStrongbox);
-    }
+    public boolean playerHasEnoughResourcesInStrongbox(QuantityResource inStrongbox) { return currentPlayer.getPersonalBoard().strongboxHasEnoughResources(inStrongbox); }
 
     @Override
-    public boolean playerHasEnoughResourcesInExtraDepot(QuantityResource inExtraDepot) {
-        return currentPlayer.getPersonalBoard().extraDepotHasEnoughResources(inExtraDepot);
-    }
+    public boolean playerHasEnoughResourcesInExtraDepot(QuantityResource inExtraDepot) { return currentPlayer.getPersonalBoard().extraDepotHasEnoughResources(inExtraDepot); }
 
     @Override
     public void removeResourceFromPlayersResourceSpots(int fromStrongbox, int fromWarehouse, int fromExtraDepot, ResourceType resourceType) {
@@ -365,8 +350,8 @@ public class MultiController implements Controller {
     }
 
     @Override
-    public boolean canConvertWhiteMarble(int bufferIndex) {
-        return currentPlayer.canConvertWhiteMarble(bufferIndex);
+    public boolean canConvertWhiteMarble(ResourceType resourceToConvert, int bufferIndex) {
+        return currentPlayer.canConvertWhiteMarble(resourceToConvert, bufferIndex);
     }
 
     @Override
@@ -423,4 +408,5 @@ public class MultiController implements Controller {
     public void setLeaderPowerOutput(int leaderSlotIndex, ResourceType output) {
         currentPlayer.getPersonalBoard().setLeaderPowerOutput(leaderSlotIndex, output);
     }
+
 }

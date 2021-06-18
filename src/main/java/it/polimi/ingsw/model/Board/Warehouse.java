@@ -12,7 +12,6 @@ import static it.polimi.ingsw.model.ResourceType.NOTHING;
 
 public class Warehouse extends WarehouseObservable implements ResourceSpot {
 
-    private final int ERROR = -1;
     private final int NOT_EXISTS = -1;
     private final int NUMBER_OF_DEPOTS = 3;
     private QuantityResource[] depots;

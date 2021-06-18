@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class SinglePlayerGame extends Game implements LorenzoGameMethods, Serializable {
 
-    private LorenzoIlMagnifico lorenzoIlMagnifico;
+    private final LorenzoIlMagnifico lorenzoIlMagnifico;
     private final int NOT_AVAILABLE_DECK = -1;
     private boolean lorenzoIsWinner;
 
@@ -53,7 +53,7 @@ public class SinglePlayerGame extends Game implements LorenzoGameMethods, Serial
     }
 
     @Override
-    public void advanceAfterDiscard(Player discarder) {
+    public void advanceAfterDiscard(Player discardingPlayer) {
         lorenzoIlMagnifico.advance();
     }
 

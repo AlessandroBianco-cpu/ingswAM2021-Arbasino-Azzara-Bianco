@@ -5,9 +5,9 @@ import it.polimi.ingsw.model.Player;
 public class MultiPlayerGame extends Game{
 
     @Override
-    public void advanceAfterDiscard(Player discarder) {
+    public void advanceAfterDiscard(Player discardingPlayer) {
         for (Player p : players){
-            if(!(p.getNickname().equals(discarder.getNickname()))){
+            if(!(p.getNickname().equals(discardingPlayer.getNickname()))){
                 p.moveForwardNPositions(1);
             }
         }

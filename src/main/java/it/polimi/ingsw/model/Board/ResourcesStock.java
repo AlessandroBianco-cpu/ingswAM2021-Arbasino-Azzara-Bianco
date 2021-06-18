@@ -17,10 +17,10 @@ public class ResourcesStock implements ResourceSpot {
     private Map<ResourceType, Integer> resources = new HashMap<>();
 
     public ResourcesStock(){
-        resources.put(ResourceType.SERVANT, 0);
-        resources.put(ResourceType.STONE, 0);
-        resources.put(ResourceType.SHIELD, 0);
-        resources.put(ResourceType.COIN, 0);
+        resources.put(ResourceType.SERVANT, 50);
+        resources.put(ResourceType.STONE, 50);
+        resources.put(ResourceType.SHIELD, 50);
+        resources.put(ResourceType.COIN, 50);
     }
 
     /**
@@ -35,9 +35,7 @@ public class ResourcesStock implements ResourceSpot {
      * Thi method is use for count how many resource  you have got
      * @return the number of your total resources
      */
-    public int getTotalNumberOfResources() {
-        return resources.get(ResourceType.SERVANT)+resources.get(ResourceType.SHIELD)+resources.get(ResourceType.COIN)+resources.get(ResourceType.STONE);
-    }
+    public int getTotalNumberOfResources() { return resources.get(ResourceType.SERVANT)+resources.get(ResourceType.SHIELD)+resources.get(ResourceType.COIN)+resources.get(ResourceType.STONE); }
 
     /**
      * This method removes the given Resource to the appropriate location of the ResCounter

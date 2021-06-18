@@ -18,11 +18,11 @@
       <Pane id="1" layoutX="121.0" layoutY="193.0" prefHeight="40.0" prefWidth="40.0" />
       <Pane id="2" layoutX="88.0" layoutY="241.0" prefHeight="40.0" prefWidth="40.0" />
       <Pane id="3" layoutX="153.0" layoutY="241.0" prefHeight="40.0" prefWidth="40.0" />
-      <Pane id="4" layoutX="121.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
-      <Pane id="5" layoutX="169.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
-      <Pane id="6" layoutX="73.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
-      <Pane id="leaderDepot1" layoutX="285.0" layoutY="134.0" prefHeight="214.0" prefWidth="140.0" />
-      <Pane id="leaderDepot2" layoutX="446.0" layoutY="134.0" prefHeight="214.0" prefWidth="140.0" />
+      <Pane id="4" layoutX="73.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
+      <Pane id="5" layoutX="121.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
+      <Pane id="6" layoutX="169.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
+      <Pane id="leader1" layoutX="285.0" layoutY="134.0" prefHeight="214.0" prefWidth="140.0" />
+      <Pane id="leader2" layoutX="446.0" layoutY="134.0" prefHeight="214.0" prefWidth="140.0" />
       <CheckBox id="depot1" layoutX="38.0" layoutY="190.0" mnemonicParsing="false" />
       <CheckBox id="depot2" layoutX="17.0" layoutY="253.0" mnemonicParsing="false" />
       <CheckBox id="depot3" layoutX="8.0" layoutY="309.0" mnemonicParsing="false" />

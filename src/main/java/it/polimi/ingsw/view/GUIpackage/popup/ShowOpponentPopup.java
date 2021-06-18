@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUIpackage.popup;
 
+import it.polimi.ingsw.client.LightModel.ParserForModel;
 import it.polimi.ingsw.client.LightModel.PlayerLight;
 import it.polimi.ingsw.model.Cards.LeaderCard;
 import javafx.fxml.FXMLLoader;
@@ -99,16 +100,24 @@ public class ShowOpponentPopup implements Popup {
 
         addImage(faithTrack.get(opponent.getFaithTrack().getPosition()),"/punchBoard/blackCross.png");
 
+        if(opponent.hasInkwell())
+            addImage(inkwell,"/punchBoard/inkwell.png");
+
+
+
         int extraDepotIndex = 0;
         List<LeaderCard> activeCards = opponent.getLeaderCardsInHand().getActiveCards();
-        for(int i = 0; i < activeCards.size(); i++) {
-            addImage(leaders.get(i), "/leaderCards/" + activeCards.get(i).getId() + ".png");
-            if (activeCards.get(i).isExtraDepotCard()) {
-                for (int numOfResources = 0; numOfResources < opponent.getWarehouse().getExtraDepotsQuantity()[extraDepotIndex]; numOfResources++) {
-                    addImage(extraDepots.get(2 * i + numOfResources), opponent.getWarehouse().getExtraDepotsTypes()[extraDepotIndex].toImage());
+        for (int i = 0; i < opponent.getLeaderCardsInHand().getSizeOfTotalLeadersInHand(); i++) {
+            if(i< activeCards.size()){
+                addImage(leaders.get(i), "/leaderCards/" + activeCards.get(i).getId() + ".png");
+                if (activeCards.get(i).isExtraDepotCard()) {
+                    for (int numOfResources = 0; numOfResources < opponent.getWarehouse().getExtraDepotsQuantity()[extraDepotIndex]; numOfResources++) {
+                        addImage(extraDepots.get(2 * i + numOfResources), opponent.getWarehouse().getExtraDepotsTypes()[extraDepotIndex].toImage());
+                    }
+                    extraDepotIndex++;
                 }
-                extraDepotIndex++;
-            }
+            }else
+                addImage(leaders.get(i), "/leaderCards/retroLeader.png");
         }
 
         for(int i=0; i<strongboxLabel.size();i++)

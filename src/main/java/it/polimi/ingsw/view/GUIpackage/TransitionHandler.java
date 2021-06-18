@@ -9,7 +9,6 @@ public class TransitionHandler {
     private static Stage primaryStage;
 
     private static Scene loadingScene;
-
     private static Scene nicknameScene;
     private static Scene discardLeadersScene;
     private static Scene waitingScene;
@@ -85,7 +84,5 @@ public class TransitionHandler {
     public static void toWinnerScene() { swapSceneTo(winnerScene); }
 
     public static void toEndScene() { swapSceneTo(endScene); }
-
-
 
 }

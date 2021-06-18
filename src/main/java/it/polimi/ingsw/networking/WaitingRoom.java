@@ -7,51 +7,53 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * This class is used to manage the login of clients and the entering in a lobby
+ */
+
 public class WaitingRoom implements EndGameObserver {
+    private final int MAX_SIZE;
     private int lobbySerial = 0;
     private boolean joinCurrent;
     private List<Lobby> lobbyList;
     private Map<String, Integer> nicknamesDB = new ConcurrentHashMap<>();
-    private final Object lock;
 
-    public WaitingRoom() {
-        lock = new Object();
+
+    public WaitingRoom(int size) {
+        MAX_SIZE = size;
         lobbyList = new ArrayList<>();
     }
 
     /**
-     * Hnaldes the client login phase, check if new client is trying to registering with the same nickname of an already registered client
+     * Handles the client login phase, check if new client is trying to registering with the same nickname of an already registered client
      * @param clientToLogIn is the client handler to handle
-     * @return the
      */
-    public String loginUser(ClientHandler clientToLogIn) {
-
+    public void loginUser(ClientHandler clientToLogIn) {
         clientToLogIn.setMyTurn(true);
         clientToLogIn.send(new SetNicknameMessage());
         Message nicknameMessage = clientToLogIn.read();
 
-        //check-up this branch
-        while (! (nicknameMessage instanceof LoginSettingMessage)) {
-            clientToLogIn.send(new ClientInputResponse("Remember you must set the nickname"));
-            System.out.println("[SERVER] wrong message sent from client");
-            nicknameMessage = clientToLogIn.read();
-        }
+        if(nicknameMessage == null)
+            return;
 
         String nickname = ((LoginSettingMessage) nicknameMessage).getNickname();
         joinCurrent = ((LoginSettingMessage) nicknameMessage).wantToJoin();
 
-        while ( (nicknamesDB.containsKey(nickname) && !joinCurrent) || (nicknamesDB.containsKey(nickname) && getLobbyByID(nicknamesDB.get(nickname)).checkActivePlayerInLobby(nickname)) ) {
+        while ((( nicknamesDB.containsKey(nickname) && !joinCurrent ) || ( nicknamesDB.containsKey(nickname) && getLobbyByID(nicknamesDB.get(nickname)).checkActivePlayerInLobby(nickname)))) {
             clientToLogIn.send(new TakenNameMessage());
             nicknameMessage = clientToLogIn.read();
+            if(nicknameMessage == null)
+                return;
             nickname = ((LoginSettingMessage) nicknameMessage).getNickname();
             joinCurrent = ((LoginSettingMessage) nicknameMessage).wantToJoin();
         }
 
+        clientToLogIn.setUserNickname(nickname);
         System.out.println("[SERVER] " + nickname + " registered!");
+        System.out.println();
         clientToLogIn.send(new ClientAcceptedMessage(nickname));
         clientToLogIn.setMyTurn(false);
 
-        return nickname;
     }
 
     /**
@@ -60,19 +62,22 @@ public class WaitingRoom implements EndGameObserver {
      */
     public void addClientToList(ClientHandler client) {
         client.send(new WaitingMessage("Server's adding you on waiting room..."));
-        synchronized (lock) {
-            String selectedNickname = loginUser(client);
-            client.setUserNickname(selectedNickname);
-            lock.notifyAll();
-        }
-        //aggiungere una costante final
-        if (!joinCurrent && lobbyList.size() < 5) {
-            createNewLobby(client);
-        } else {
-            manageJoiningInLobby(client);
+        loginUser(client);
+        String selectedNickname = client.getUserNickname();
+
+        if(selectedNickname != null) {
+            if (!joinCurrent && lobbyList.size() < MAX_SIZE)
+                createNewLobby(client);
+             else
+                manageJoiningInLobby(client);
+
         }
     }
 
+    /**
+     * Add a client in a not ready lobby, if there isn't notReady lobby, crate a new one with this client
+     * @param ch is the clientHandler to handle
+     */
     private void addInNotReadyLobby(ClientHandler ch) {
         for(Lobby l : lobbyList) {
             if (!l.isLobbyIsReady()) {
@@ -81,12 +86,17 @@ public class WaitingRoom implements EndGameObserver {
                 return;
             }
         }
-        if(lobbyList.size() < 5)
+        if(lobbyList.size() < MAX_SIZE)
             createNewLobby(ch);
         else
             ch.send(new RemoveClientForErrors("This server is full of players, please retry to enter later..."));
     }
 
+    /**
+     * This method get the lobby from the waitingRoom's lobbyList
+     * @param ID is the ID of the lobby we want to get
+     * @return the lobby
+     */
     private Lobby getLobbyByID (Integer ID) {
         for (Lobby lobby : lobbyList)
             if (lobby.getLobbyID() == ID)
@@ -114,18 +124,22 @@ public class WaitingRoom implements EndGameObserver {
      */
     private void createNewLobby(ClientHandler newClient) {
         Thread t = new Thread(() -> {
-            ClientHandler ch = newClient;
             lobbySerial++;
             Lobby lobby = new Lobby(lobbySerial, this);
             lobbyList.add(lobby);
-            nicknamesDB.put(ch.getUserNickname(),lobby.getLobbyID());
-            lobby.addClient(ch);
+            nicknamesDB.put(newClient.getUserNickname(),lobby.getLobbyID());
+            lobby.addClient(newClient);
         });
         t.start();
     }
 
+    /**
+     * Clean the nicknamesDB if a client disconnected and lobby isn't ready
+     * @param ch is the clientHandler of the disconnected player
+     */
     @Override
-    public void managePreGameDisconnection(ClientHandler ch) { nicknamesDB.remove(ch.getUserNickname()); }
+    public synchronized void managePreGameDisconnection(ClientHandler ch) {
+        nicknamesDB.remove(ch.getUserNickname()); }
 
     /**
      * Remove all saved nicknames with the closing ID lobby associate

@@ -47,7 +47,21 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         }
     }
 
-    public String getCurrentPlayer() { return currentPlayer; }
+    /**
+     * Remove the client and its nickname to the clients map
+     * @param name player nickname
+     * @param client recipient client
+     */
+    public void removeClient(String name, ClientHandler client){
+        synchronized (lock) {
+            clients.remove(name, client);
+            lock.notifyAll();
+        }
+    }
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
 
     /**
      * Sets the client as current player
@@ -64,7 +78,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      */
     public void requestPlayersNum(ClientHandler firstClient) {
 
-        int num = -1;
+        int num;
         System.out.println("[SERVER] Sending setting_num message");
         firstClient.send(new SetPlayersNumMessage());
         Message message = firstClient.read();
@@ -136,14 +150,15 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      */
     public void catchMessages(){
         Message m = clients.get(currentPlayer).read();
-        notifyNewMessage(m);
+        if (m != null)
+            notifyNewMessage(m);
     }
 
     public void updateWinner(String winner) {
         System.out.println("[LOBBY #"+lobbyID +"] The winner is " + winner);
         sendBroadcast(new WinnerMessage(winner));
         System.out.println();
-        System.out.println("[LOBBY #"+lobbyID +"] All client-side sockets are now closed");
+        System.out.println("[LOBBY #"+lobbyID +"] Game ended");
         endGameObserver.manageEndGame(lobbyID);
     }
 
@@ -165,17 +180,12 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      * @param errorMessage is a string to printf Client-side
      */
     public void handleClientInputError(String errorMessage){
-        //mandi il messaggio al client
+        //send a error response to the current client
         clients.get(currentPlayer).send(new ClientInputResponse(errorMessage));
     }
 
     public void handleClientInput(String input){
         clients.get(currentPlayer).send(new ClientInputResponse(input));
-    }
-
-    public void handleClientInputError(){
-        //mandi il messaggio al client
-        clients.get(currentPlayer).send(new ClientInputResponse());
     }
 
     public void handlesWinningForQuitting(String nickname) {
@@ -195,6 +205,10 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         }
     }
 
+    /**
+     * This method send a message to all clients except the current player
+     * @param m is the message
+     */
     public void sendToEveryoneExceptCurrentPlayer(Message m){
         for(String s : clients.keySet()){
             if (!(s.equals(currentPlayer)))
@@ -202,6 +216,10 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         }
     }
 
+    /**
+     * This method send a message to all clients except the disconnected player
+     * @param playerNick is the nickname of disconnected player
+     */
     public void sendToEveryoneExceptQuitPlayer(String playerNick) {
         synchronized (lock) {
             clients.remove(playerNick);
@@ -210,24 +228,33 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
         sendBroadcast(new PlayerIsQuittingMessage(playerNick + " left the game!"));
     }
 
+    /**
+     * This method send a message to all clients except the disconnected player which is rejoining
+     * @param ch is the client name to add in virtual view list
+     */
     public void sendToEveryoneExceptRejoiningPlayer(ClientHandler ch) {
         for(String s : clients.keySet())
             if(!s.equals(ch.getUserNickname()))
                 clients.get(s).send(new PlayerIsRejoiningMessage(ch.getUserNickname() + " is trying to re-join in the match..."));
     }
 
+    /**
+     *This method send a message to the current player
+     * @param m is the message
+     */
     public void sendToCurrentPlayer(Message m){clients.get(currentPlayer).send(m);}
 
     public void sendDisconnectionInSetUpGame(String quitPlayerNickname) {
-        synchronized (lock) {
-            clients.remove(quitPlayerNickname);
-            lock.notifyAll();
-        }
         //send to other client a message that close theirs connections
         sendBroadcast(new RemoveClientForErrors(quitPlayerNickname+" left the game in set-up phase, please reconnect in another match to play"));
         endGameObserver.manageEndGame(lobbyID);
     }
 
+    /**
+     * This method is used to send the right state of game to the rejoining player
+     * @param reJoiningNick is the re-joining player's nickname
+     * @param m message to send
+     */
     public void sendToRejoiningPlayer(String reJoiningNick, Object m) { clients.get(reJoiningNick).send(m); }
 
     public MarketUpdateMessage createMarketUpdateMessage(Market market){
@@ -325,9 +352,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     @Override
-    public void updateDevCardMarketState(DevCardMarket devCardMarket) {
-        sendBroadcast(createDevCardMarketUpdateState(devCardMarket));
-    }
+    public void updateDevCardMarketState(DevCardMarket devCardMarket) { sendBroadcast(createDevCardMarketUpdateState(devCardMarket)); }
 
     public LorenzoUpdateMessage createLorenzoUpdateMessage(LorenzoIlMagnifico lorenzoIlMagnifico){
         return new LorenzoUpdateMessage(lorenzoIlMagnifico.getPosition(), lorenzoIlMagnifico.getLastTokenExecuted());
@@ -348,7 +373,6 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     @Override
-    public void updateProductionZoneState(PersonalBoard personalBoard) {
-        sendBroadcast(createProductionZoneUpdateMessage(personalBoard));
-    }
+    public void updateProductionZoneState(PersonalBoard personalBoard) { sendBroadcast(createProductionZoneUpdateMessage(personalBoard)); }
+
 }

@@ -16,21 +16,18 @@ public class PersonalBoard extends ProductionZoneObservable {
 
     private ResourcesStock generalResource;
     private Strongbox strongbox;
-    private Player owner;
-    private int victoryPointsCounter;
+    private final Player owner;
     private Warehouse warehouse;
     private FaithTrack faithTrack;
     private List<ProductionSlot> devCardSlots;
     private int numberBoughtCards;
     private final int NOT_IN_LIST = -1;
     private final int CARDS_TO_END_GAME = 7;
-    private VaticanReporter vaticanReporter;
 
 
     public PersonalBoard(Player owner, VaticanReporter vaticanReporter) {
         this.generalResource = new ResourcesStock();
         this.owner = owner;
-        this.vaticanReporter = vaticanReporter;
         devCardSlots = new ArrayList<>();
         devCardSlots.add(new BaseDevSlot());
         devCardSlots.add(new DevCardSlot());
@@ -39,7 +36,6 @@ public class PersonalBoard extends ProductionZoneObservable {
         warehouse = new Warehouse();
         faithTrack = new FaithTrack(vaticanReporter, owner.getNickname());
         strongbox = new Strongbox();
-        victoryPointsCounter = 0;
         numberBoughtCards = 0;
     }
 
@@ -47,16 +43,14 @@ public class PersonalBoard extends ProductionZoneObservable {
         faithTrack.vaticanReport(vaticanReportCounter);
     }
 
-    public List<ProductionSlot> getDevCardSlots() {
-        return devCardSlots;
-    }
-
     public Warehouse getWarehouse() {
         return warehouse;
     }
+
     public Strongbox getStrongbox() {
         return strongbox;
     }
+
     public FaithTrack getFaithTrack() {
         return faithTrack;
     }
@@ -83,7 +77,7 @@ public class PersonalBoard extends ProductionZoneObservable {
     }
 
     /**
-     *
+     * This method sets the leader card
      * @param leaderSlotIndex since the leader Slots get appended after the four default slots,
      *                        it must be 4 or 5 to choose respectively to choose the first or the
      *                        second Extra Production Power

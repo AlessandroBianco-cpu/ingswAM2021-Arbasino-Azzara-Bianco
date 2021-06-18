@@ -16,10 +16,17 @@ public class AfterMainActionState extends PlayerState{
     @Override
     public void performAction(Message message) {
         if (message instanceof EndTurnMessage){
-            controller.setCurrentPlayerWantToEndTurn(true);
+            handleEndTurnMessage();
         } else {
             baseActionsOutsideMainAction(message);
         }
+    }
+
+    /**
+     * Handles a message of endTurn type
+     */
+    private void handleEndTurnMessage(){
+        controller.setCurrentPlayerWantToEndTurn(true);
     }
 
 }

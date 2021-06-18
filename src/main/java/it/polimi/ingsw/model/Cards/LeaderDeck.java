@@ -22,7 +22,7 @@ public class LeaderDeck extends Deck {
         final int CONVERT_POINTS = 5;
         final int DISCOUNT_AMOUNT = -1;
 
-        cards= new LinkedList<LeaderCard>();
+        cards= new LinkedList<>();
         LinkedList<Requirement> requirementExtraDepotStone = new LinkedList<>();
         LinkedList<Requirement> requirementExtraDepotServant = new LinkedList<>();
         LinkedList<Requirement> requirementExtraDepotShield = new LinkedList<>();
@@ -82,7 +82,6 @@ public class LeaderDeck extends Deck {
         LeaderCard productionWithServant = new ExtraDevCard(requirementProductionWithServant, SERVANT, 14, PRODUCTION_POINTS);
         LeaderCard productionWithShield = new ExtraDevCard(requirementProductionWithShield, SHIELD, 15, PRODUCTION_POINTS);
         LeaderCard productionWithStone = new ExtraDevCard(requirementProductionWithStone, STONE, 16, PRODUCTION_POINTS);
-
 
         cards.add(discountServant);
         cards.add(discountShield);

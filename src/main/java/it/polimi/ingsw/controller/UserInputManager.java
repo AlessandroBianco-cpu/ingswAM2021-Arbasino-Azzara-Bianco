@@ -15,7 +15,6 @@ public class UserInputManager implements ViewObserver {
         playersNumber = 0;
     }
 
-
     public Message getActionMessage() {
         return actionMessage;
     }

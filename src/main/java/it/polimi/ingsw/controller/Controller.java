@@ -42,7 +42,6 @@ public interface Controller {
     void sendErrorToCurrentPlayer(String errorMessage);
     void sendResponseToCurrentPlayer(String message);
     void sendMessageToCurrentPlayer(Message message);
-    void sendGenericErrorToCurrentPlayer();
 
     // ---------------------------------- Methods calling model ------------------------------
     List<Marble> insertMarbleInCol(int colIndex);
@@ -70,7 +69,7 @@ public interface Controller {
     void addResourceInWarehouseFromBuffer(int bufferIndex, int shelf);
     boolean canAddResourceInExtraDepotFromBuffer(int bufferIndex);
     void addResourceInExtraDepotFromBuffer(int bufferIndex);
-    boolean canConvertWhiteMarble(int bufferIndex);
+    boolean canConvertWhiteMarble(ResourceType resourceToConvert, int bufferIndex);
     void convertWhiteMarble(ResourceType resourceType, int bufferIndex);
     List<QuantityResource> getDevCardCostFromMarketIndex(int marketIndex);
     boolean satisfiesDevCardInsertionRule(DevCard devCard, int devSlotIndex);

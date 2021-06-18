@@ -267,7 +267,7 @@ public class CLI extends UiObservable implements Runnable, View {
 
         boolean useLeaderDiscount = booleanRequest("Do you want to use a leader discount?" + printGreen("0") +" -> no" + printGreen("1") + " -> yes");
 
-        notifyMessage(new DevCardPayment(fromWarehouse, fromStrongBox, fromExtra, resourceType, useLeaderDiscount));
+        notifyMessage(new DevCardPaymentMessage(fromWarehouse, fromStrongBox, fromExtra, resourceType, useLeaderDiscount));
     }
 
     /**
@@ -319,7 +319,7 @@ public class CLI extends UiObservable implements Runnable, View {
             System.out.println("Wrong slot index, retype");
             position = getIntegerInput();
         }
-        notifyMessage(new InsertDevCardInDevSlot(position));
+        notifyMessage(new InsertDevCardInDevSlotMessage(position));
     }
 
     /**
@@ -364,24 +364,24 @@ public class CLI extends UiObservable implements Runnable, View {
             case "dis":
                 System.out.println(indexOfMarble);
                 index = getIntegerInput();
-                notifyMessage(new DiscardMarble(index));
+                notifyMessage(new DiscardMarbleMessage(index));
                 break;
             case "extra":
                 System.out.println(indexOfMarble);
                 index = getIntegerInput();
-                notifyMessage(new StoreResourceInExtraDepot(index));
+                notifyMessage(new StoreResourceInExtraDepotMessage(index));
                 break;
             case "war":
                 System.out.println(indexOfMarble);
                 index = getIntegerInput();
                 int depot = askWarehouseDepot("Where do you want to store the resource?");
-                notifyMessage(new StoreResourceInWarehouse(index,depot));
+                notifyMessage(new StoreResourceInWarehouseMessage(index,depot));
                 break;
             case "convert":
                 System.out.println(indexOfMarble);
                 index = getIntegerInput();
                 ResourceType res = askAResource("Choose the resource you want to convert to");
-                notifyMessage(new ConvertWhiteMarble(index,res));
+                notifyMessage(new ConvertWhiteMarbleMessage(index,res));
                 break;
             default:
                 System.out.println(typingErrorMessage);
@@ -479,41 +479,47 @@ public class CLI extends UiObservable implements Runnable, View {
      */
     @Override
     public void askInitialDiscard() {
-        List<Integer> indexes = new ArrayList<>();
-        displayLeaderCards();
-        for(int i=0; i<2; i++) {
-            System.out.println("Insert the index of the card you want to discard:");
-            int x = getIntegerInput();
-            while (x < 1 || x > 4 || indexes.contains(x)) {
-                if (indexes.contains(x)) {
-                    System.out.println("You have already insert this index!");
-                    System.out.println("Insert the index of the card you want to discard:");
-                    x = getIntegerInput();
-                } else {
-                    System.out.println(notInBoundMessage);
-                    System.out.println("Insert the index of the card you want to discard:");
-                    x = getIntegerInput();
+        Thread t = new Thread(() -> {
+            List<Integer> indexes = new ArrayList<>();
+            displayLeaderCards();
+            for(int i=0; i<2; i++) {
+                System.out.println("Insert the index of the card you want to discard:");
+                int x = getIntegerInput();
+                while (x < 1 || x > 4 || indexes.contains(x)) {
+                    if (indexes.contains(x)) {
+                        System.out.println("You have already insert this index!");
+                        System.out.println("Insert the index of the card you want to discard:");
+                        x = getIntegerInput();
+                    } else {
+                        System.out.println(notInBoundMessage);
+                        System.out.println("Insert the index of the card you want to discard:");
+                        x = getIntegerInput();
+                    }
                 }
+                indexes.add(x);
             }
-            indexes.add(x);
-        }
-        notifyMessage(new ChooseLeaderMessage(indexes));
+            notifyMessage(new ChooseLeaderMessage(indexes));
+        });
+        t.start();
     }
 
     /**
      * Asks the type of resource player wants to add in the initial stage of the game
      */
     public void askInitialResource() {
-        System.out.println("You must choose "+resToAdd+ " resources to add in your warehouse");
-        ChooseResourcesMessage resMessage = new ChooseResourcesMessage(resToAdd);
+        Thread t = new Thread(() -> {
+            System.out.println("You must choose "+resToAdd+ " resources to add in your warehouse");
+            ChooseResourcesMessage resMessage = new ChooseResourcesMessage(resToAdd);
 
-        for(int i=0; i<resToAdd; i++) {
-            ResourceType res = askAResource("Choose a resource to add");
-            int indexToAdd = askWarehouseDepot("where you want to put this resource");
-            resMessage.addResource(res,indexToAdd);
-        }
+            for(int i=0; i<resToAdd; i++) {
+                ResourceType res = askAResource("Choose a resource to add");
+                int indexToAdd = askWarehouseDepot("where you want to put this resource");
+                resMessage.addResource(res,indexToAdd);
+            }
 
-        notifyMessage(resMessage);
+            notifyMessage(resMessage);
+        });
+        t.start();
     }
 
     /**
@@ -540,7 +546,7 @@ public class CLI extends UiObservable implements Runnable, View {
                 int depFrom = askWarehouseDepot(" from which you want to move your resources");
                 int extraDepTo = askExtraDepot(" where you want to put your resources");
                 quantity = askQuantity();
-                while(quantity > 2){
+                while(quantity > 2) {
                     System.out.println(notInBoundMessage);
                     quantity = askQuantity();
                 }
@@ -696,6 +702,9 @@ public class CLI extends UiObservable implements Runnable, View {
     }
 
     @Override
+    public void updateFirstPlayer(FirstPlayerMessage m) { model.getPlayerByNickname(m.getNickname()).setInkwell(true); }
+
+    @Override
     public void updatePlaceNewCard(PlacementDevCardMessage m) {
         model.updateBoughtCard(m);
         System.out.println("You can now place the card: ");
@@ -720,7 +729,6 @@ public class CLI extends UiObservable implements Runnable, View {
 
 
     // ------------------------ PRINTERS ------------------------
-
     /**
      * Prints the game title
      */
@@ -854,7 +862,11 @@ public class CLI extends UiObservable implements Runnable, View {
     }
 
     @Override
-    public void quittingForProblem(String message) { displayStringMessages(message); }
+    public void quittingForProblem(String message) {
+        System.out.println();
+        System.out.println(message);
+        endGame();
+    }
 
     private void displayMarket(){
         model.getMarbleMarket().print();

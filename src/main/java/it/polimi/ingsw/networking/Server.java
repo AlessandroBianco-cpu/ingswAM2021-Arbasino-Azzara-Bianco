@@ -7,11 +7,12 @@ import java.net.Socket;
 public class Server implements Runnable {
 
     ServerSocket serverSocket;
+    private final int SIZE = 10; // is the No. of lobbies supported
     private final int PORT = 12345;
     private WaitingRoom waitingRoom;
 
     /**
-     * Manages clients' reception
+     * Manages clients' reception and creates new clientHandlers
      */
     public void run() {
             try {
@@ -20,7 +21,8 @@ public class Server implements Runnable {
                 e.printStackTrace();
                 System.out.println("SERVER SOCKET CLOSED!");
             }
-            waitingRoom = new WaitingRoom();
+
+            waitingRoom = new WaitingRoom(SIZE);
             while (true) {
                 try {
                     // Create socket
@@ -38,5 +40,6 @@ public class Server implements Runnable {
                 }
             }
     }
+
 
 }

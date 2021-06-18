@@ -21,10 +21,7 @@ public class Market extends MarketObservable {
         // the size of the row determines the number of columns and vice versa
         marbleMatrix = new Marble[COL_SIZE][ROW_SIZE];
 
-        List<Marble> marbleLinkedList = new LinkedList<>();
-        /*
-          I put all Marbles, last one after shuffle will be marbleLeft
-         */
+        LinkedList<Marble> marbleLinkedList = new LinkedList<>();
 
         marbleLinkedList.add(new WhiteMarble());
         marbleLinkedList.add(new YellowMarble());
@@ -44,30 +41,10 @@ public class Market extends MarketObservable {
 
         for (int i = 0; i < COL_SIZE; i++)
             for (int j = 0; j < ROW_SIZE; j++) {
-                marbleMatrix[i][j] = ((LinkedList<Marble>) marbleLinkedList).pop();
+                marbleMatrix[i][j] = marbleLinkedList.pop();
             }
-        marbleLeft = ((LinkedList<Marble>) marbleLinkedList).pop();
+        marbleLeft = marbleLinkedList.pop();
 
-    }
-
-    /**
-     * Method used to test the class
-     */
-    public void setInitialCondition(){
-        marbleMatrix[0][0] = new PurpleMarble();
-        marbleMatrix[0][1] = new BlueMarble();
-        marbleMatrix[0][2] = new PurpleMarble();
-        marbleMatrix[0][3] = new GreyMarble();
-        marbleMatrix[1][0] = new WhiteMarble();
-        marbleMatrix[1][1] = new RedMarble();
-        marbleMatrix[1][2] = new WhiteMarble();
-        marbleMatrix[1][3] = new WhiteMarble();
-        marbleMatrix[2][0] = new WhiteMarble();
-        marbleMatrix[2][1] = new GreyMarble();
-        marbleMatrix[2][2] = new YellowMarble();
-        marbleMatrix[2][3] = new YellowMarble();
-
-        marbleLeft = new BlueMarble();
     }
 
     /**
@@ -129,9 +106,6 @@ public class Market extends MarketObservable {
 
     }
 
-    public Marble[][] getMarbleMatrix() {
-        return marbleMatrix;
-    }
 
     public Marble getMarbleByIndexes(int i, int j){
         return marbleMatrix[i][j];

@@ -9,13 +9,9 @@ import java.util.List;
 
 public class TokenStack implements Serializable {
 
-    private LorenzoIlMagnifico lorenzoIlMagnifico;
     private List<ActionToken> tokenStack;
-    private LorenzoGameMethods lorenzoGameMethods;
 
     public TokenStack(LorenzoIlMagnifico caller,LorenzoGameMethods lorenzoGameMethods) {
-        this.lorenzoIlMagnifico = caller;
-        this.lorenzoGameMethods = lorenzoGameMethods;
         tokenStack = new LinkedList<>();
 
         tokenStack.add(new BlueToken(lorenzoGameMethods));
@@ -45,6 +41,5 @@ public class TokenStack implements Serializable {
         currentToken.doAction();
         return currentToken;
     }
-
 
 }

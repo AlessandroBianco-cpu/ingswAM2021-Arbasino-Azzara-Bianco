@@ -19,6 +19,10 @@ public class LeaderCardsInHandLight {
     private int sizeOfTotalLeadersInHand; //int value meant to be used to hide some informations when displaying opponent's leader cards
     private final ParserForModel parser = new ParserForModel();
 
+    public int getSizeOfTotalLeadersInHand() {
+        return sizeOfTotalLeadersInHand;
+    }
+
     public LeaderCardsInHandLight() {
         this.cards = new ArrayList<>();
         this.activeCards = new ArrayList<>();
@@ -49,6 +53,9 @@ public class LeaderCardsInHandLight {
 
     public void updateOpponentLeaderInHand(OpponentsLeaderCardsInHandUpdateMessage message){
         this.cards = message.getActiveCards();
+        for(LeaderCard card : cards)
+            if (card.isActive() && !(idIsInActiveCardsList(card)))
+                activeCards.add(card);
         this.sizeOfTotalLeadersInHand = message.getNumberOfCards();
     }
 
@@ -82,7 +89,7 @@ public class LeaderCardsInHandLight {
         if(card != null){
             List<Requirement> list = card.getRequirements();
             if(card.isExtraDepotCard()){
-                System.out.print(parser.parseActiveCard(card) +"║     " + ConsoleColors.RESET + parser.parseQuantityResource(card.getRequirements().get(0).getResource()) + parser.parseActiveCard(card) +"     ║" );
+                System.out.print(parser.parseActiveCard(card) +"║     " + ConsoleColors.RESET + parser.parseQuantityResource(card.getRequirements().get(0).getResource()) + parser.parseActiveCard(card) +"     ║" + ConsoleColors.RESET );
             }else{
                 System.out.print((parser.parseActiveCard(card) +"║" + ConsoleColors.RESET));
                 for (int i = 0; i<2; i++){
@@ -276,7 +283,7 @@ public class LeaderCardsInHandLight {
         System.out.println();
         for (int i=0; i<sizeOfTotalLeadersInHand; i++) {
             if(i < activeCards)
-               displayPower(cards.get(i));
+                displayPower(cards.get(i));
             else
                 backFour();
         }

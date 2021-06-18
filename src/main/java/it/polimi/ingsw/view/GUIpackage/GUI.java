@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * GUI class
+ */
 public class GUI  extends Application implements View {
 
     private String owner;
@@ -103,13 +106,16 @@ public class GUI  extends Application implements View {
      * Sets the scene that asks for ip address and port
      */
     private void askConnection() {
-        //ask ip and port
         ConnectionScene connectionScene = new ConnectionScene();
         connectionScene.addObserver(networkHandler);
         Platform.runLater(() -> TransitionHandler.setConnectionScene(connectionScene));
         Platform.runLater(TransitionHandler::toConnectionScene);
     }
 
+    /**
+     * Sets the owner of thi GUI after the login phase
+     * @param m is the message sent from Server after the login
+     */
     @Override
     public void registerClient(ClientAcceptedMessage m) {
         this.owner = m.getNickname();
@@ -415,6 +421,10 @@ public class GUI  extends Application implements View {
         Platform.runLater(TransitionHandler::toEndScene);
     }
 
+    /**
+     * Displays string in the console log after the number of player was set
+     * @param num is the number of player of the match
+     */
     @Override
     public void updatePlayersNumber(int num) {
         playersNumber = num;
@@ -424,6 +434,13 @@ public class GUI  extends Application implements View {
             displayStringMessages("Let's start your single player match");
     }
 
+    @Override
+    public void updateFirstPlayer(FirstPlayerMessage m) { model.getPlayerByNickname(m.getNickname()).setInkwell(true); }
+
+    /**
+     * This method update the number of resources to add and launch the relative scene
+     * @param num is the number of resource player needs to add for start the game
+     */
     @Override
     public void updateNumOfResourcesToAdd(int num) {
         this.resToAdd = num;

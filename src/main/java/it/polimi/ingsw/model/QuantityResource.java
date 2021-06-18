@@ -23,10 +23,7 @@ public class QuantityResource implements Serializable {
         quantity+=value;
     }
 
-    public void decrease(int value) {
-        quantity-=value;
-
-    }
+    public void decrease(int value) { quantity-=value; }
 
     public void setResourceType(ResourceType typeResource){
         this.resourceType =typeResource;

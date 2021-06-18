@@ -24,6 +24,7 @@ public class PlayerLight {
     private final ProductionZoneLight productionZone;
     private final ResourceBufferLight resourceBufferLight;
     private DevCard boughtCard;
+    private boolean inkwell;
 
     public PlayerLight(String nickname) {
         this.nickname = nickname;
@@ -35,12 +36,15 @@ public class PlayerLight {
         this.productionZone = new ProductionZoneLight();
         this.resourceBufferLight = new ResourceBufferLight();
         this.boughtCard = null;
+        this.inkwell = false;
     }
 
     // ------------------------ GETTERS ------------------------
     public String getNickname() {
         return nickname;
     }
+
+    public boolean hasInkwell() { return inkwell; }
 
     public LeaderCardsInHandLight getLeaderCardsInHand() {
         return leaderCardsInHand;
@@ -111,6 +115,7 @@ public class PlayerLight {
         }
     }
 
+    public void setInkwell(boolean inkwell) { this.inkwell = inkwell; }
 
     // ------------------------ PRINTERS ------------------------
     public void printBuffer(){

@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.ResourceType;
  */
 public class ExtraDepot implements ResourceSpot {
 
-    private int MAX_SIZE = 2;
+    private final int MAX_SIZE = 2;
     private QuantityResource slot;
 
     public ExtraDepot(ResourceType resourceType) {

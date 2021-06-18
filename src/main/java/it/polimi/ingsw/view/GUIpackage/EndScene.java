@@ -7,6 +7,9 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
+/**
+ * This scene is used after a brutal closing server-side
+ */
 public class EndScene extends UiObservable {
 
     private Pane root;

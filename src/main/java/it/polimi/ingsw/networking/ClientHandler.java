@@ -18,11 +18,10 @@ public class ClientHandler extends ConnectionObservable {
     private final Socket socket;
     private String userNickname;
     private volatile boolean connected;
-    private Thread readingThread;
     private boolean myTurn;
     private Message answer;
     private PingMessage pingMessage;
-    private boolean answerReady;
+    private volatile boolean answerReady;
     private ObjectOutputStream socketOut;
     private ObjectInputStream socketIn;
 
@@ -38,10 +37,10 @@ public class ClientHandler extends ConnectionObservable {
         this.myTurn = myTurn;
     }
 
-    public boolean isConnected() {
-        return connected;
-    }
-
+    /**
+     * This method is used to send message from server to a specific client
+     * @param object is the serializable object to send
+     */
     public void send(Object object){
         try {
             socketOut.reset();
@@ -55,19 +54,25 @@ public class ClientHandler extends ConnectionObservable {
     /**
      * Closes connection with client
      */
-    public synchronized void closeConnection() {
+    public void closeConnection() {
+        //handle the case of a disconnection before the login
+        if (userNickname == null) {
+            synchronized (this) {
+                answer = null;
+                answerReady = true;
+                notifyAll();
+            }
+        }
         connected = false;
         try {
             socketOut.close();
             socketIn.close();
             socket.close();
-            //readingThread.interrupt();
             System.out.println("[SERVER] "+userNickname+"-socket connection closed server-side");
             System.out.println();
         } catch (IOException e) {
-            System.out.println("[SERVER] ERRORE IN CHIUSURA DEL CLIENT: " +userNickname);
+            System.out.println("[SERVER] Error closing the client: " +userNickname);
             e.printStackTrace();
-            System.out.println();
             System.out.println();
         }
     }
@@ -102,7 +107,7 @@ public class ClientHandler extends ConnectionObservable {
      * Loops read from client: when a message is read, answerReady is set true. If the client is unreachable, server is notified
      */
     public void readFromClient() {
-        readingThread = new Thread(() -> {
+        Thread t = new Thread(() -> {
             while (connected) {
                 try {
                     socket.setSoTimeout(30000);
@@ -131,12 +136,12 @@ public class ClientHandler extends ConnectionObservable {
                 }
             }
         });
-        readingThread.start();
+        t.start();
     }
 
     /**
      * Returns client message: waits until a message is received
-     * @return
+     * @return message sent from client
      */
     public Message read() {
         synchronized (this) {
@@ -161,7 +166,6 @@ public class ClientHandler extends ConnectionObservable {
             socketOut = new ObjectOutputStream(socket.getOutputStream());
             socketIn = new ObjectInputStream(socket.getInputStream());
             System.out.println("[SERVER] New ClientSockets created");
-            System.out.println();
         } catch (IOException e) {
             e.printStackTrace();
         }

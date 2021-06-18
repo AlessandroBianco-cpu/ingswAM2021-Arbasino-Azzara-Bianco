@@ -22,7 +22,7 @@ class PlayerTest {
     @BeforeEach
     void setUpPlayer(){
         this.game = new MultiPlayerGame();
-        this.player = new Player("Alex");
+        this.player = new Player("Pippo");
         this.player.setGame(game);
     }
 
@@ -352,8 +352,8 @@ class PlayerTest {
 
         player.addResourceInWarehouseFromBuffer(2,0);
         player.addResourceInWarehouseFromBuffer(2,1);
-        assertTrue(player.canConvertWhiteMarble(0));
-        assertTrue(player.canConvertWhiteMarble(1));
+        assertTrue(player.canConvertWhiteMarble(SHIELD,0));
+        assertTrue(player.canConvertWhiteMarble(SERVANT, 1));
         player.convertWhiteMarble(SHIELD, 0);
         player.addResourceInWarehouseFromBuffer(0,1);
         player.convertWhiteMarble(SERVANT, 0);

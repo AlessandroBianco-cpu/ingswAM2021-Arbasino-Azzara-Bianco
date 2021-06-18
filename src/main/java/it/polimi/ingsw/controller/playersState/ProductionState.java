@@ -31,38 +31,45 @@ public class ProductionState extends PlayerState{
     @Override
     public void performAction(Message message) {
         if (message instanceof ResourcePlayerWantsToSpendMessage){
-            ResourceType resourceType = ((ResourcePlayerWantsToSpendMessage) message).getResourceType();
+            handleResourcePlayerWantsToSpendMessage((ResourcePlayerWantsToSpendMessage) message);
+        } else baseActionsDuringMainAction(message);
+    }
 
+    /**
+     * Handles a message of resourcePlayerWantsToSpend type
+     * @param message message containing the resourcePlayerWantsToSpend action player wants to perform
+     */
+    private void handleResourcePlayerWantsToSpendMessage(ResourcePlayerWantsToSpendMessage message){
+        ResourceType resourceType = message.getResourceType();
 
-            if (!(resourceTypeIsInListToPay(resourceType))){ //The resource should not be paid
-                controller.sendErrorToCurrentPlayer("The resource selected must not be paid");
-                return;
-            }
-            int fromWarehouse = ((ResourcePlayerWantsToSpendMessage) message).getFromWarehouse();
-            int fromStrongbox = ((ResourcePlayerWantsToSpendMessage) message).getFromStrongbox();
-            int fromExtraDepot = ((ResourcePlayerWantsToSpendMessage) message).getFromExtraDepot();
+        if (!(resourceTypeIsInListToPay(resourceType))){ //The resource should not be paid
+            controller.sendErrorToCurrentPlayer("The resource selected must not be paid");
+            return;
+        }
+        int fromWarehouse = message.getFromWarehouse();
+        int fromStrongbox = message.getFromStrongbox();
+        int fromExtraDepot = message.getFromExtraDepot();
 
-            if (controller.playerHasEnoughResourcesInStrongbox(new QuantityResource(resourceType, fromStrongbox))
+        if (controller.playerHasEnoughResourcesInStrongbox(new QuantityResource(resourceType, fromStrongbox))
                 && controller.playerHasEnoughResourcesInWarehouse(new QuantityResource(resourceType, fromWarehouse))
                 && controller.playerHasEnoughResourcesInExtraDepot(new QuantityResource(resourceType, fromExtraDepot))
                 && (fromStrongbox + fromWarehouse + fromExtraDepot) == getQuantityToPayFromList(resourceType)  ) {
 
-                controller.removeResourceFromPlayersResourceSpots(fromStrongbox, fromWarehouse, fromExtraDepot, resourceType);
+            controller.removeResourceFromPlayersResourceSpots(fromStrongbox, fromWarehouse, fromExtraDepot, resourceType);
 
-                removeResourcesFromListToPay(fromStrongbox, fromWarehouse, fromExtraDepot, resourceType);
+            removeResourcesFromListToPay(fromStrongbox, fromWarehouse, fromExtraDepot, resourceType);
 
-                //There are no more resources to pay, purchase correctly completed
-                if(resourceToPay.size() == 0){
-                    controller.addProducedResources(productionSlotIndexes);
-                    controller.setCurrentPlayerState(new AfterMainActionState(controller));
-                }
-
-                controller.sendMessageToCurrentPlayer(new ProductionResourceBufferUpdateMessage(resourceToPay));
-
-            }else{
-                controller.sendErrorToCurrentPlayer("The combination of resources selected is not valid ");
+            //There are no more resources to pay, purchase correctly completed
+            if(resourceToPay.size() == 0){
+                controller.addProducedResources(productionSlotIndexes);
+                controller.setCurrentPlayerState(new AfterMainActionState(controller));
             }
-        } else baseActionsDuringMainAction(message);
+
+            controller.sendMessageToCurrentPlayer(new ProductionResourceBufferUpdateMessage(resourceToPay));
+
+        }else{
+            controller.sendErrorToCurrentPlayer("The combination of resources selected is not valid ");
+        }
     }
 
     /**

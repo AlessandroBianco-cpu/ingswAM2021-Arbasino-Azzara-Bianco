@@ -69,8 +69,8 @@ public class SwapPopup extends SceneObservable implements Popup {
                 addImage(depots.get(i),warehouse.getDepots()[i].toImage());
 
         extraLeaders = new ArrayList<>();
-        extraLeaders.add((Pane) root.lookup("#leaderDepot1"));
-        extraLeaders.add((Pane) root.lookup("#leaderDepot2"));
+        extraLeaders.add((Pane) root.lookup("#leader1"));
+        extraLeaders.add((Pane) root.lookup("#leader2"));
         extraDepots = new ArrayList<>();
         extraDepots.add((Pane) root.lookup("#firstExtra1"));
         extraDepots.add((Pane) root.lookup("#firstExtra2"));
@@ -181,10 +181,10 @@ public class SwapPopup extends SceneObservable implements Popup {
 
     private void setChosenExtra(Pane pane) {
         switch (pane.getId()) {
-            case "leaderDepot1":
+            case "leader1":
                 chosenExtra = 1;
                 break;
-            case "leaderDepot2":
+            case "leader2":
                 chosenExtra = 2;
                 break;
         }

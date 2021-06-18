@@ -14,12 +14,9 @@ public class StringToPrint {
 
     //error and wait messages
     public final static String typingErrorMessage = "typing error message! Retype the action!";
-    public final static String notInBoundMessage ="Invalid integer: not in-bound, re-type it!";
+    public final static String notInBoundMessage = "Invalid integer: not in-bound, re-type it!";
 
-
-    private static String printGreen(String string){
-        return  (ConsoleColors.GREEN_BOLD + string + ConsoleColors.RESET);
-    }
+    private static String printGreen(String string){ return  (ConsoleColors.GREEN_BOLD + string + ConsoleColors.RESET); }
 
     private static String printBlue(String string){
         return  (ConsoleColors.BLUE + string + ConsoleColors.RESET);
@@ -29,9 +26,7 @@ public class StringToPrint {
         return  (ConsoleColors.YELLOW + string + ConsoleColors.RESET);
     }
 
-    private static String printGrey(String string){
-        return  (ConsoleColors.BLACK_BRIGHT + string + ConsoleColors.RESET);
-    }
+    private static String printGrey(String string){ return  (ConsoleColors.BLACK_BRIGHT + string + ConsoleColors.RESET); }
 
     private static String printPurple(String string){
         return  (ConsoleColors.PURPLE + string + ConsoleColors.RESET);
