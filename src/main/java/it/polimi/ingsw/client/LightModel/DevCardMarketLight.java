@@ -7,16 +7,17 @@ import it.polimi.ingsw.utils.ConsoleColors;
 
 import java.util.List;
 
+import static it.polimi.ingsw.utils.StaticUtils.NUMBER_OF_DEV_DECKS;
+
 /**
  * Lightweight representation of the DevCardMarket stored client-side
  */
 public class DevCardMarketLight {
     private final DevCard[] grid;
-    private final int NUMBER_OF_DECKS = 12;
     private final ParserForModel parser = new ParserForModel();
 
     public DevCardMarketLight() {
-        grid = new DevCard[NUMBER_OF_DECKS];
+        grid = new DevCard[NUMBER_OF_DEV_DECKS];
     }
 
     /**
@@ -25,7 +26,7 @@ public class DevCardMarketLight {
      */
     public void updateDevCardMarketLight(DevCardMarketUpdateMessage message){
         DevCard[] update = message.getDevCardMarketStatus();
-        for (int i = 0; i < NUMBER_OF_DECKS; i++)
+        for (int i = 0; i < NUMBER_OF_DEV_DECKS; i++)
             grid[i] = update[i];
     }
 

@@ -6,6 +6,8 @@ import it.polimi.ingsw.observer.FaithTrackObservable;
 import java.util.HashMap;
 import java.util.Map;
 
+import static it.polimi.ingsw.utils.StaticUtils.*;
+
 public class FaithTrack extends FaithTrackObservable {
 
     private Map<Integer, Integer> faithTrack = new HashMap<>();
@@ -22,12 +24,6 @@ public class FaithTrack extends FaithTrackObservable {
     private boolean thirdVaticanSectionPointsAchieved;
 
     private String owner;
-    private final int FIRST_VATICAN_SECTION = 5;
-    private final int SECOND_VATICAN_SECTION = 12;
-    private final int THIRD_VATICAN_SECTION = 19;
-    private final int FIRST_POPE_FAVOR_TILE_SCORE = 2;
-    private final int SECOND_POPE_FAVOR_TILE_SCORE = 3;
-    private final int THIRD_POPE_FAVOR_TILE_SCORE = 4;
     private VaticanReporter vaticanReporter;
 
     public FaithTrack(VaticanReporter vaticanReporter, String owner) {

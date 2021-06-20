@@ -3,29 +3,21 @@ package it.polimi.ingsw.client.LightModel;
 import it.polimi.ingsw.networking.message.updateMessage.FaithTrackUpdateMessage;
 import it.polimi.ingsw.utils.ConsoleColors;
 
+import static it.polimi.ingsw.utils.StaticUtils.*;
+
 /**
  * Lightweight representation of the FaithTrack stored client-side
  */
 public class FaithTrackLight{
 
-    private final int FAITH_TRACK_SIZE = 25;
+
     private int position;
-    private final int START_FIRST_VATICAN_SECTION = 5;
-    private final int END_FIRST_VATICAN_SECTION = 8;
-    private final int START_SECOND_VATICAN_SECTION = 12;
-    private final int END_SECOND_VATICAN_SECTION = 16;
-    private final int START_THIRD_VATICAN_SECTION = 19;
-    private final int END_THIRD_VATICAN_SECTION = 24;
-    private final int FIRST_POPE_FAVOR_TILE_SCORE = 2;
-    private final int SECOND_POPE_FAVOR_TILE_SCORE = 3;
-    private final int THIRD_POPE_FAVOR_TILE_SCORE = 4;
     private boolean firstPopeFavorAchieved = false;
     private boolean secondPopeFavorAchieved = false;
     private boolean thirdPopeFavorAchieved = false;
 
-
     /**
-     * Updates the status of the faith-tracka
+     * Updates the status of the faith-track
      * @param m content to update
      */
     public void update (FaithTrackUpdateMessage m){

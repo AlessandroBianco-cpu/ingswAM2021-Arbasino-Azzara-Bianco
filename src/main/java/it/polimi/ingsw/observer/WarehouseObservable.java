@@ -18,12 +18,6 @@ public class WarehouseObservable {
         }
     }
 
-    public void removeObserver(WarehouseObserver observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-
     public void notifyWarehouseState(Warehouse warehouse){
         synchronized (observers) {
             for(WarehouseObserver observer : observers){

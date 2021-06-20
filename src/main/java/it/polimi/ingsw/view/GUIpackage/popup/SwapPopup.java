@@ -29,10 +29,10 @@ import static it.polimi.ingsw.model.ResourceType.NOTHING;
 public class SwapPopup extends SceneObservable implements Popup {
 
     private Pane root;
-    private ImageView swapButton;
+    private final ImageView swapButton;
     private List<CheckBox> checkList;
-    private ChoiceBox choiceBox;
-    private ChoiceBox quantityBox;
+    private final ChoiceBox choiceBox;
+    private final ChoiceBox quantityBox;
     private List<Pane> depots;
     private List<Pane> extraLeaders;
     private List<Pane> extraDepots;

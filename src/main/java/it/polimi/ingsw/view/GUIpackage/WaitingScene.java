@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class WaitingScene extends UiObservable {
     private Pane root;
-    private Text messageText;
+    private final Text messageText;
 
     public WaitingScene(String toPrint) {
         try {

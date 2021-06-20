@@ -20,10 +20,11 @@ public class App {
                 new Thread(clientNetworkHandler).start();
                 new Thread(cli).start();
             }//start ServerApp
-            else if (args[0].equals("-server")){
+            else if (args[0].equals("-server")) {
+                int port = Integer.parseInt(args[1]);
                 Server server;
 
-                server = new Server();
+                server = new Server(port);
                 server.run();
             }
         } else //start GUI ClientApp

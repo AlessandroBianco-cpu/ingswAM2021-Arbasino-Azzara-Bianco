@@ -7,10 +7,11 @@ import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
 
+import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_ERROR_NUM;
+
 public class SinglePlayerGame extends Game implements LorenzoGameMethods, Serializable {
 
     private final LorenzoIlMagnifico lorenzoIlMagnifico;
-    private final int NOT_AVAILABLE_DECK = -1;
     private boolean lorenzoIsWinner;
 
     public SinglePlayerGame() {
@@ -41,13 +42,13 @@ public class SinglePlayerGame extends Game implements LorenzoGameMethods, Serial
         int destroyedCards = 0;
         int colorCode = devCardMarket.colorParser(color);
         int indexAvailable = devCardMarket.firstAvailableDeckByColor(colorCode);
-        while(destroyedCards < cardsToDestroy && indexAvailable != NOT_AVAILABLE_DECK){
+        while(destroyedCards < cardsToDestroy && indexAvailable != DEFAULT_ERROR_NUM){
             devCardMarket.getDeckByIndex(indexAvailable).popFirstCard();
             destroyedCards++;
             indexAvailable = devCardMarket.firstAvailableDeckByColor(colorCode);
         }
         devCardMarket.notifyDevCardMarketState(devCardMarket);
-        if(indexAvailable == NOT_AVAILABLE_DECK){
+        if(indexAvailable == DEFAULT_ERROR_NUM){
             setLorenzoWin();
         }
     }

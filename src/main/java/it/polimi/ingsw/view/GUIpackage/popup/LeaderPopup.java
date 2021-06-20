@@ -20,8 +20,8 @@ import java.io.IOException;
  */
 public class LeaderPopup extends SceneObservable implements Popup{
     private Pane root;
-    private ImageView activateButton;
-    private ImageView discardButton;
+    private final ImageView activateButton;
+    private final ImageView discardButton;
     private Pane leader;
     private int indexInHand;
 

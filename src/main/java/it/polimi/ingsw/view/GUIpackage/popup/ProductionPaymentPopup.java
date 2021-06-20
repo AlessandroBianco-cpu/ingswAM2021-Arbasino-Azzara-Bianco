@@ -34,7 +34,7 @@ public class ProductionPaymentPopup extends SceneObservable implements Popup {
     private List<Button> positiveButtons;
     private List<Button> negativeButtons;
     private List<Label> quantityLabel;
-    private ImageView doneButton;
+    private final ImageView doneButton;
     private List<Pane> toPay;
     private List<Text> quantityResources;
 

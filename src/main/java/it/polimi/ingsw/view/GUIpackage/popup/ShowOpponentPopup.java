@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.GUIpackage.popup;
 
-import it.polimi.ingsw.client.LightModel.ParserForModel;
 import it.polimi.ingsw.client.LightModel.PlayerLight;
 import it.polimi.ingsw.model.Cards.LeaderCard;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +30,7 @@ public class ShowOpponentPopup implements Popup {
     private List<Pane> leaders;
     private List<Pane> extraDepots;
     private List<Pane> popeSpaces;
-    private String title;
+    private final String title;
     private List<Label> strongboxLabel;
     private List<Pane> faithTrack;
     private Pane inkwell;

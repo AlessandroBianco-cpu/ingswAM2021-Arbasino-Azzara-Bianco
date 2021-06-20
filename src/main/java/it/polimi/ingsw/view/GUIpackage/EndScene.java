@@ -13,7 +13,7 @@ import java.io.IOException;
 public class EndScene extends UiObservable {
 
     private Pane root;
-    private Text textBox;
+    private final Text textBox;
 
     public EndScene(String message) {
         try {

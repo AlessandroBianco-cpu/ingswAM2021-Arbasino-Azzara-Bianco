@@ -2,9 +2,9 @@ package it.polimi.ingsw.model.Cards;
 
 public class CardRequirement extends Requirement {
 
-    private int level;
-    private int quantity;
-    private DevCardColor color;
+    private final int level;
+    private final int quantity;
+    private final DevCardColor color;
 
     public CardRequirement(int level, int quantity, DevCardColor color) {
         this.level = level;

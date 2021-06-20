@@ -19,7 +19,7 @@ import java.io.IOException;
 public class AlertPopup implements Popup{
     private Pane root;
     private Label messageLabel;
-    private ImageView closeButton;
+    private final ImageView closeButton;
 
     public AlertPopup() {
         try {

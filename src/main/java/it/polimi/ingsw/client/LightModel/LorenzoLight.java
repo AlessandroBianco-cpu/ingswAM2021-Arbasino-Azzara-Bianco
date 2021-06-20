@@ -4,11 +4,12 @@ import it.polimi.ingsw.model.LorenzoIlMagnifico.ActionToken;
 import it.polimi.ingsw.networking.message.updateMessage.LorenzoUpdateMessage;
 import it.polimi.ingsw.utils.ConsoleColors;
 
+import static it.polimi.ingsw.utils.StaticUtils.FAITH_TRACK_SIZE;
+
 /**
  * Lightweight representation of LorenzoIlMagnifico. It is stored client-side
  */
 public class LorenzoLight {
-    private final int FAITH_TRACK_SIZE = 25;
     private int position;
     private String lorenzoAction;
     private final ParserForModel parser;

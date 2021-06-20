@@ -17,8 +17,8 @@ import java.io.IOException;
  */
 public class NicknameScene extends UiObservable {
     private Pane root;
-    private ImageView joinButton;
-    private ImageView createButton;
+    private final ImageView joinButton;
+    private final ImageView createButton;
 
     public NicknameScene(String message) {
         try {

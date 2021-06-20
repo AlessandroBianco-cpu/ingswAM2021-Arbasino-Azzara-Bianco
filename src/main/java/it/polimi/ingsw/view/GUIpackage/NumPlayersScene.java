@@ -42,8 +42,6 @@ public class NumPlayersScene extends UiObservable {
         choiceBox.getItems().add("3 Players");
         choiceBox.getItems().add("4 Players");
 
-        choiceBox.setStyle("-fx-font: normal 14 'Avenir Book'");
-
         readyButton.setOnMouseClicked(event -> {
             String str = (String) choiceBox.getValue();
             switch (str) {

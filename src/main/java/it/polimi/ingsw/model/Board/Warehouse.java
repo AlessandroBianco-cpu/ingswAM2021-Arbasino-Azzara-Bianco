@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static it.polimi.ingsw.model.ResourceType.NOTHING;
+import static it.polimi.ingsw.utils.StaticUtils.NUMBER_OF_WAR_DEPOTS;
 
 public class Warehouse extends WarehouseObservable implements ResourceSpot {
 
     private final int NOT_EXISTS = -1;
-    private final int NUMBER_OF_DEPOTS = 3;
     private QuantityResource[] depots;
     private List<ExtraDepot> extraDepots;
 
     public Warehouse(){
-        depots=new QuantityResource[NUMBER_OF_DEPOTS];
-        for(int i = 0; i < NUMBER_OF_DEPOTS; i++){
+        depots = new QuantityResource[NUMBER_OF_WAR_DEPOTS];
+        for(int i = 0; i < NUMBER_OF_WAR_DEPOTS; i++){
            depots[i] = new QuantityResource(NOTHING,0);
         }
         this.extraDepots = new ArrayList<>();
@@ -121,7 +121,7 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
      * @return the index of the depot containing the resource type given as parameter
      */
     public int indexWithSameResource(ResourceType type){
-        for(int i=0; i<NUMBER_OF_DEPOTS; i++){
+        for(int i=0; i<NUMBER_OF_WAR_DEPOTS; i++){
             if(depots[i].getResourceType() == type)
                 return i;
         }
@@ -237,7 +237,7 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
      */
     public QuantityResource[] getDepots() {
         QuantityResource[] warehouseStatus = new QuantityResource[5];
-        for(int i = 0; i<NUMBER_OF_DEPOTS; i++){
+        for(int i = 0; i<NUMBER_OF_WAR_DEPOTS; i++){
             warehouseStatus[i] = depots[i];
         }
         if(extraDepots.size() == 0){
@@ -254,7 +254,7 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
     }
 
     public boolean depotIndexIsInBound(int depotIndex){
-        return depotIndex >= 0 && depotIndex < NUMBER_OF_DEPOTS;
+        return depotIndex >= 0 && depotIndex < NUMBER_OF_WAR_DEPOTS;
     }
 
     public boolean extraDepotIndexIsInBound(int extraDepotIndex){

@@ -24,8 +24,6 @@ public class ParserForModel {
                 return new ShieldLight();
             case STONE:
                 return new StoneLight();
-            case NOTHING:
-                return new NoResourceLight();
             default:
                 return new NoResourceLight();
         }
@@ -99,8 +97,6 @@ public class ParserForModel {
                 return new BlueMarbleLight();
             case STONE:
                 return new GreyMarbleLight();
-            case NOTHING:
-                return new WhiteMarbleLight();
             default:
                 return new WhiteMarbleLight();
         }

@@ -37,7 +37,7 @@ public class Lobby implements ConnectionObserver {
     private boolean lobbyIsReady; //lobby have the right number of players
     private boolean lobbyIsSettingUp; //distribution of cards and initial setting phase
 
-    public Lobby(int ID, EndGameObserver waitingRoom){
+    public Lobby (int ID, EndGameObserver waitingRoom) {
         virtualView = new VirtualView(waitingRoom, ID);
         userInputManager = new UserInputManager();
         this.endGameObserver = waitingRoom;
@@ -83,7 +83,7 @@ public class Lobby implements ConnectionObserver {
         return null;
     }
 
-    public void setGameEnded(boolean gameEnded) { this.gameEnded = gameEnded; }
+    public void setGameEnded (boolean gameEnded) { this.gameEnded = gameEnded; }
 
     /**
      * Calculate how many player are active
@@ -194,45 +194,36 @@ public class Lobby implements ConnectionObserver {
         System.out.println();
 
         if (gamePlayers.size() == 1)
-            startSinglePlayerGame(gamePlayers.get(0));
+            startSinglePlayerGame();
         else
-            startMultiPlayerGame(gamePlayers);
+            startMultiPlayerGame();
     }
 
     /**
      * Creates SingleGame and SingleController and starts a new match
-     * @param singlePlayer is the player of the singleGame
      */
-    private void startSinglePlayerGame(Player singlePlayer){
+    private void startSinglePlayerGame(){
 
         System.out.println("[LOBBY #"+ID+"] Single player game settings phase");
         SinglePlayerGame game = new SinglePlayerGame();
-        singlePlayer.setGame(game);
+        gamePlayers.get(0).setGame(game);
         game.addPlayers(gamePlayers);
 
-        List<Player> tmpPlayers = game.getPlayers();
-        //adding PlayerItemsObservers
-        for(Player p : tmpPlayers){
-            p.getPersonalBoard().getStrongbox().addObserver(virtualView);
-            p.getPersonalBoard().getFaithTrack().addObserver(virtualView);
-            p.getPersonalBoard().getWarehouse().addObserver(virtualView);
-            p.getPersonalBoard().addObserver(virtualView);
-        }
+        observersSettings(game);
         game.getLorenzoIlMagnifico().addObserver(virtualView);
-        game.getMarket().addObserver(virtualView);
-        game.getDevCardMarket().addObserver(virtualView);
 
         List<String> nicknames = new ArrayList<>();
-        nicknames.add(singlePlayer.getNickname());
+        nicknames.add(gamePlayers.get(0).getNickname());
         virtualView.setUp(nicknames,game.getDevCardMarket(),game.getMarket()); //setting the modelLight
-        controller = new SingleController(game,userInputManager,virtualView,singlePlayer);
+        controller = new SingleController(game,userInputManager,virtualView,gamePlayers.get(0));
 
         // distribution of leader cards
         controller.distributeLeaderCard();
         System.out.println("[LOBBY #"+ID+"] Leader cards chosen by the player");
 
-        virtualView.sendToCurrentPlayer(new FirstPlayerMessage(singlePlayer.getNickname()));
+        virtualView.sendToCurrentPlayer(new FirstPlayerMessage(gamePlayers.get(0).getNickname()));
         System.out.println("[LOBBY #"+ID+"] Single player game starts");
+        System.out.println();
         virtualView.sendToCurrentPlayer(new GameStartedMessage());
         lobbyIsSettingUp = false;
         controller.play();
@@ -240,9 +231,8 @@ public class Lobby implements ConnectionObserver {
 
     /**
      * Creates MultiGame and MultiController and starts a new match
-     * @param sortedPlayers multiPlayerGame players list
      */
-    private void startMultiPlayerGame(List<Player> sortedPlayers) {
+    private void startMultiPlayerGame() {
 
         System.out.println("[LOBBY #"+ID+"] Multiplayer game settings phase");
         Game game = new MultiPlayerGame();
@@ -250,7 +240,32 @@ public class Lobby implements ConnectionObserver {
         for(Player p : gamePlayers)
             p.setGame(game);
 
-        game.addPlayers(sortedPlayers);
+        game.addPlayers(gamePlayers);
+        observersSettings(game);
+
+        List<String> nicknames = new ArrayList<>();
+        for(Player p : gamePlayers) {
+            nicknames.add(p.getNickname());
+        }
+
+        virtualView.setUp(nicknames,game.getDevCardMarket(),game.getMarket()); //setting the modelLight
+        controller = new MultiController(game, userInputManager, virtualView, gamePlayers);
+
+        // distribution of leader cards
+        controller.distributeLeaderCard();
+        System.out.println("[LOBBY #"+ID+"] Leader cards chosen by all players");
+        // distribution of initial resources
+        controller.distributeInitialResource();
+        System.out.println("[LOBBY #"+ID+"] Initial resources chosen by all players");
+        virtualView.sendBroadcast(new FirstPlayerMessage(gamePlayers.get(0).getNickname()));
+        virtualView.sendBroadcast(new GameStartedMessage());
+        System.out.println("[LOBBY #"+ID+"] Set-Up completed, multiplayer game starts");
+        System.out.println();
+        lobbyIsSettingUp = false;
+        controller.play();
+    }
+
+    private void observersSettings(Game game) {
 
         List<Player> tmpPlayers = game.getPlayers();
         //adding PlayerItemsObservers
@@ -262,26 +277,6 @@ public class Lobby implements ConnectionObserver {
         }
         game.getMarket().addObserver(virtualView);
         game.getDevCardMarket().addObserver(virtualView);
-
-        List<String> nicknames = new ArrayList<>();
-        for(Player p : sortedPlayers) {
-            nicknames.add(p.getNickname());
-        }
-
-        virtualView.setUp(nicknames,game.getDevCardMarket(),game.getMarket()); //setting the modelLight
-        controller = new MultiController(game, userInputManager, virtualView, sortedPlayers);
-
-        // distribution of leader cards
-        controller.distributeLeaderCard();
-        System.out.println("[LOBBY #"+ID+"] Leader cards chosen by all players");
-        // distribution of initial resources
-        controller.distributeInitialResource();
-        System.out.println("[LOBBY #"+ID+"] Initial resources chosen by all players");
-        virtualView.sendBroadcast(new FirstPlayerMessage(sortedPlayers.get(0).getNickname()));
-        virtualView.sendBroadcast(new GameStartedMessage());
-        System.out.println("[LOBBY #"+ID+"] Set-Up completed, game starts");
-        lobbyIsSettingUp = false;
-        controller.play();
     }
 
     /**

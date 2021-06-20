@@ -3,6 +3,9 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.networking.message.Message;
 import it.polimi.ingsw.observer.ViewObserver;
 
+/**
+ * Class used to transfer the information of messages, nicknames and players number from virtualView/Lobby to controller
+ */
 public class UserInputManager implements ViewObserver {
 
     private Message actionMessage; //is the message sent by the client

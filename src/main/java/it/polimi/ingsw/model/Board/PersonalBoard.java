@@ -12,6 +12,8 @@ import it.polimi.ingsw.observer.ProductionZoneObservable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.utils.StaticUtils.CARDS_TO_END_GAME;
+
 public class PersonalBoard extends ProductionZoneObservable {
 
     private ResourcesStock generalResource;
@@ -22,7 +24,7 @@ public class PersonalBoard extends ProductionZoneObservable {
     private List<ProductionSlot> devCardSlots;
     private int numberBoughtCards;
     private final int NOT_IN_LIST = -1;
-    private final int CARDS_TO_END_GAME = 7;
+
 
 
     public PersonalBoard(Player owner, VaticanReporter vaticanReporter) {

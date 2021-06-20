@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-import static it.polimi.ingsw.utils.StringToPrint.*;
+import static it.polimi.ingsw.utils.StaticUtils.*;
 
 /**
  * CLI class
@@ -82,7 +82,7 @@ public class CLI extends UiObservable implements Runnable, View {
 
                 switch (s) {
                     case "?":
-                        giveLegenda();
+                        printListOfCommands();
                         break;
                     case "SHOW":
                         displayPersonalBoard(owner);
@@ -312,7 +312,7 @@ public class CLI extends UiObservable implements Runnable, View {
      */
     private void askDevCardSlotPosition(){
         System.out.println("Where do you want to place the DevCard?");
-        model.printBoughtCard(owner);
+        model.printBoughtCard();
         displayProductionZone();
         int position = getIntegerInput();
         while (position < 1 || position > 3){
@@ -463,11 +463,11 @@ public class CLI extends UiObservable implements Runnable, View {
      */
     public ResourceType askAResource(String toPrint) {
         System.out.print(toPrint);
-        System.out.println(printResourceLegenda);
+        System.out.println(resourcesPrintList);
         int resource = getIntegerInput();
         while(resource < 1 || resource > 4) {
             System.out.println(notInBoundMessage);
-            System.out.println(printResourceLegenda);
+            System.out.println(resourcesPrintList);
             resource = getIntegerInput();
         }
 
@@ -762,7 +762,7 @@ public class CLI extends UiObservable implements Runnable, View {
     /**
      * Prints all the command that player can insert to interact with server
      */
-    public void giveLegenda(){
+    public void printListOfCommands(){
         System.out.println("To activate production from development slots, type: " + printGreen("production"));
         System.out.println("To activate or discard a leader, type: " + printGreen("leader"));
         System.out.println("To buy a new development card, type: " + printGreen("buyCard"));
@@ -776,8 +776,6 @@ public class CLI extends UiObservable implements Runnable, View {
         System.out.println("To place a DevCard bought, type: " + printGreen("placeCard"));
         System.out.println("To pay the production, type: " + printGreen("payProd"));
         System.out.println("To show an opponent's personal board, type: " + printGreen("showOpponent"));
-
-        //anche dei comandi per avere le informazioni degli altri player!!
     }
 
     /**

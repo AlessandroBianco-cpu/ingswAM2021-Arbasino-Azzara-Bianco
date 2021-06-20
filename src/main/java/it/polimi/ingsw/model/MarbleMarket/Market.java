@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Market extends MarketObservable {
+import static it.polimi.ingsw.utils.StaticUtils.COL_SIZE;
+import static it.polimi.ingsw.utils.StaticUtils.ROW_SIZE;
 
-    private final int ROW_SIZE = 4;
-    private final int COL_SIZE = 3;
+public class Market extends MarketObservable {
 
     private Marble[][] marbleMatrix;
     private Marble marbleLeft;

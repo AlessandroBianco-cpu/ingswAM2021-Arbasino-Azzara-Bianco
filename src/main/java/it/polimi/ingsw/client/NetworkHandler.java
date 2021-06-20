@@ -217,7 +217,6 @@ public class NetworkHandler implements Runnable, UiObserver {
     @Override
     public void updateMessage(Message message) throws IOException {
         try {
-            //vedere se senza il reset il server gira meglio
             socketOut.reset();
             socketOut.writeObject(message);
             socketOut.flush();

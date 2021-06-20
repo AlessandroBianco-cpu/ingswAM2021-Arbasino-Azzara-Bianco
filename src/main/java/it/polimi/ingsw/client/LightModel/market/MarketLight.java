@@ -5,13 +5,13 @@ import it.polimi.ingsw.networking.message.updateMessage.MarketUpdateMessage;
 
 import java.util.List;
 
+import static it.polimi.ingsw.utils.StaticUtils.COL_SIZE;
+import static it.polimi.ingsw.utils.StaticUtils.ROW_SIZE;
+
 /**
  * Lightweight representation of the Marble Market
  */
 public class MarketLight {
-
-    private final int ROW_SIZE = 4;
-    private final int COL_SIZE = 3;
 
     private final MarbleLight[][] marbleMatrix;
     private MarbleLight marbleLeft;

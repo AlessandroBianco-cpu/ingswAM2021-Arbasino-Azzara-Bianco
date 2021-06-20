@@ -18,12 +18,6 @@ public class UiObservable {
         }
     }
 
-    public void removeObserver(UiObserver observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-
     public void notifyMessage(Message m){
         synchronized (observers) {
             for(UiObserver observer : observers){

@@ -60,7 +60,6 @@ public class SingleController implements Controller{
         virtualView.setCurrentPlayer(currentPlayer.getNickname());
         virtualView.startTurn();
 
-        //manda le nuove 4 carte del giocatore j-esimo
         virtualView.updateLeaderCards(currentPlayer.getLeaders());
         virtualView.requestInitialDiscard();
         ChooseLeaderMessage initialDiscarding = (ChooseLeaderMessage) uim.getActionMessage();
@@ -124,13 +123,11 @@ public class SingleController implements Controller{
      */
     public void performTurn(Player currentPlayer) {
 
-        //viene settato il giocatore corrente nella virtual view:essa gestirà l'invio del messaggio all'utente
         virtualView.setCurrentPlayer(currentPlayer.getNickname());
         setCurrentPlayerState(new BeforeMainActionState(this));
         setCurrentPlayerWantToEndTurn(false);
         virtualView.startTurn();
 
-        //gestione della fase di inizio turno (il player non ha ancora eseguito nessuna azione)
         while (!currentPlayerWantsToEndTurn) {
             virtualView.catchMessages();
             Message actionMessage = uim.getActionMessage();

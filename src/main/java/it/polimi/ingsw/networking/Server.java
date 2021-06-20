@@ -4,25 +4,31 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_SIZE;
+
 public class Server implements Runnable {
 
     ServerSocket serverSocket;
-    private final int SIZE = 10; // is the No. of lobbies supported
-    private final int PORT = 12345;
-    private WaitingRoom waitingRoom;
+    private final int port;
+    private final WaitingRoom waitingRoom;
+
+
+    public Server(int port) {
+        this.port = port;
+        this.waitingRoom = new WaitingRoom(DEFAULT_SIZE);
+    }
 
     /**
      * Manages clients' reception and creates new clientHandlers
      */
     public void run() {
             try {
-                serverSocket = new ServerSocket(PORT);
+                serverSocket = new ServerSocket(port);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("SERVER SOCKET CLOSED!");
             }
 
-            waitingRoom = new WaitingRoom(SIZE);
             while (true) {
                 try {
                     // Create socket

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DiscountCard extends LeaderCard {
 
-    private int discountAmount;
+    private final int discountAmount;
 
     public DiscountCard(List<Requirement> requirements, ResourceType resourceType, int id, int victoryPoints, int discountAmount) {
         super(requirements, resourceType, id, victoryPoints);

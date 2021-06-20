@@ -201,13 +201,13 @@ public class ModelLight {
 
     /**
      * Shows the leader cards possessed by the player player looked for
-     * @param nickname nickanme of the player looked for
+     * @param nickname nickname of the player looked for
      */
     public void printLeaderCardInHand(String nickname){getPlayerByNickname(nickname).printLeaderCardsInHand();}
 
     public void printOpponentLeaderCardInHand(String nickname){getPlayerByNickname(nickname).printOpponentLeaderCardsInHand();}
 
-    public void printBoughtCard(String nickname){
+    public void printBoughtCard(){
         getPlayerByNickname(owner).printBoughtCard();
     }
 }

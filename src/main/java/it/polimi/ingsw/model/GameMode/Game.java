@@ -11,6 +11,9 @@ import it.polimi.ingsw.model.VaticanReporter;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Abstract class extended by the single/multi match
+ */
 public abstract class Game implements VaticanReporter {
 
     List<Player> players = new LinkedList<>();
@@ -46,7 +49,7 @@ public abstract class Game implements VaticanReporter {
         this.leaderDeck = new LeaderDeck();
     }
 
-    public abstract void advanceAfterDiscard(Player discarder);
+    public abstract void advanceAfterDiscard(Player discardingPlayer);
 
     public DevCard popDevCardFromIndex(int index) {
         return devCardMarket.popDevCardFromIndex(index);

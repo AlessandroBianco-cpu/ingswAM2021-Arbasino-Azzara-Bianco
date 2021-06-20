@@ -18,12 +18,6 @@ public class FaithTrackObservable {
         }
     }
 
-    public void removeObserver(FaithTrackObserver observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-
     public void notifyFaithTrackState(FaithTrack faithTrack) {
         synchronized (observers) {
             for(FaithTrackObserver observer : observers){

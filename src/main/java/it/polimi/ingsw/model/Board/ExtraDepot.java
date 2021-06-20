@@ -4,13 +4,14 @@ import it.polimi.ingsw.model.QuantityResource;
 import it.polimi.ingsw.model.ResourceSpot;
 import it.polimi.ingsw.model.ResourceType;
 
+import static it.polimi.ingsw.utils.StaticUtils.EXTRA_DEPOT_MAX_SIZE;
+
 /**
  * The class represents the Extra Slot provided by the special ability
  * of the ExtraDepot Leader Cards
  */
 public class ExtraDepot implements ResourceSpot {
 
-    private final int MAX_SIZE = 2;
     private QuantityResource slot;
 
     public ExtraDepot(ResourceType resourceType) {
@@ -34,7 +35,7 @@ public class ExtraDepot implements ResourceSpot {
     }
 
     public int getMAX_SIZE() {
-        return MAX_SIZE;
+        return EXTRA_DEPOT_MAX_SIZE;
     }
 
     @Override

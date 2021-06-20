@@ -14,11 +14,11 @@
          </image>
       </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fafafa5e" height="149.0" layoutX="418.0" layoutY="477.0" stroke="#d8b32d" strokeType="INSIDE" strokeWidth="5.0" width="374.0" />
-      <TextField id="IPtext" layoutX="568.0" layoutY="508.0" prefHeight="26.0" prefWidth="204.0" promptText="IP Address">
+      <TextField id="IPtext" layoutX="568.0" layoutY="508.0" prefHeight="26.0" prefWidth="204.0" promptText="127.0.0.1">
          <font>
             <Font name="Avenir Next Bold" size="13.0" />
          </font></TextField>
-      <TextField id="PORTtext" layoutX="570.0" layoutY="553.0" prefHeight="26.0" prefWidth="201.0" promptText="Port Number">
+      <TextField id="PORTtext" layoutX="570.0" layoutY="553.0" prefHeight="26.0" prefWidth="201.0" promptText="12345">
          <font>
             <Font name="Avenir Next Bold" size="13.0" />
          </font></TextField>

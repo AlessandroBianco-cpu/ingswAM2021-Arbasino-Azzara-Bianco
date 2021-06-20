@@ -35,7 +35,6 @@ public class ProductionPopup extends SceneObservable implements Popup {
     private List<Pane> slot3;
     private List<Pane> leaderCards;
     private List<CheckBox> devSlots;
-    private boolean noExtraDev = true;
 
     public ProductionPopup(ProductionZoneLight zone, LeaderCardsInHandLight cards) {
 
@@ -141,17 +140,11 @@ public class ProductionPopup extends SceneObservable implements Popup {
         });
 
         devSlots.get(4).setOnMouseClicked(event -> {
-            if (basePower.get(3).isDisable())
-                basePower.get(3).setDisable(false);
-            else
-                basePower.get(3).setDisable(true);
+            basePower.get(3).setDisable(!basePower.get(3).isDisable());
         });
 
         devSlots.get(5).setOnMouseClicked(event ->{
-            if (basePower.get(4).isDisable())
-                basePower.get(4).setDisable(false);
-            else
-                basePower.get(4).setDisable(true);
+            basePower.get(4).setDisable(!basePower.get(4).isDisable());
         });
 
         startButton.setOnMouseClicked(event -> {

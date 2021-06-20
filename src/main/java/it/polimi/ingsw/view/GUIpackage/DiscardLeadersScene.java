@@ -22,8 +22,7 @@ public class DiscardLeadersScene extends UiObservable {
     private Pane root;
     private final ImageView readyButton;
     private final ArrayList<CheckBox> checkList;
-    List<Integer> indexes = new ArrayList<>();
-
+    private List<Integer> indexes = new ArrayList<>();
 
     public DiscardLeadersScene(List<LeaderCard> leaders) {
 

@@ -25,9 +25,8 @@ import java.util.List;
 public class MarketPopup extends SceneObservable implements Popup{
     private Pane root;
     private List<Button> selections;
-    private GridPane grid;
+    private final GridPane grid;
     private Pane marbleLeftPane;
-
 
     public MarketPopup(MarketLight market) {
 

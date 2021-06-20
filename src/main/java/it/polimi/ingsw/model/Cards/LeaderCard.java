@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.ResourceType;
 
 import java.util.List;
 
+/**
+ * Class used to implements the leader cards
+ */
 public abstract class LeaderCard extends Card {
 
     protected List <Requirement> requirements;

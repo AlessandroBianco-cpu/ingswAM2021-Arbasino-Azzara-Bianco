@@ -20,7 +20,7 @@ public class ClientHandler extends ConnectionObservable {
     private volatile boolean connected;
     private boolean myTurn;
     private Message answer;
-    private PingMessage pingMessage;
+    private final PingMessage pingMessage;
     private volatile boolean answerReady;
     private ObjectOutputStream socketOut;
     private ObjectInputStream socketIn;

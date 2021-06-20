@@ -19,7 +19,6 @@ public class ResourceBufferLight {
 
     // ------------------------ UPDATES ------------------------
 
-
     public void updateResourceBufferLight(CardPaymentResourceBufferUpdateMessage message){
         updateResourceBufferLight(message.getResourcesToPay());
     }

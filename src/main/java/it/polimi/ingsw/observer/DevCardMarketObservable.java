@@ -18,12 +18,6 @@ public class DevCardMarketObservable {
         }
     }
 
-    public void removeObserver(DevCardMarketObserver observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-
     public void notifyDevCardMarketState(DevCardMarket devCardMarket) {
         synchronized (observers) {
             for(DevCardMarketObserver observer : observers){

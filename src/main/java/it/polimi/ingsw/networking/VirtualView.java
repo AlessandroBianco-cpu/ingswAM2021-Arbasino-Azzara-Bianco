@@ -242,7 +242,9 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      *This method send a message to the current player
      * @param m is the message
      */
-    public void sendToCurrentPlayer(Message m){clients.get(currentPlayer).send(m);}
+    public void sendToCurrentPlayer(Message m) {
+        clients.get(currentPlayer).send(m);
+    }
 
     public void sendDisconnectionInSetUpGame(String quitPlayerNickname) {
         //send to other client a message that close theirs connections
@@ -316,7 +318,9 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     @Override
-    public void updateStrongboxState(Strongbox strongbox) { sendBroadcast(createStrongboxUpdateMessage(currentPlayer, strongbox)); }
+    public void updateStrongboxState(Strongbox strongbox) {
+        sendBroadcast(createStrongboxUpdateMessage(currentPlayer, strongbox));
+    }
 
     public FaithTrackUpdateMessage createFaithTrackUpdateMessage(FaithTrack faithTrack){
         return new FaithTrackUpdateMessage(faithTrack.getOwner(), faithTrack.getPosition(),
@@ -352,7 +356,9 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     @Override
-    public void updateDevCardMarketState(DevCardMarket devCardMarket) { sendBroadcast(createDevCardMarketUpdateState(devCardMarket)); }
+    public void updateDevCardMarketState(DevCardMarket devCardMarket) {
+        sendBroadcast(createDevCardMarketUpdateState(devCardMarket));
+    }
 
     public LorenzoUpdateMessage createLorenzoUpdateMessage(LorenzoIlMagnifico lorenzoIlMagnifico){
         return new LorenzoUpdateMessage(lorenzoIlMagnifico.getPosition(), lorenzoIlMagnifico.getLastTokenExecuted());
@@ -373,6 +379,8 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     @Override
-    public void updateProductionZoneState(PersonalBoard personalBoard) { sendBroadcast(createProductionZoneUpdateMessage(personalBoard)); }
+    public void updateProductionZoneState(PersonalBoard personalBoard) {
+        sendBroadcast(createProductionZoneUpdateMessage(personalBoard));
+    }
 
 }

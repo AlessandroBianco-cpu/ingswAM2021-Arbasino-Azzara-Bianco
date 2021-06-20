@@ -8,21 +8,22 @@ import it.polimi.ingsw.observer.DevCardMarketObservable;
 import java.util.HashMap;
 import java.util.Map;
 
+import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_ERROR_NUM;
+import static it.polimi.ingsw.utils.StaticUtils.NUMBER_OF_DEV_DECKS;
+
 public class DevCardMarket extends DevCardMarketObservable {
-    private final int NUMBER_OF_DECKS = 12;
-    private final int NOT_AVAILABLE = -1;
     private DevDeck[] devDecks;
 
     private Map<DevCardColor, Integer> colorMap;
     public DevCardMarket(){
         colorMap = new HashMap<>();
-        devDecks = new DevDeck[NUMBER_OF_DECKS];
+        devDecks = new DevDeck[NUMBER_OF_DEV_DECKS];
         colorMap.put(DevCardColor.GREEN,0);
         colorMap.put(DevCardColor.BLUE,1);
         colorMap.put(DevCardColor.YELLOW,2);
         colorMap.put(DevCardColor.PURPLE,3);
 
-        for (int i = 0; i < NUMBER_OF_DECKS; i++)
+        for (int i = 0; i < NUMBER_OF_DEV_DECKS; i++)
             devDecks[i] = new DevDeck();
 
         devDecks[0].greenLevelOneDeck();
@@ -54,16 +55,16 @@ public class DevCardMarket extends DevCardMarketObservable {
     }
 
     public int firstAvailableDeckByColor(int colorCode){
-        for(int index = colorCode; index<NUMBER_OF_DECKS; index+=4){
+        for(int index = colorCode; index<NUMBER_OF_DEV_DECKS; index+=4){
             if(devDecks[index].getDeckSize()>0){
                 return index;
             }
         }
-        return NOT_AVAILABLE;
+        return DEFAULT_ERROR_NUM;
     }
 
     public int getNumberOfDecks() {
-        return NUMBER_OF_DECKS;
+        return NUMBER_OF_DEV_DECKS;
     }
 
     public DevDeck getDeckByIndex(int index){

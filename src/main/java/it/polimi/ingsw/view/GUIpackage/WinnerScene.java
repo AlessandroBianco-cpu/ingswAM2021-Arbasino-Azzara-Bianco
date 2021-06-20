@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class WinnerScene extends UiObservable {
     private Pane root;
-    private Text winnerText;
+    private final Text winnerText;
 
     public WinnerScene(String winner) {
         try {
