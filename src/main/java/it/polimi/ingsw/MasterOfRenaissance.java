@@ -5,7 +5,7 @@ import it.polimi.ingsw.view.CLIpackage.CLI;
 import it.polimi.ingsw.view.GUIpackage.GUI;
 import javafx.application.Application;
 
-public class App {
+public class MasterOfRenaissance {
     public static void main(String[] args) {
 
         if (args.length > 0) {

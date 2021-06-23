@@ -1,4 +1,20 @@
 -------------------------------------------------------------------------------
 Test set: it.polimi.ingsw.model.Board.StrongboxTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in it.polimi.ingsw.model.Board.StrongboxTest
+Tests run: 4, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.006 s <<< FAILURE! - in it.polimi.ingsw.model.Board.StrongboxTest
+getNumResource  Time elapsed: 0 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <2> but was: <52>
+	at it.polimi.ingsw.model.Board.StrongboxTest.getNumResource(StrongboxTest.java:77)
+
+testIncreaseStrongbox  Time elapsed: 0 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <0> but was: <50>
+	at it.polimi.ingsw.model.Board.StrongboxTest.testIncreaseStrongbox(StrongboxTest.java:22)
+
+decreaseStrongbox  Time elapsed: 0.003 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <0> but was: <50>
+	at it.polimi.ingsw.model.Board.StrongboxTest.decreaseStrongbox(StrongboxTest.java:52)
+
+hasEnoughResources  Time elapsed: 0.001 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <false> but was: <true>
+	at it.polimi.ingsw.model.Board.StrongboxTest.hasEnoughResources(StrongboxTest.java:68)
+
