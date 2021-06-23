@@ -325,8 +325,13 @@ public class Lobby implements ConnectionObserver {
         System.out.println("[LOBBY #"+ID+"] Closing lobby: a client disconnects in set-up phase");
         System.out.println();
         deregisterConnection(disconnectedClient);
-        gameEnded = true;
-        controller.manageDisconnectionInSetUp(disconnectedClient.getUserNickname());
+        if (playersNumber == 1) {
+            endGameObserver.manageEndGame(ID);
+        }
+        else {
+            gameEnded = true;
+            controller.manageDisconnectionInSetUp(disconnectedClient.getUserNickname());
+        }
     }
 
     /**

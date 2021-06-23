@@ -23,7 +23,7 @@ public class SingleController implements Controller{
     private final Game game; //model
     private final UserInputManager uim;
     private final VirtualView virtualView;
-    private Player currentPlayer;
+    private final Player currentPlayer;
     private PlayerState currentState;
     private boolean currentPlayerWantsToEndTurn;
     private final LorenzoIlMagnifico lorenzoIlMagnifico;
@@ -81,12 +81,16 @@ public class SingleController implements Controller{
 
     }
 
-    //this method is only used in  the multiplayer Controller
-    @Override
-    public void manageRejoining(String nickname) { }
 
     @Override
-    public void manageDisconnectionInSetUp(String quitNickname) { virtualView.sendDisconnectionInSetUpGame(quitNickname); }
+    public void manageRejoining(String nickname) {
+        //this method is only used in  the multiplayer Controller
+    }
+
+    @Override
+    public void manageDisconnectionInSetUp(String quitNickname) {
+        //in single player we don't need to manage this disconnection
+    }
 
     /**
      * Handles player's turn shifts
