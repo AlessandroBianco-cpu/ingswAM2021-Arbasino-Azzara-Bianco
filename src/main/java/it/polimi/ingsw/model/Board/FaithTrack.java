@@ -10,7 +10,7 @@ import static it.polimi.ingsw.utils.StaticUtils.*;
 
 public class FaithTrack extends FaithTrackObservable {
 
-    private Map<Integer, Integer> faithTrack = new HashMap<>();
+    private final Map<Integer, Integer> faithTrack = new HashMap<>();
 
     private int position;
     private int vaticanReportFaithPoints;
@@ -23,8 +23,8 @@ public class FaithTrack extends FaithTrackObservable {
     private boolean secondVaticanSectionPointsAchieved;
     private boolean thirdVaticanSectionPointsAchieved;
 
-    private String owner;
-    private VaticanReporter vaticanReporter;
+    private final String owner;
+    private final VaticanReporter vaticanReporter;
 
     public FaithTrack(VaticanReporter vaticanReporter, String owner) {
         this.vaticanReporter = vaticanReporter;

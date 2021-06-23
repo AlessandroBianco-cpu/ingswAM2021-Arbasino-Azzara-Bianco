@@ -13,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Popup that displays all the available development cards
@@ -25,7 +26,7 @@ public class DevMarketPopup extends SceneObservable implements Popup{
     public DevMarketPopup(DevCard[] cards) {
 
         try {
-            root= FXMLLoader.load(getClass().getResource("/devCardMarketPopup.fxml"));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/devCardMarketPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,8 +75,8 @@ public class DevMarketPopup extends SceneObservable implements Popup{
         ObservableList<Node> children = gridPane.getChildren();
 
         for (Node node : children) {
-            Integer nodeRow = gridPane.getRowIndex(node);
-            Integer nodeCol = gridPane.getColumnIndex(node);
+            Integer nodeRow = GridPane.getRowIndex(node);
+            Integer nodeCol = GridPane.getColumnIndex(node);
 
             if(nodeRow == null)
                 nodeRow=0;

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
@@ -32,9 +31,14 @@
             <Font name="Avenir Next Bold" size="29.0" />
          </font>
       </Text>
-      <ImageView id="readyButton" fitHeight="25.0" fitWidth="130.0" layoutX="634.0" layoutY="590.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="connectButton" fitHeight="25.0" fitWidth="130.0" layoutX="635.0" layoutY="590.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@buttons/readyButton.png" />
+            <Image url="@buttons/connectButton.png" />
+         </image>
+      </ImageView>
+      <ImageView id="localGameButton" fitHeight="25.0" fitWidth="130.0" layoutX="450.0" layoutY="590.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@buttons/localGameButton.png" />
          </image>
       </ImageView>
    </children>

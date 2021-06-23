@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class Strongbox extends StrongboxObservable implements ResourceSpot {
 
-    private Map<ResourceType, Integer> resources = new HashMap<>();
+    private final Map<ResourceType, Integer> resources = new HashMap<>();
 
     public Strongbox(){
         resources.put(ResourceType.SERVANT, 50);
@@ -23,7 +23,7 @@ public class Strongbox extends StrongboxObservable implements ResourceSpot {
     }
 
     /**
-     * This method adds the given QuantityResource to the appropriate location of the stronbox
+     * This method adds the given QuantityResource to the appropriate location of the strongbox
      * @param resource quantityResource to add given after production
      */
     public void increaseStrongbox(QuantityResource resource){

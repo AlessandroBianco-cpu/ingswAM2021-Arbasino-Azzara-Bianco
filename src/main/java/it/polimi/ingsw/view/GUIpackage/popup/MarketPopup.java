@@ -18,26 +18,26 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Popup that handles the interaction with marbles market
  */
 public class MarketPopup extends SceneObservable implements Popup{
     private Pane root;
-    private List<Button> selections;
-    private final GridPane grid;
-    private Pane marbleLeftPane;
+    private final List<Button> selections;
+
 
     public MarketPopup(MarketLight market) {
 
         try {
-            root= FXMLLoader.load(getClass().getResource("/marblesMarketPopup.fxml"));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/marblesMarketPopup.fxml")));
         }  catch (IOException e) {
         e.printStackTrace();
         }
 
-        grid = (GridPane) root.lookup("#grid");
-        marbleLeftPane = (Pane) root.lookup("#marbleLeft");
+        GridPane grid = (GridPane) root.lookup("#grid");
+        Pane marbleLeftPane = (Pane) root.lookup("#marbleLeft");
 
         selections = new ArrayList<>();
         selections.add((Button) root.lookup("#row1"));
@@ -72,7 +72,7 @@ public class MarketPopup extends SceneObservable implements Popup{
         for(Button b : selections) {
             b.setOnMouseClicked(event -> {
                 boolean row = isRowButton(b);
-                int index = 0;
+                int index;
                 if (row)
                     index = selections.indexOf(b) +1;
                 else
@@ -103,8 +103,8 @@ public class MarketPopup extends SceneObservable implements Popup{
         ObservableList<Node> children = gridPane.getChildren();
 
         for (Node node : children) {
-            Integer nodeRow = gridPane.getRowIndex(node);
-            Integer nodeCol = gridPane.getColumnIndex(node);
+            Integer nodeRow = GridPane.getRowIndex(node);
+            Integer nodeCol = GridPane.getColumnIndex(node);
 
             if(nodeRow == null)
                 nodeRow=0;

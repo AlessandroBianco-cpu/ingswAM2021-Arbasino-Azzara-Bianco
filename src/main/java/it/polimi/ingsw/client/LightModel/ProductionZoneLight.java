@@ -19,6 +19,7 @@ public class ProductionZoneLight {
     private List<DevCard> thirdSlot;
     private List<ExtraDevCard> activatedExtraCards;
     private final ParserForModel parser = new ParserForModel();
+    
 
     public ProductionZoneLight() {
         activatedExtraCards = new ArrayList<>();

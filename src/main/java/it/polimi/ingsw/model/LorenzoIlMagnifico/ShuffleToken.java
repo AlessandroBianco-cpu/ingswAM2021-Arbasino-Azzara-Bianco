@@ -2,8 +2,8 @@ package it.polimi.ingsw.model.LorenzoIlMagnifico;
 
 public class ShuffleToken extends ActionToken{
 
-    private LorenzoIlMagnifico lorenzoIlMagnifico;
-    private TokenStack tokenStack;
+    private final LorenzoIlMagnifico lorenzoIlMagnifico;
+    private final TokenStack tokenStack;
 
     public ShuffleToken(LorenzoIlMagnifico lorenzoIlMagnifico, TokenStack tokenStack) {
         this.lorenzoIlMagnifico = lorenzoIlMagnifico;

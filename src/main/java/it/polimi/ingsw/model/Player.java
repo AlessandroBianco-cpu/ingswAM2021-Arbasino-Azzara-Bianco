@@ -16,11 +16,11 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
 
     private final String nickname;
     private boolean active;
-    private List<ResourceType> convertWhiteCards;
-    private List<QuantityResource> discountCards;
+    private final List<ResourceType> convertWhiteCards;
+    private final List<QuantityResource> discountCards;
     private PersonalBoard personalBoard;
-    private List<Marble> buffer;
-    private List<LeaderCard> leaders;
+    private final List<Marble> buffer;
+    private final List<LeaderCard> leaders;
     private Game game;
     private int victoryPoints;
     private Market market;
@@ -136,13 +136,11 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
      */
     public void marbleFilter(List<Marble> marbles){
         for (Marble marble : marbles) {
-            if(marble.convertResource().canAddToFaithTrack()){
+            if(marble.convertResource().canAddToFaithTrack())
                 moveForwardNPositions(1);
-            }else if(marble.isWhiteMarble() && convertWhiteCards.size() == 0){
-                 // if the marble can't be converted gets automatically "discarded"
-            }else{
+            else if( !(marble.isWhiteMarble() && convertWhiteCards.size() == 0))
                 buffer.add(marble);
-            }
+            //if the marble can't be converted, it get automatically discarded
         }
     }
 

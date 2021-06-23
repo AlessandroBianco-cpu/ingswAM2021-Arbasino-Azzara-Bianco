@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static it.polimi.ingsw.model.ResourceType.NOTHING;
 
@@ -23,35 +24,25 @@ import static it.polimi.ingsw.model.ResourceType.NOTHING;
 public class ShowOpponentPopup implements Popup {
 
     private Pane root;
-    private List<Pane> slot1;
-    private List<Pane> slot2;
-    private List<Pane> slot3;
-    private List<Pane> depots;
-    private List<Pane> leaders;
-    private List<Pane> extraDepots;
-    private List<Pane> popeSpaces;
     private final String title;
-    private List<Label> strongboxLabel;
-    private List<Pane> faithTrack;
-    private Pane inkwell;
 
     public ShowOpponentPopup(PlayerLight opponent) {
         title = opponent.getNickname()+"'s PlayerBoard";
 
         try {
-            root = FXMLLoader.load(getClass().getResource("/showOpponentPopup.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/showOpponentPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
 
-        strongboxLabel = new ArrayList<>();
+        List<Label> strongboxLabel = new ArrayList<>();
         strongboxLabel.add((Label) root.lookup("#qtaCoin"));
         strongboxLabel.add((Label) root.lookup("#qtaServant"));
         strongboxLabel.add((Label) root.lookup("#qtaShield"));
         strongboxLabel.add((Label) root.lookup("#qtaStone"));
-        inkwell = (Pane) root.lookup("#inkwell");
+        Pane inkwell = (Pane) root.lookup("#inkwell");
 
-        depots = new ArrayList<>();
+        List<Pane> depots = new ArrayList<>();
         depots.add((Pane) root.lookup("#firstDepot"));
         depots.add((Pane) root.lookup("#secondDepot1"));
         depots.add((Pane) root.lookup("#secondDepot2"));
@@ -59,41 +50,41 @@ public class ShowOpponentPopup implements Popup {
         depots.add((Pane) root.lookup("#thirdDepot2"));
         depots.add((Pane) root.lookup("#thirdDepot3"));
 
-        slot1 = new ArrayList<>();
+        List<Pane> slot1 = new ArrayList<>();
         for(int i = 0; i<3; i++) {
             int j = i+1;
             slot1.add((Pane) root.lookup("#slot1card"+j));
         }
 
-        slot2 = new ArrayList<>();
+        List<Pane> slot2 = new ArrayList<>();
         for(int i = 0; i<3; i++) {
             int j = i+1;
             slot2.add((Pane) root.lookup("#slot2card"+j));
         }
 
-        slot3 = new ArrayList<>();
+        List<Pane> slot3 = new ArrayList<>();
         for(int i = 0; i<3; i++) {
             int j = i+1;
             slot3.add((Pane) root.lookup("#slot3card"+j));
         }
 
-        popeSpaces = new ArrayList<>();
+        List<Pane> popeSpaces = new ArrayList<>();
         for(int i = 0; i<3; i++) {
             int j = i+1;
             popeSpaces.add((Pane) root.lookup("#popeSpace"+j));
         }
 
-        extraDepots = new ArrayList<>();
+        List<Pane> extraDepots = new ArrayList<>();
         extraDepots.add((Pane) root.lookup("#firstExtra1"));
         extraDepots.add((Pane) root.lookup("#firstExtra2"));
         extraDepots.add((Pane) root.lookup("#secondExtra1"));
         extraDepots.add((Pane) root.lookup("#secondExtra2"));
 
-        leaders = new ArrayList<>();
+        List<Pane> leaders = new ArrayList<>();
         leaders.add((Pane) root.lookup("#leaderCard1"));
         leaders.add((Pane) root.lookup("#leaderCard2"));
 
-        faithTrack = new ArrayList<>();
+        List<Pane> faithTrack = new ArrayList<>();
         for(int i = 0; i<25; i++)
             faithTrack.add((Pane) root.lookup("#slot"+i));
 
@@ -178,9 +169,8 @@ public class ShowOpponentPopup implements Popup {
      * Adds an ImageView to a Pane
      * @param pane where to add the image
      * @param image path
-     * @return the new image
      */
-    private ImageView addImage(Pane pane, String image) {
+    private void addImage(Pane pane, String image) {
         ImageView view = new ImageView();
         view.setImage(new Image(image));
 
@@ -188,9 +178,7 @@ public class ShowOpponentPopup implements Popup {
         view.fitWidthProperty().bind(pane.widthProperty());
         view.fitHeightProperty().bind(pane.heightProperty());
 
-        return view;
     }
-
 
     private void setLabelIntText(Label label, int toSet) {
         if(toSet > 0)

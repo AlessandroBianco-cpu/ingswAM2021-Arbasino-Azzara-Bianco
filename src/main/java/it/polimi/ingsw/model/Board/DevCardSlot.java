@@ -12,7 +12,8 @@ import java.util.List;
  * a card can be added to the Slot if and only if the card is a level higher than the one on the Slot
  */
 public class DevCardSlot extends ProductionSlot {
-    private List<DevCard> cards;
+
+    private final List<DevCard> cards;
 
     public DevCardSlot() {
         this.cards = new ArrayList<>();

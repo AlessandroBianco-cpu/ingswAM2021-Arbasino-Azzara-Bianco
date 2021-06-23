@@ -1,28 +1,28 @@
 package it.polimi.ingsw.view.GUIpackage;
 
-import it.polimi.ingsw.observer.UiObservable;
+import it.polimi.ingsw.observer.NetworkHandlerObservable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * This scene is used after a brutal closing server-side
  */
-public class EndScene extends UiObservable {
+public class EndScene extends NetworkHandlerObservable {
 
     private Pane root;
-    private final Text textBox;
 
     public EndScene(String message) {
         try {
-            root = FXMLLoader.load(getClass().getResource("/endScene.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/endScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        textBox = (Text) root.lookup("#textBox");
+        Text textBox = (Text) root.lookup("#textBox");
         textBox.setText(message);
     }
 

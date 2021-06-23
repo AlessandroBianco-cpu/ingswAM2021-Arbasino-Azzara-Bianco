@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Popup that handles all the possibles actions for the relative leader card
@@ -22,19 +23,17 @@ public class LeaderPopup extends SceneObservable implements Popup{
     private Pane root;
     private final ImageView activateButton;
     private final ImageView discardButton;
-    private Pane leader;
-    private int indexInHand;
-
+    private final int indexInHand;
 
     public LeaderPopup(LeaderCard leaderCard,int indexInHand) {
         this.indexInHand = indexInHand+1;
         try {
-            root= FXMLLoader.load(getClass().getResource("/leaderActionPopup.fxml"));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/leaderActionPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
 
-        leader = (Pane) root.lookup("#leader");
+        Pane leader = (Pane) root.lookup("#leader");
         activateButton = (ImageView) root.lookup("#activateButton");
         discardButton = (ImageView) root.lookup("#discardButton");
 

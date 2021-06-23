@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model.LorenzoIlMagnifico;
 
+import static it.polimi.ingsw.utils.StaticUtils.BLACK_TOKEN_SPACES;
+
 public class BlackToken extends ActionToken{
 
-    private final int NEXT_SPACE = 2;
     private final LorenzoIlMagnifico lorenzoIlMagnifico;
 
     public BlackToken(LorenzoIlMagnifico lorenzoIlMagnifico) {
@@ -14,7 +15,7 @@ public class BlackToken extends ActionToken{
      */
     @Override
     public void doAction() {
-        for (int i = 0; i < NEXT_SPACE; i++)
+        for (int i = 0; i < BLACK_TOKEN_SPACES; i++)
             lorenzoIlMagnifico.advance();
     }
 

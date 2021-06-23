@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class LeaderCardsInHandLight {
     private List<LeaderCard> cards;
-    private List<LeaderCard> activeCards;
-    private int sizeOfTotalLeadersInHand; //int value meant to be used to hide some informations when displaying opponent's leader cards
+    private final List<LeaderCard> activeCards;
+    private int sizeOfTotalLeadersInHand; //int value meant to be used to hide some information when displaying opponent's leader cards
     private final ParserForModel parser = new ParserForModel();
 
     public int getSizeOfTotalLeadersInHand() {

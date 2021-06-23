@@ -1,27 +1,27 @@
 package it.polimi.ingsw.view.GUIpackage;
 
-import it.polimi.ingsw.observer.UiObservable;
+import it.polimi.ingsw.observer.NetworkHandlerObservable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Scene that print the winner player and credits
  */
-public class WinnerScene extends UiObservable {
+public class WinnerScene extends NetworkHandlerObservable {
     private Pane root;
-    private final Text winnerText;
 
     public WinnerScene(String winner) {
         try {
-            root = FXMLLoader.load(getClass().getResource("/winnerScene.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/winnerScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        winnerText = (Text) root.lookup("#winnerText");
+        Text winnerText = (Text) root.lookup("#winnerText");
         winnerText.setText(winner);
     }
 

@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.GUIpackage;
 
 import it.polimi.ingsw.model.Cards.LeaderCard;
 import it.polimi.ingsw.networking.message.ChooseLeaderMessage;
-import it.polimi.ingsw.observer.UiObservable;
+import it.polimi.ingsw.observer.NetworkHandlerObservable;
 import it.polimi.ingsw.view.GUIpackage.popup.AlertPopup;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
@@ -14,20 +14,22 @@ import javafx.scene.layout.Pane;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Scene that displays the distributed cards and asks for discard
  */
-public class DiscardLeadersScene extends UiObservable {
+public class DiscardLeadersScene extends NetworkHandlerObservable {
     private Pane root;
     private final ImageView readyButton;
     private final ArrayList<CheckBox> checkList;
-    private List<Integer> indexes = new ArrayList<>();
+    private final List<Integer> indexes = new ArrayList<>();
+
 
     public DiscardLeadersScene(List<LeaderCard> leaders) {
 
         try {
-            root = FXMLLoader.load(getClass().getResource("/discardLeadersScene.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/discardLeadersScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

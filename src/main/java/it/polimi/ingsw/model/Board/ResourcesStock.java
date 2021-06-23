@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class ResourcesStock implements ResourceSpot {
 
-    private Map<ResourceType, Integer> resources = new HashMap<>();
+    private final Map<ResourceType, Integer> resources = new HashMap<>();
 
     public ResourcesStock(){
         resources.put(ResourceType.SERVANT, 50);

@@ -13,32 +13,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static it.polimi.ingsw.utils.StaticUtils.CARDS_TO_END_GAME;
+import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_ERROR_NUM;
 
 public class PersonalBoard extends ProductionZoneObservable {
 
-    private ResourcesStock generalResource;
-    private Strongbox strongbox;
+    private final ResourcesStock generalResource;
+    private final Strongbox strongbox;
     private final Player owner;
-    private Warehouse warehouse;
-    private FaithTrack faithTrack;
-    private List<ProductionSlot> devCardSlots;
+    private final Warehouse warehouse;
+    private final FaithTrack faithTrack;
+    private final List<ProductionSlot> devCardSlots;
     private int numberBoughtCards;
-    private final int NOT_IN_LIST = -1;
-
-
 
     public PersonalBoard(Player owner, VaticanReporter vaticanReporter) {
         this.generalResource = new ResourcesStock();
         this.owner = owner;
-        devCardSlots = new ArrayList<>();
-        devCardSlots.add(new BaseDevSlot());
-        devCardSlots.add(new DevCardSlot());
-        devCardSlots.add(new DevCardSlot());
-        devCardSlots.add(new DevCardSlot());
-        warehouse = new Warehouse();
-        faithTrack = new FaithTrack(vaticanReporter, owner.getNickname());
-        strongbox = new Strongbox();
-        numberBoughtCards = 0;
+        this.devCardSlots = new ArrayList<>();
+        this.devCardSlots.add(new BaseDevSlot());
+        this.devCardSlots.add(new DevCardSlot());
+        this.devCardSlots.add(new DevCardSlot());
+        this.devCardSlots.add(new DevCardSlot());
+        this.warehouse = new Warehouse();
+        this.faithTrack = new FaithTrack(vaticanReporter, owner.getNickname());
+        this.strongbox = new Strongbox();
+        this.numberBoughtCards = 0;
     }
 
     public void vaticanReport(int vaticanReportCounter) {
@@ -147,7 +145,7 @@ public class PersonalBoard extends ProductionZoneObservable {
             List<QuantityResource> productionResource = devCardSlots.get(i).getProductionPowerInput();
             for(QuantityResource q : productionResource){
                 int indexWithSameResource = isAlreadyIn(sumResources, q.getResourceType());
-                if(indexWithSameResource == NOT_IN_LIST){
+                if(indexWithSameResource == DEFAULT_ERROR_NUM){
                     QuantityResource toAdd = new QuantityResource(q.getResourceType(), q.getQuantity());
                     sumResources.add(toAdd);
                 }else{
@@ -249,7 +247,7 @@ public class PersonalBoard extends ProductionZoneObservable {
             if (resourceList.get(i).getResourceType() == resourceTypeToLookFor)
                 return i;
 
-        return NOT_IN_LIST;
+        return DEFAULT_ERROR_NUM;
     }
 
     /**
@@ -345,15 +343,6 @@ public class PersonalBoard extends ProductionZoneObservable {
             if (canUseDevSlot(i))
                 return true;
         return false;
-    }
-
-    public List<Integer> getSlotIndexesPlayerCanPlaceDevCard(DevCard devCard){
-        List<Integer> indexes = new ArrayList<>();
-        for (int i = 1; i < 4; i++){
-            if (devCard.getLevel() == ( ((DevCardSlot) devCardSlots.get(i)).getTopCardLevel() + 1))
-                indexes.add(i);
-        }
-        return indexes;
     }
 
     /**

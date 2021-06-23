@@ -11,7 +11,7 @@ import static it.polimi.ingsw.utils.StaticUtils.ROW_SIZE;
 
 public class Market extends MarketObservable {
 
-    private Marble[][] marbleMatrix;
+    private final Marble[][] marbleMatrix;
     private Marble marbleLeft;
 
     /**

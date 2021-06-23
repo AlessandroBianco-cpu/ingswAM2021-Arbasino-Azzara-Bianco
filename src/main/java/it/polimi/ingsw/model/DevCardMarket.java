@@ -12,10 +12,12 @@ import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_ERROR_NUM;
 import static it.polimi.ingsw.utils.StaticUtils.NUMBER_OF_DEV_DECKS;
 
 public class DevCardMarket extends DevCardMarketObservable {
-    private DevDeck[] devDecks;
 
-    private Map<DevCardColor, Integer> colorMap;
-    public DevCardMarket(){
+    private final DevDeck[] devDecks;
+
+    private final Map<DevCardColor, Integer> colorMap;
+
+    public DevCardMarket() {
         colorMap = new HashMap<>();
         devDecks = new DevDeck[NUMBER_OF_DEV_DECKS];
         colorMap.put(DevCardColor.GREEN,0);

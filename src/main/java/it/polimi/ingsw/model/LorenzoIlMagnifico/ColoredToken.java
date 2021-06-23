@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Cards.DevCardColor;
 import it.polimi.ingsw.model.LorenzoGameMethods;
 
 public abstract class ColoredToken extends ActionToken{
-    private LorenzoGameMethods lorenzoGameMethods;
+    private final LorenzoGameMethods lorenzoGameMethods;
     protected DevCardColor color;
 
     public ColoredToken(LorenzoGameMethods lorenzoGameMethods) {

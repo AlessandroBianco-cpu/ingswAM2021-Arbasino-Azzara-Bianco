@@ -26,8 +26,7 @@ public class DevCardMarketLight {
      */
     public void updateDevCardMarketLight(DevCardMarketUpdateMessage message){
         DevCard[] update = message.getDevCardMarketStatus();
-        for (int i = 0; i < NUMBER_OF_DEV_DECKS; i++)
-            grid[i] = update[i];
+        System.arraycopy(update, 0, grid, 0, NUMBER_OF_DEV_DECKS);
     }
 
     public DevCard[] getGrid() {

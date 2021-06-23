@@ -19,6 +19,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static it.polimi.ingsw.model.ResourceType.*;
 
@@ -28,25 +29,21 @@ import static it.polimi.ingsw.model.ResourceType.*;
 public class ProductionPopup extends SceneObservable implements Popup {
 
     private Pane root;
-    private List<Pane> slot1;
-    private List<Pane> slot2;
-    private ImageView startButton;
-    private List<ChoiceBox> basePower;
-    private List<Pane> slot3;
-    private List<Pane> leaderCards;
-    private List<CheckBox> devSlots;
+    private final ImageView startButton;
+    private final List<ChoiceBox<String>> basePower;
+    private final List<CheckBox> devSlots;
 
     public ProductionPopup(ProductionZoneLight zone, LeaderCardsInHandLight cards) {
 
         try {
-            root = FXMLLoader.load(getClass().getResource("/productionPopup.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/productionPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
 
-        slot1 = new ArrayList<>();
-        slot2 = new ArrayList<>();
-        slot3 = new ArrayList<>();
+        List<Pane> slot1 = new ArrayList<>();
+        List<Pane> slot2 = new ArrayList<>();
+        List<Pane> slot3 = new ArrayList<>();
         for(int i = 0; i<3; i++) {
             int j = i+1;
             slot1.add((Pane) root.lookup("#slot1card"+j));
@@ -64,7 +61,7 @@ public class ProductionPopup extends SceneObservable implements Popup {
         devSlots.get(4).setDisable(true);
         devSlots.get(5).setDisable(true);
 
-        leaderCards = new ArrayList<>();
+        List<Pane> leaderCards = new ArrayList<>();
         leaderCards.add((Pane) root.lookup("#leaderCard1"));
         leaderCards.add((Pane) root.lookup("#leaderCard2"));
 
@@ -78,11 +75,11 @@ public class ProductionPopup extends SceneObservable implements Popup {
         }
 
         basePower = new ArrayList<>();
-        basePower.add((ChoiceBox) root.lookup("#baseInput1"));
-        basePower.add((ChoiceBox) root.lookup("#baseInput2"));
-        basePower.add((ChoiceBox) root.lookup("#baseOutput"));
-        basePower.add((ChoiceBox) root.lookup("#leaderOut1"));
-        basePower.add((ChoiceBox) root.lookup("#leaderOut2"));
+        basePower.add((ChoiceBox<String>) root.lookup("#baseInput1"));
+        basePower.add((ChoiceBox<String>) root.lookup("#baseInput2"));
+        basePower.add((ChoiceBox<String>) root.lookup("#baseOutput"));
+        basePower.add((ChoiceBox<String>) root.lookup("#leaderOut1"));
+        basePower.add((ChoiceBox<String>) root.lookup("#leaderOut2"));
 
         basePower.get(0).setValue("input#1");
         basePower.get(1).setValue("input#2");
@@ -91,7 +88,7 @@ public class ProductionPopup extends SceneObservable implements Popup {
         basePower.get(4).setValue("output");
 
 
-        for(ChoiceBox choiceBox : basePower) {
+        for(ChoiceBox<String> choiceBox : basePower) {
             choiceBox.getItems().add("COIN");
             choiceBox.getItems().add("SHIELD");
             choiceBox.getItems().add("STONE");
@@ -99,7 +96,7 @@ public class ProductionPopup extends SceneObservable implements Popup {
             choiceBox.setDisable(true);
         }
 
-        for(ChoiceBox choiceBox : basePower) {
+        for(ChoiceBox<String> choiceBox : basePower) {
             choiceBox.setStyle("-fx-font: normal 14 'Avenir Book'");
         }
 
@@ -139,13 +136,9 @@ public class ProductionPopup extends SceneObservable implements Popup {
             }
         });
 
-        devSlots.get(4).setOnMouseClicked(event -> {
-            basePower.get(3).setDisable(!basePower.get(3).isDisable());
-        });
+        devSlots.get(4).setOnMouseClicked(event -> basePower.get(3).setDisable(!basePower.get(3).isDisable()));
 
-        devSlots.get(5).setOnMouseClicked(event ->{
-            basePower.get(4).setDisable(!basePower.get(4).isDisable());
-        });
+        devSlots.get(5).setOnMouseClicked(event -> basePower.get(4).setDisable(!basePower.get(4).isDisable()));
 
         startButton.setOnMouseClicked(event -> {
             if (parseCheckingList().size() == 0)
@@ -183,9 +176,9 @@ public class ProductionPopup extends SceneObservable implements Popup {
       return list;
     }
 
-    private ResourceType parseTextField (ChoiceBox choiceBox) {
+    private ResourceType parseTextField (ChoiceBox<String> choiceBox) {
         if( !(choiceBox.isDisable())) {
-            String str = (String) choiceBox.getValue();
+            String str = choiceBox.getValue();
             switch (str) {
                 case "SHIELD":
                     return SHIELD;

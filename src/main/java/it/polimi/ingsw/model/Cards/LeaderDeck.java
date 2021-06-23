@@ -10,12 +10,9 @@ import java.util.List;
 import static it.polimi.ingsw.model.Cards.DevCardColor.*;
 import static it.polimi.ingsw.model.ResourceType.*;
 
-/**
- * Class used to implements the leader cards decks
- */
 public class LeaderDeck extends Deck {
 
-    private List<LeaderCard> cards;
+    private final List<LeaderCard> cards;
 
     public LeaderDeck() {
 

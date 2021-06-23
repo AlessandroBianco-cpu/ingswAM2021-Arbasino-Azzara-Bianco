@@ -1,13 +1,17 @@
 package it.polimi.ingsw.view.CLIpackage;
 
 import it.polimi.ingsw.client.LightModel.ModelLight;
+import it.polimi.ingsw.client.LocalNetworkHandler;
+import it.polimi.ingsw.client.SocketNetworkHandler;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.networking.message.*;
 import it.polimi.ingsw.networking.message.updateMessage.*;
-import it.polimi.ingsw.observer.UiObservable;
+import it.polimi.ingsw.observer.NetworkHandler;
+import it.polimi.ingsw.observer.NetworkHandlerObservable;
 import it.polimi.ingsw.utils.ConsoleColors;
 import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -18,19 +22,21 @@ import static it.polimi.ingsw.utils.StaticUtils.*;
 /**
  * CLI class
  */
-public class CLI extends UiObservable implements Runnable, View {
+public class CLI extends NetworkHandlerObservable implements Runnable, View {
 
     private final Scanner in;
     private String owner;
-    private boolean gameCreated = false;
-    private boolean gameStarted = false;
-    private ModelLight model = new ModelLight();
+    private boolean gameCreated;
+    private boolean gameStarted;
+    private final ModelLight model;
 
     //variables sent from Server
-    private int playersNumber = 0;
     private int resToAdd = 0;
 
     public CLI() {
+        gameStarted = false;
+        gameCreated = false;
+        model = new ModelLight();
         this.in = new Scanner(System.in);
     }
 
@@ -39,7 +45,11 @@ public class CLI extends UiObservable implements Runnable, View {
      */
     @Override
     public void run() {
-        askConnection();
+        try {
+            askConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         startGame();
     }
 
@@ -82,7 +92,7 @@ public class CLI extends UiObservable implements Runnable, View {
 
                 switch (s) {
                     case "?":
-                        printListOfCommands();
+                        helperPrints();
                         break;
                     case "SHOW":
                         displayPersonalBoard(owner);
@@ -463,11 +473,11 @@ public class CLI extends UiObservable implements Runnable, View {
      */
     public ResourceType askAResource(String toPrint) {
         System.out.print(toPrint);
-        System.out.println(resourcesPrintList);
+        System.out.println(listOfResources);
         int resource = getIntegerInput();
         while(resource < 1 || resource > 4) {
             System.out.println(notInBoundMessage);
-            System.out.println(resourcesPrintList);
+            System.out.println(listOfResources);
             resource = getIntegerInput();
         }
 
@@ -488,13 +498,11 @@ public class CLI extends UiObservable implements Runnable, View {
                 while (x < 1 || x > 4 || indexes.contains(x)) {
                     if (indexes.contains(x)) {
                         System.out.println("You have already insert this index!");
-                        System.out.println("Insert the index of the card you want to discard:");
-                        x = getIntegerInput();
                     } else {
                         System.out.println(notInBoundMessage);
-                        System.out.println("Insert the index of the card you want to discard:");
-                        x = getIntegerInput();
                     }
+                    System.out.println("Insert the index of the card you want to discard:");
+                    x = getIntegerInput();
                 }
                 indexes.add(x);
             }
@@ -603,12 +611,26 @@ public class CLI extends UiObservable implements Runnable, View {
     /**
      * Asks the player the connection settings
      */
-    private void askConnection() {
-        System.out.println("IP address of server?");
-        String ip = in.nextLine();
-        System.out.println("Port?");
-        String port = in.nextLine();
-        notifyConnection(ip, port);
+    private void askConnection() throws IOException {
+        boolean localGame = booleanRequest("Do you want to play a local SP game or an online game? 1-> yes, 0-> no");
+        NetworkHandler networkHandler;
+        if (localGame){
+            networkHandler = new LocalNetworkHandler(this);
+            addObserver(networkHandler);
+            new Thread(networkHandler).start();
+            notifyConnection("local", "local");
+        } else {
+            networkHandler = new SocketNetworkHandler(this);
+            addObserver(networkHandler);
+            new Thread(networkHandler).start();
+
+            System.out.println("IP address of server?");
+            String ip = in.nextLine();
+            System.out.println("Port?");
+            String port = in.nextLine();
+            notifyConnection(ip, port);
+        }
+
     }
 
     // ------------------------ UTIL ------------------------
@@ -696,9 +718,8 @@ public class CLI extends UiObservable implements Runnable, View {
      */
     @Override
     public void updatePlayersNumber(int num) {
-        playersNumber = num;
         if (gameCreated)
-            displayNumberOfPlayers(playersNumber);
+            displayNumberOfPlayers(num);
     }
 
     @Override
@@ -762,7 +783,7 @@ public class CLI extends UiObservable implements Runnable, View {
     /**
      * Prints all the command that player can insert to interact with server
      */
-    public void printListOfCommands(){
+    public void helperPrints(){
         System.out.println("To activate production from development slots, type: " + printGreen("production"));
         System.out.println("To activate or discard a leader, type: " + printGreen("leader"));
         System.out.println("To buy a new development card, type: " + printGreen("buyCard"));
@@ -776,6 +797,7 @@ public class CLI extends UiObservable implements Runnable, View {
         System.out.println("To place a DevCard bought, type: " + printGreen("placeCard"));
         System.out.println("To pay the production, type: " + printGreen("payProd"));
         System.out.println("To show an opponent's personal board, type: " + printGreen("showOpponent"));
+
     }
 
     /**
@@ -786,13 +808,6 @@ public class CLI extends UiObservable implements Runnable, View {
     public String printGreen(String string){
         return (ConsoleColors.GREEN_BOLD + string + ConsoleColors.RESET);
     }
-
-    /**
-     * Method used to print in red Uppercase
-     * @param string string to print
-     * @return the input string in green
-     */
-    public String printRedCaps(String string){return (ConsoleColors.RED_BOLD + string.toUpperCase() + ConsoleColors.RESET); }
 
     /**
      * Displays the game table

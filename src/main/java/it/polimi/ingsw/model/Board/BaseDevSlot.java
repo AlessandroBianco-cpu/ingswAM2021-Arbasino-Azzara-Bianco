@@ -18,7 +18,6 @@ public class BaseDevSlot extends ProductionSlot{
     public BaseDevSlot() {
         productionPowerInput = new ArrayList<>();
         productionPowerOutput = new ArrayList<>();
-
     }
 
     @Override

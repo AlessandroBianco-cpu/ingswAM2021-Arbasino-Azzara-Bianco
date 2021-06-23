@@ -4,9 +4,6 @@ import it.polimi.ingsw.model.QuantityResource;
 
 import java.util.List;
 
-/**
- * Class used to implements the development cards
- */
 public class DevCard extends Card {
 
     private final int level;

@@ -1,10 +1,13 @@
 package it.polimi.ingsw.view.GUIpackage;
 
-import it.polimi.ingsw.client.LightModel.*;
+import it.polimi.ingsw.client.LightModel.ModelLight;
+import it.polimi.ingsw.client.LightModel.ProductionZoneLight;
+import it.polimi.ingsw.client.LightModel.ResourceLight;
+import it.polimi.ingsw.client.LightModel.StrongboxLight;
 import it.polimi.ingsw.model.Cards.LeaderCard;
 import it.polimi.ingsw.networking.message.EndTurnMessage;
 import it.polimi.ingsw.networking.message.Message;
-import it.polimi.ingsw.observer.UiObservable;
+import it.polimi.ingsw.observer.NetworkHandlerObservable;
 import it.polimi.ingsw.view.GUIpackage.popup.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ChoiceBox;
@@ -19,21 +22,16 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Main scene of the game, it implements all the actions which player can do
  */
-public class PlayerBoardScene extends UiObservable implements SceneObserver {
-    private ModelLight gameModel;
+public class PlayerBoardScene extends NetworkHandlerObservable implements SceneObserver {
+    private final ModelLight gameModel;
     private final String owner;
 
     private Pane root;
-    private final ImageView showButton;
-    private final ImageView endTurnButton;
-    private final ImageView productionButton;
-    private final ImageView marketButton;
-    private final ImageView swapButton;
-    private final ImageView buyButton;
     private final List<Pane> slot1;
     private final List<Pane> slot2;
     private final List<Pane> slot3;
@@ -41,8 +39,7 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
     private final List<Pane> leaders;
     private final List<Pane> extraDepots;
     private final List<Pane> popeSpaces;
-    private final ChoiceBox showChoice;
-    private final Pane inkwell;
+    private final ChoiceBox<String> showChoice;
     private final Text consoleText;
     private final List<Label> strongboxLabel;
     private final List<Pane> faithTrack;
@@ -53,22 +50,22 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
         gameModel = model;
 
         try {
-            root = FXMLLoader.load(getClass().getResource("/playerBoardScene.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/playerBoardScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         List<ImageView> buttonsList = new ArrayList<>();
-        buyButton = (ImageView) root.lookup("#buyButton");
-        swapButton = (ImageView) root.lookup("#swapButton");
-        marketButton = (ImageView) root.lookup("#marketButton");
-        showButton = (ImageView) root.lookup("#showButton");
-        productionButton = (ImageView) root.lookup("#productionButton");
-        inkwell = (Pane) root.lookup("#inkwell");
+        ImageView buyButton = (ImageView) root.lookup("#buyButton");
+        ImageView swapButton = (ImageView) root.lookup("#swapButton");
+        ImageView marketButton = (ImageView) root.lookup("#marketButton");
+        ImageView showButton = (ImageView) root.lookup("#showButton");
+        ImageView productionButton = (ImageView) root.lookup("#productionButton");
+        ImageView endTurnButton = (ImageView) root.lookup("#endButton");
+        Pane inkwell = (Pane) root.lookup("#inkwell");
 
-        showChoice = (ChoiceBox) root.lookup("#showChoice");
+        showChoice = (ChoiceBox<String>) root.lookup("#showChoice");
         consoleText = (Text) root.lookup("#consoleText");
-        endTurnButton = (ImageView) root.lookup("#endButton");
 
         buttonsList.add(buyButton);
         buttonsList.add(swapButton);
@@ -106,6 +103,7 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
             im.setOnMouseEntered(event -> im.setEffect(shadow));
             im.setOnMouseExited(event -> im.setEffect(null));
         }
+
 
         if (model.getNumberOfPlayers() == 1) {
             showChoice.setValue("LorenzoIlMagnifico");
@@ -160,7 +158,7 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
         updatePopeTiles();
         displayLeaders();
 
-        showChoice.setStyle("-fx-font: normal 16 'Avenir Book'");
+        showChoice.setStyle("-fx-font: normal 14 'Avenir Book'");
 
         for(Pane pane : leaders)
             pane.setOnMouseClicked(event -> {
@@ -192,10 +190,10 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
         endTurnButton.setOnMouseClicked(event -> notifyMessage(new EndTurnMessage()));
 
         showButton.setOnMouseClicked(event -> {
-            if (showChoice.getValue().toString().equals("LorenzoIlMagnifico"))
+            if (showChoice.getValue().equals("LorenzoIlMagnifico"))
                 new LorenzoPopup(model.getLorenzoPosition(),model.getLorenzoLatestUsedToken()).display();
             else
-                new ShowOpponentPopup(model.getPlayerByNickname(showChoice.getValue().toString())).display();
+                new ShowOpponentPopup(model.getPlayerByNickname(showChoice.getValue())).display();
         });
 
         productionButton.setOnMouseClicked(event -> {
@@ -326,7 +324,6 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
         List<LeaderCard> inHand = gameModel.getPlayerByNickname(owner).getLeaderCardsInHand().getCards();
         for (int leaderCardIndex = 0; leaderCardIndex < inHand.size(); leaderCardIndex++) {
             LeaderCard current = inHand.get(leaderCardIndex);
-            ParserForModel parser = new ParserForModel();
             if (current.isExtraDepotCard() && current.isActive()) {
                 int extraDepotIndex = gameModel.getPlayerByNickname(owner).getWarehouse().getExtraDepotsIndexByType(current.getAbilityResource());
                 if(extraDepotIndex != -1){
@@ -346,9 +343,8 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
      * Adds an ImageView to a Pane
      * @param pane where to add the image
      * @param image path
-     * @return the new image
      */
-    private ImageView addImage(Pane pane, String image) {
+    private void addImage(Pane pane, String image) {
         ImageView view = new ImageView();
         view.setImage(new Image(image));
 
@@ -356,7 +352,6 @@ public class PlayerBoardScene extends UiObservable implements SceneObserver {
         view.fitWidthProperty().bind(pane.widthProperty());
         view.fitHeightProperty().bind(pane.heightProperty());
 
-        return view;
     }
 
     private void setLabelIntText(Label label, int toSet) {

@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Popup that shows  Lorenzo's information
@@ -19,19 +20,17 @@ import java.util.List;
 public class LorenzoPopup implements Popup {
 
     private Pane root;
-    private Pane activatedToken;
-    private List<Pane> positions;
 
     public LorenzoPopup(int pos, ActionToken lastToken) {
 
         try {
-            root= FXMLLoader.load(getClass().getResource("/lorenzoPopup.fxml"));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/lorenzoPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
 
-        activatedToken = (Pane) root.lookup("#activatedToken");
-        positions = new ArrayList<>();
+        Pane activatedToken = (Pane) root.lookup("#activatedToken");
+        List<Pane> positions = new ArrayList<>();
 
         for(int i = 0; i<25; i++)
             positions.add((Pane) root.lookup("#slot"+i));
@@ -61,9 +60,8 @@ public class LorenzoPopup implements Popup {
      * Adds an ImageView to a Pane
      * @param pane where to add the image
      * @param image path
-     * @return the new image
      */
-    private ImageView addImage(Pane pane, String image) {
+    private void addImage(Pane pane, String image) {
         ImageView view = new ImageView();
         view.setImage(new Image(image));
 
@@ -71,7 +69,6 @@ public class LorenzoPopup implements Popup {
         view.fitWidthProperty().bind(pane.widthProperty());
         view.fitHeightProperty().bind(pane.heightProperty());
 
-        return view;
     }
 
     @Override

@@ -9,7 +9,7 @@ public class YellowMarble extends Marble {
     }
 
     /**
-     * Converts the YellowMarble into a coint
+     * Converts the YellowMarble into a coin
      * @return a Coin QuantityResource
      */
     @Override

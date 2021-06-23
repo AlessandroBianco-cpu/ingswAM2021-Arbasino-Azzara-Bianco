@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.LorenzoIlMagnifico;
 
-import it.polimi.ingsw.model.DevCardMarket;
 import it.polimi.ingsw.model.LorenzoGameMethods;
 import it.polimi.ingsw.observer.LorenzoObservable;
 
@@ -10,10 +9,9 @@ import java.io.Serializable;
 public class LorenzoIlMagnifico extends LorenzoObservable implements Serializable {
 
     private int position;
-    private TokenStack tokenStack;
+    private final TokenStack tokenStack;
     private ActionToken lastTokenExecuted;
-    private DevCardMarket devCardMarket;
-    private LorenzoGameMethods lorenzoGameMethods;
+    private final LorenzoGameMethods lorenzoGameMethods;
     private boolean firstVaticanReportHasOccurred;
     private boolean secondVaticanReportHasOccurred;
     private boolean thirdVaticanReportHasOccurred;
@@ -21,7 +19,7 @@ public class LorenzoIlMagnifico extends LorenzoObservable implements Serializabl
     public LorenzoIlMagnifico(LorenzoGameMethods lorenzoGameMethods) {
         this.position = 0;
         this.tokenStack = new TokenStack(this, lorenzoGameMethods);
-        this.lorenzoGameMethods=lorenzoGameMethods;
+        this.lorenzoGameMethods = lorenzoGameMethods;
         firstVaticanReportHasOccurred = false;
         secondVaticanReportHasOccurred = false;
         thirdVaticanReportHasOccurred = false;

@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.NetworkHandler;
-import it.polimi.ingsw.networking.Server;
+import it.polimi.ingsw.networking.socketGame.Server;
 import it.polimi.ingsw.view.CLIpackage.CLI;
 import it.polimi.ingsw.view.GUIpackage.GUI;
 import javafx.application.Application;
@@ -14,15 +13,11 @@ public class App {
                 //start CLI ClientApp
                 CLI cli = new CLI();
 
-                NetworkHandler clientNetworkHandler = new NetworkHandler(cli);
-                cli.addObserver(clientNetworkHandler);
-
-                new Thread(clientNetworkHandler).start();
                 new Thread(cli).start();
             }//start ServerApp
-            else if (args[0].equals("-server")) {
-                int port = Integer.parseInt(args[1]);
+            else if (args[0].equals("-server")){
                 Server server;
+                int port = Integer.parseInt(args[1]);
 
                 server = new Server(port);
                 server.run();

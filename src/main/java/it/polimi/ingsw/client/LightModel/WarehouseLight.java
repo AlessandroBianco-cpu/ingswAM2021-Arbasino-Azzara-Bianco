@@ -12,8 +12,8 @@ import static it.polimi.ingsw.model.ResourceType.NOTHING;
 public class WarehouseLight {
 
     private ResourceLight firstDepot;
-    private ResourceLight[] secondDepot;
-    private ResourceLight[] thirdDepot;
+    private final ResourceLight[] secondDepot;
+    private final ResourceLight[] thirdDepot;
     private ResourceLight firstExtraDepot;
     private ResourceLight secondExtraDepot;
     private int firstExtraDepotQuantity;

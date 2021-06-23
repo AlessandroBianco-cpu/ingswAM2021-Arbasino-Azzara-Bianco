@@ -13,7 +13,6 @@ import it.polimi.ingsw.networking.message.updateMessage.CardPaymentResourceBuffe
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * State used to manage the purchase of a developmentCard
  */
@@ -75,6 +74,12 @@ public class BuyDevCardState  extends  PlayerState{
     private void applyPayment(DevCardPaymentMessage message){
         int totalResourceGiven = 0;
         ResourceType givenResourceType = message.getResourceType();
+
+        if (!resourceTypeIsInListToPay(givenResourceType)){
+            controller.sendErrorToCurrentPlayer("You don't have to pay this type of resource!");
+            return;
+        }
+
         if (message.wantsToApplyDiscount()){
             if(controller.canApplyDiscount(givenResourceType)){
                 totalResourceGiven -= controller.getDiscountAmount(givenResourceType); //because the discount is a negative number
@@ -90,7 +95,8 @@ public class BuyDevCardState  extends  PlayerState{
 
         if (!(controller.playerHasEnoughResourcesInStrongbox(new QuantityResource(givenResourceType, fromStrongbox))
             && controller.playerHasEnoughResourcesInWarehouse(new QuantityResource(givenResourceType, fromWarehouse))
-            && controller.playerHasEnoughResourcesInExtraDepot(new QuantityResource(givenResourceType, fromExtraDepot)))){
+            && controller.playerHasEnoughResourcesInExtraDepot(new QuantityResource(givenResourceType, fromExtraDepot)))
+            ){
             controller.sendErrorToCurrentPlayer("You don't have the inserted resources in your resource spots!");
             return;
         }
@@ -125,6 +131,19 @@ public class BuyDevCardState  extends  PlayerState{
                 return;
             }
         }
+    }
+
+    /**
+     * Method used to retrieve if a resource type is in the list of resources to pay
+     * @param resourceType resource type to check
+     * @return true if present, false otherwise
+     */
+    private boolean resourceTypeIsInListToPay(ResourceType resourceType){
+        for (QuantityResource resourceToPay : listResourcesToPay){
+            if (resourceToPay.getResourceType() == resourceType)
+                return true;
+        }
+        return false;
     }
 
 }

@@ -20,6 +20,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static it.polimi.ingsw.model.ResourceType.NOTHING;
 
@@ -30,27 +31,25 @@ public class SwapPopup extends SceneObservable implements Popup {
 
     private Pane root;
     private final ImageView swapButton;
-    private List<CheckBox> checkList;
-    private final ChoiceBox choiceBox;
-    private final ChoiceBox quantityBox;
-    private List<Pane> depots;
-    private List<Pane> extraLeaders;
-    private List<Pane> extraDepots;
+    private final List<CheckBox> checkList;
+    private final List<Pane> extraLeaders;
+    private final ChoiceBox<String> choiceBox;
+    private final ChoiceBox<String> quantityBox;
     private boolean noExtra = true;
     private int chosenExtra = -1;
-    private boolean isClosable;
+    private final boolean isClosable;
 
     public SwapPopup(WarehouseLight warehouse, LeaderCardsInHandLight leaders, boolean isClosable) {
         this.isClosable = isClosable;
         try {
-            root= FXMLLoader.load(getClass().getResource("/swapPopup.fxml"));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/swapPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
 
-        quantityBox = ((ChoiceBox) root.lookup("#quantityBox"));
         swapButton = (ImageView) root.lookup("#swapButton");
-        choiceBox = (ChoiceBox) root.lookup("#choiceBox");
+        quantityBox = ((ChoiceBox<String>) root.lookup("#quantityBox"));
+        choiceBox = (ChoiceBox<String>) root.lookup("#choiceBox");
         choiceBox.setValue("warehouse->extra");
         choiceBox.getItems().add("warehouse->extra");
         choiceBox.getItems().add("extra->warehouse");
@@ -58,7 +57,7 @@ public class SwapPopup extends SceneObservable implements Popup {
         quantityBox.getItems().add("1");
         quantityBox.getItems().add("2");
 
-        depots = new ArrayList<>();
+        List<Pane> depots = new ArrayList<>();
         for(int i=0; i<6; i++) {
             int j = i+1;
             depots.add((Pane) root.lookup("#"+j));
@@ -68,10 +67,11 @@ public class SwapPopup extends SceneObservable implements Popup {
             if(!(warehouse.getDepots()[i].getResource().equals(NOTHING)))
                 addImage(depots.get(i),warehouse.getDepots()[i].toImage());
 
+
         extraLeaders = new ArrayList<>();
         extraLeaders.add((Pane) root.lookup("#leader1"));
         extraLeaders.add((Pane) root.lookup("#leader2"));
-        extraDepots = new ArrayList<>();
+        List<Pane> extraDepots = new ArrayList<>();
         extraDepots.add((Pane) root.lookup("#firstExtra1"));
         extraDepots.add((Pane) root.lookup("#firstExtra2"));
         extraDepots.add((Pane) root.lookup("#secondExtra1"));
@@ -125,7 +125,7 @@ public class SwapPopup extends SceneObservable implements Popup {
             }
             else if (parseCheckingList().size() == 1) {
                 if (!noExtra) {
-                    String str = (String) choiceBox.getValue();
+                    String str = choiceBox.getValue();
                     switch (str) {
                         case "warehouse->extra":
                             notifyNewMessageFromClient(new MoveToExtraDepotMessage(parseCheckingList().get(0), chosenExtra, getChosenQuantity()));
@@ -157,7 +157,7 @@ public class SwapPopup extends SceneObservable implements Popup {
 
 
     private int getChosenQuantity() {
-        String str = (String) quantityBox.getValue();
+        String str = quantityBox.getValue();
         switch (str) {
             case "1":
                 return 1;

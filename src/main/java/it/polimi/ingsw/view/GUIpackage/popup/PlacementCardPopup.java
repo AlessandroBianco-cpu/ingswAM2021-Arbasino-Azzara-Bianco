@@ -15,6 +15,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Popup that handles the placement of a bought development cards
@@ -22,20 +23,19 @@ import java.util.List;
 public class PlacementCardPopup extends SceneObservable implements Popup {
 
     private Pane root;
-    private Pane boughtCard;
-    private List<Pane> slot1;
-    private List<Pane> slot2;
-    private List<Pane> slot3;
+    private final List<Pane> slot1;
+    private final List<Pane> slot2;
+    private final List<Pane> slot3;
 
     public PlacementCardPopup(DevCard cardToPlace, ProductionZoneLight zone) {
 
         try {
-            root = FXMLLoader.load(getClass().getResource("/placementCardPopup.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/placementCardPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
 
-        boughtCard = (Pane) root.lookup("#boughtCard");
+        Pane boughtCard = (Pane) root.lookup("#boughtCard");
 
         slot1 = new ArrayList<>();
         slot2 = new ArrayList<>();

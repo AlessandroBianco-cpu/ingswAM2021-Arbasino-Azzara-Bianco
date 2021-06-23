@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.GUIpackage;
 
 import it.polimi.ingsw.networking.message.NumOfPlayerMessage;
-import it.polimi.ingsw.observer.UiObservable;
+import it.polimi.ingsw.observer.NetworkHandlerObservable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.effect.DropShadow;
@@ -9,25 +9,26 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Scene used to get the number of players for the match
  */
-public class NumPlayersScene extends UiObservable {
+public class NumPlayersScene extends NetworkHandlerObservable {
     private Pane root;
     private int number;
     private final ImageView readyButton;
-    private final ChoiceBox choiceBox;
+    private final ChoiceBox<String> choiceBox;
 
     public NumPlayersScene() {
         try {
-            root = FXMLLoader.load(getClass().getResource("/numPlayerScene.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/numPlayerScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         readyButton = (ImageView) root.lookup("#readyButton");
-        choiceBox = (ChoiceBox) root.lookup("#choiceBox");
+        choiceBox = (ChoiceBox<String>) root.lookup("#choiceBox");
 
         DropShadow shadow = new DropShadow();
         readyButton.setOnMouseEntered(event -> readyButton.setEffect(shadow));
@@ -36,14 +37,15 @@ public class NumPlayersScene extends UiObservable {
         choiceBox.setStyle("-fx-font: normal 14 'Avenir Book'");
 
         choiceBox.setValue("Single Player");
-
         choiceBox.getItems().add("Single Player");
         choiceBox.getItems().add("2 Players");
         choiceBox.getItems().add("3 Players");
         choiceBox.getItems().add("4 Players");
 
+        choiceBox.setStyle("-fx-font: normal 14 'Avenir Book'");
+
         readyButton.setOnMouseClicked(event -> {
-            String str = (String) choiceBox.getValue();
+            String str = choiceBox.getValue();
             switch (str) {
                 case "2 Players":
                     number = 2;

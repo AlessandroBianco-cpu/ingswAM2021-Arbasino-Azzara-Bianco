@@ -12,18 +12,19 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Popup used to display messages from server
  */
 public class AlertPopup implements Popup{
     private Pane root;
-    private Label messageLabel;
+    private final Label messageLabel;
     private final ImageView closeButton;
 
     public AlertPopup() {
         try {
-            root= FXMLLoader.load(getClass().getResource("/alertPopup.fxml"));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/alertPopup.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

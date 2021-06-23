@@ -22,6 +22,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static it.polimi.ingsw.model.ResourceType.*;
 
@@ -31,26 +32,24 @@ import static it.polimi.ingsw.model.ResourceType.*;
 public class CardPaymentPopup extends SceneObservable implements Popup {
 
     private Pane root;
-    private List<CheckBox> checkList;
-    private List<Button> positiveButtons;
-    private List<Button> negativeButtons;
-    private List<Label> quantityLabel;
-    private ImageView doneButton;
-    private ChoiceBox leaderBox;
-    private List<Pane> toPay;
-    private List<Text> quantityResources;
+    private final List<CheckBox> checkList;
+    private final List<Button> positiveButtons;
+    private final List<Button> negativeButtons;
+    private final List<Label> quantityLabel;
+    private final ImageView doneButton;
+    private final ChoiceBox<String> leaderBox;
 
     public CardPaymentPopup(ResourceBufferLight resourcesToPay) {
 
         try {
-            root = FXMLLoader.load(getClass().getResource("/cardPaymentPopup.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/cardPaymentPopup.fxml")));
         } catch (
                 IOException e) {
             e.printStackTrace();
         }
 
-        toPay = new ArrayList<>();
-        quantityResources = new ArrayList<>();
+        List<Pane> toPay = new ArrayList<>();
+        List<Text> quantityResources = new ArrayList<>();
         for(int i = 0; i<resourcesToPay.getResources().size(); i++) {
             toPay.add((Pane) root.lookup("#resource"+i));
             quantityResources.add((Text) root.lookup("#qtaRes"+i));
@@ -105,14 +104,10 @@ public class CardPaymentPopup extends SceneObservable implements Popup {
         doneButton.setOnMouseExited(event -> doneButton.setEffect(null));
 
         for (Button b : positiveButtons)
-            b.setOnMouseClicked(event -> {
-                searchAndAddOnLabel(positiveButtons.indexOf(b));
-            });
+            b.setOnMouseClicked(event -> searchAndAddOnLabel(positiveButtons.indexOf(b)));
 
         for (Button b : negativeButtons)
-            b.setOnMouseClicked(event -> {
-                searchAndDecreaseOnLabel(negativeButtons.indexOf(b));
-            });
+            b.setOnMouseClicked(event -> searchAndDecreaseOnLabel(negativeButtons.indexOf(b)));
 
         doneButton.setOnMouseClicked(event -> {
             ResourceType toPay = parseCheckingList();
@@ -133,13 +128,11 @@ public class CardPaymentPopup extends SceneObservable implements Popup {
     }
 
     private int getQuantity(Label label) {
-        int value = Integer.parseInt(label.getText());
-        return value;
+        return Integer.parseInt(label.getText());
     }
 
-
     private void searchAndAddOnLabel(int indexOfButton) {
-        int toSet=0;
+        int toSet;
         switch (indexOfButton) {
             case 0 :
                 toSet = Integer.parseInt(quantityLabel.get(0).getText()) + 1;
@@ -154,11 +147,10 @@ public class CardPaymentPopup extends SceneObservable implements Popup {
                 setLabelIntText(quantityLabel.get(2),toSet);
                 break;
         }
-        return;
     }
 
     private void searchAndDecreaseOnLabel(int indexOfButton) {
-        int toSet=0;
+        int toSet;
         switch (indexOfButton) {
             case 0:
                 toSet = Integer.parseInt(quantityLabel.get(0).getText()) -1;
@@ -173,7 +165,6 @@ public class CardPaymentPopup extends SceneObservable implements Popup {
                 setLabelIntText(quantityLabel.get(2),toSet);
                 break;
         }
-        return;
     }
 
     private void setLabelIntText(Label label, int toSet) {
@@ -186,10 +177,10 @@ public class CardPaymentPopup extends SceneObservable implements Popup {
     private ResourceType parseCheckingList() {
         int num = 0;
         String checkChosen = "";
-        for(int j=0; j< checkList.size(); j++) {
-            if (checkList.get(j).isSelected()) {
+        for (CheckBox checkBox : checkList) {
+            if (checkBox.isSelected()) {
                 num++;
-                checkChosen = checkList.get(j).getId();
+                checkChosen = checkBox.getId();
             }
         }
 
@@ -220,10 +211,7 @@ public class CardPaymentPopup extends SceneObservable implements Popup {
     }
 
     private boolean wantToUseDiscount() {
-        if (leaderBox.getValue().equals("yes"))
-            return true;
-
-        return false;
+        return leaderBox.getValue().equals("yes");
     }
 
     @Override

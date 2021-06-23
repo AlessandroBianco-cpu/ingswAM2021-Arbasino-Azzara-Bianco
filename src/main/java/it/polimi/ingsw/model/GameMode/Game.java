@@ -11,9 +11,6 @@ import it.polimi.ingsw.model.VaticanReporter;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Abstract class extended by the single/multi match
- */
 public abstract class Game implements VaticanReporter {
 
     List<Player> players = new LinkedList<>();

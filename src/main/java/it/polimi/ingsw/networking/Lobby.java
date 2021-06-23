@@ -12,6 +12,7 @@ import it.polimi.ingsw.networking.message.GameStartedMessage;
 import it.polimi.ingsw.networking.message.S2CPlayersNumberMessage;
 import it.polimi.ingsw.networking.message.WaitingMessage;
 import it.polimi.ingsw.networking.message.updateMessage.FirstPlayerMessage;
+import it.polimi.ingsw.networking.socketGame.EndGameObserver;
 import it.polimi.ingsw.observer.ConnectionObserver;
 
 import java.util.ArrayList;
@@ -25,11 +26,11 @@ public class Lobby implements ConnectionObserver {
 
     private final VirtualView virtualView;
     private final UserInputManager userInputManager;
-    private final EndGameObserver endGameObserver;
+    private EndGameObserver endGameObserver;
 
-    private List<ClientHandler> clients;
+    private final List<ClientHandler> clients;
+    private final List<Player> gamePlayers;
     private Controller controller;
-    private List<Player> gamePlayers;
     private final Object lock;
     private final int ID;
     private int playersNumber;
@@ -37,8 +38,8 @@ public class Lobby implements ConnectionObserver {
     private boolean lobbyIsReady; //lobby have the right number of players
     private boolean lobbyIsSettingUp; //distribution of cards and initial setting phase
 
-    public Lobby (int ID, EndGameObserver waitingRoom) {
-        virtualView = new VirtualView(waitingRoom, ID);
+    public Lobby(int ID, EndGameObserver waitingRoom){
+        virtualView = new VirtualView(ID);
         userInputManager = new UserInputManager();
         this.endGameObserver = waitingRoom;
         clients = new ArrayList<>();
@@ -47,6 +48,23 @@ public class Lobby implements ConnectionObserver {
         lock = new Object();
         playersNumber = -1;
         lobbyIsReady = false;
+        lobbyIsSettingUp = false;
+        gameEnded = false;
+
+        virtualView.addObserver(userInputManager);
+    }
+
+    /**
+     * This constructor is used for a local game lobby
+     * @param ID is the serial ID of a local lobby
+     */
+    public Lobby(int ID) {
+        virtualView = new VirtualView(ID);
+        userInputManager = new UserInputManager();
+        clients = new ArrayList<>();
+        gamePlayers = new ArrayList<>();
+        this.ID = ID;
+        lock = new Object();
         lobbyIsSettingUp = false;
         gameEnded = false;
 
@@ -83,7 +101,7 @@ public class Lobby implements ConnectionObserver {
         return null;
     }
 
-    public void setGameEnded (boolean gameEnded) { this.gameEnded = gameEnded; }
+    public void setGameEnded(boolean gameEnded) { this.gameEnded = gameEnded; }
 
     /**
      * Calculate how many player are active
@@ -114,6 +132,11 @@ public class Lobby implements ConnectionObserver {
             else
                 updateDisconnectionInWaitingRoom(client);
         }
+        else {
+            deregisterConnection(client);
+            if (clients.size() == 0)
+                endGameObserver.manageEndGame(ID);
+        }
     }
 
     /**
@@ -128,6 +151,7 @@ public class Lobby implements ConnectionObserver {
 
         return false;
     }
+
     /**
      * Clients addition manager: adds a client in the lobby list and if needed asks playersNumber
      * @param client client added
@@ -153,6 +177,24 @@ public class Lobby implements ConnectionObserver {
                 client.send(new WaitingMessage("Waiting for other players"));
                 lobbyIsReady = true;
             }
+            lock.notifyAll();
+        }
+
+        if (lobbyIsReady)
+            createNewGame();
+    }
+
+    public void addClientAndStartLocalGame(ClientHandler client){
+        playersNumber = 1;
+        lobbyIsReady = true;
+
+        synchronized (lock) {
+            client.addObserver(this);
+            clients.add(client);
+            String nick = client.getUserNickname();
+            virtualView.addClient(nick, client);
+            gamePlayers.add(new Player(nick));
+
             lock.notifyAll();
         }
 
@@ -202,14 +244,12 @@ public class Lobby implements ConnectionObserver {
     /**
      * Creates SingleGame and SingleController and starts a new match
      */
-    private void startSinglePlayerGame(){
+    private void startSinglePlayerGame() {
 
         System.out.println("[LOBBY #"+ID+"] Single player game settings phase");
         SinglePlayerGame game = new SinglePlayerGame();
-        gamePlayers.get(0).setGame(game);
-        game.addPlayers(gamePlayers);
 
-        observersSettings(game);
+        observerSettings(game);
         game.getLorenzoIlMagnifico().addObserver(virtualView);
 
         List<String> nicknames = new ArrayList<>();
@@ -220,10 +260,8 @@ public class Lobby implements ConnectionObserver {
         // distribution of leader cards
         controller.distributeLeaderCard();
         System.out.println("[LOBBY #"+ID+"] Leader cards chosen by the player");
-
         virtualView.sendToCurrentPlayer(new FirstPlayerMessage(gamePlayers.get(0).getNickname()));
         System.out.println("[LOBBY #"+ID+"] Single player game starts");
-        System.out.println();
         virtualView.sendToCurrentPlayer(new GameStartedMessage());
         lobbyIsSettingUp = false;
         controller.play();
@@ -237,16 +275,11 @@ public class Lobby implements ConnectionObserver {
         System.out.println("[LOBBY #"+ID+"] Multiplayer game settings phase");
         Game game = new MultiPlayerGame();
 
-        for(Player p : gamePlayers)
-            p.setGame(game);
-
-        game.addPlayers(gamePlayers);
-        observersSettings(game);
-
+        observerSettings(game);
         List<String> nicknames = new ArrayList<>();
-        for(Player p : gamePlayers) {
+
+        for(Player p : gamePlayers)
             nicknames.add(p.getNickname());
-        }
 
         virtualView.setUp(nicknames,game.getDevCardMarket(),game.getMarket()); //setting the modelLight
         controller = new MultiController(game, userInputManager, virtualView, gamePlayers);
@@ -259,24 +292,9 @@ public class Lobby implements ConnectionObserver {
         System.out.println("[LOBBY #"+ID+"] Initial resources chosen by all players");
         virtualView.sendBroadcast(new FirstPlayerMessage(gamePlayers.get(0).getNickname()));
         virtualView.sendBroadcast(new GameStartedMessage());
-        System.out.println("[LOBBY #"+ID+"] Set-Up completed, multiplayer game starts");
-        System.out.println();
+        System.out.println("[LOBBY #"+ID+"] Set-Up completed, game starts");
         lobbyIsSettingUp = false;
         controller.play();
-    }
-
-    private void observersSettings(Game game) {
-
-        List<Player> tmpPlayers = game.getPlayers();
-        //adding PlayerItemsObservers
-        for(Player p : tmpPlayers){
-            p.getPersonalBoard().getStrongbox().addObserver(virtualView);
-            p.getPersonalBoard().getFaithTrack().addObserver(virtualView);
-            p.getPersonalBoard().getWarehouse().addObserver(virtualView);
-            p.getPersonalBoard().addObserver(virtualView);
-        }
-        game.getMarket().addObserver(virtualView);
-        game.getDevCardMarket().addObserver(virtualView);
     }
 
     /**
@@ -307,7 +325,9 @@ public class Lobby implements ConnectionObserver {
         System.out.println("[LOBBY #"+ID+"] Closing lobby: a client disconnects in set-up phase");
         System.out.println();
         deregisterConnection(disconnectedClient);
-        controller.manageDisconnectionInSetUp(disconnectedClient.getUserNickname()); }
+        gameEnded = true;
+        controller.manageDisconnectionInSetUp(disconnectedClient.getUserNickname());
+    }
 
     /**
      * Handles the disconnection of a client in waiting room with other clients
@@ -323,6 +343,29 @@ public class Lobby implements ConnectionObserver {
         else  {
             endGameObserver.managePreGameDisconnection(disconnectedClient);
         }
+    }
+
+    /**
+     * This method is used to set the observer to the gamePlayers
+     * @param game is the created instance of game
+     */
+    private void observerSettings(Game game) {
+        for(Player p : gamePlayers)
+            p.setGame(game);
+
+        game.addPlayers(gamePlayers);
+        List<Player> tmpPlayers = game.getPlayers();
+        //adding PlayerItemsObservers
+        for(Player p : tmpPlayers){
+            p.getPersonalBoard().getStrongbox().addObserver(virtualView);
+            p.getPersonalBoard().getFaithTrack().addObserver(virtualView);
+            p.getPersonalBoard().getWarehouse().addObserver(virtualView);
+            p.getPersonalBoard().addObserver(virtualView);
+        }
+
+        game.getMarket().addObserver(virtualView);
+        game.getDevCardMarket().addObserver(virtualView);
+
     }
 
     /**

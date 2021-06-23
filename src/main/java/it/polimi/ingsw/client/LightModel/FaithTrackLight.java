@@ -10,11 +10,12 @@ import static it.polimi.ingsw.utils.StaticUtils.*;
  */
 public class FaithTrackLight{
 
-
     private int position;
     private boolean firstPopeFavorAchieved = false;
     private boolean secondPopeFavorAchieved = false;
     private boolean thirdPopeFavorAchieved = false;
+
+    // ------------------------ GETTERS ------------------------
 
     /**
      * Updates the status of the faith-track
@@ -26,8 +27,6 @@ public class FaithTrackLight{
         secondPopeFavorAchieved = m.isSecondVaticanReportVPAchieved();
         thirdPopeFavorAchieved = m.isThirdVaticanReportVPAchieved();
     }
-
-    // ------------------------ GETTERS ------------------------
 
     public int getPosition() {
         return position;
@@ -96,4 +95,6 @@ public class FaithTrackLight{
         }
         System.out.println("Position: " + position);
     }
+
+
 }

@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.QuantityResource;
 
 public class ResourceRequirement extends  Requirement{
 
-    private QuantityResource quantityResource;
+    private final QuantityResource quantityResource;
 
     public ResourceRequirement(QuantityResource quantityResource) {
         this.quantityResource = quantityResource;

@@ -8,6 +8,10 @@ public class GreyMarble extends Marble {
         resourceType = ResourceType.STONE;
     }
 
+    /**
+     * Converts the GreyMarble into a stone
+     * @return a Stone QuantityResource
+     */
     @Override
     public ResourceType convertResource() {
         return resourceType;

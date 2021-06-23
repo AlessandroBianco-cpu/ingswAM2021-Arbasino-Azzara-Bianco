@@ -1,11 +1,13 @@
 package it.polimi.ingsw.view.GUIpackage;
 
 import it.polimi.ingsw.client.LightModel.ModelLight;
-import it.polimi.ingsw.client.NetworkHandler;
+import it.polimi.ingsw.client.LocalNetworkHandler;
+import it.polimi.ingsw.client.SocketNetworkHandler;
 import it.polimi.ingsw.networking.message.ClientAcceptedMessage;
 import it.polimi.ingsw.networking.message.PlacementDevCardMessage;
 import it.polimi.ingsw.networking.message.StartTurnMessage;
 import it.polimi.ingsw.networking.message.updateMessage.*;
+import it.polimi.ingsw.observer.NetworkHandler;
 import it.polimi.ingsw.view.GUIpackage.popup.*;
 import it.polimi.ingsw.view.View;
 import javafx.animation.FadeTransition;
@@ -20,24 +22,24 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
  * GUI class
  */
-public class GUI  extends Application implements View {
+public class GUI  extends Application implements View, ConnectionCreator {
 
     private String owner;
     private boolean gameCreated = false;
-    private ModelLight model = new ModelLight();
+    private final ModelLight model = new ModelLight();
     private PlayerBoardScene playerBoardScene;
 
     private boolean thereIsPopup = false;
     private Popup currentPopup;
 
     //variables sent from Server
-    private int playersNumber = 0;
     private int resToAdd = 0;
     private NetworkHandler networkHandler;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -48,14 +50,11 @@ public class GUI  extends Application implements View {
         Font.loadFont(getClass().getResourceAsStream("/fonts/AvenirNext-Bold.ttf"), 28);
         Font.loadFont(getClass().getResourceAsStream("/fonts/Diogenes.ttf"), 28);
 
-        networkHandler = new NetworkHandler(this);
-        executor.submit(networkHandler);
-
         primaryStage.setResizable(true);
         TransitionHandler.setPrimaryStage(primaryStage);
 
         try{
-            Pane root = FXMLLoader.load(getClass().getResource("/masterLogo.fxml"));
+            Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/masterLogo.fxml")));
 
             Scene loadingScene = new Scene(root);
             TransitionHandler.setLoadingScene(loadingScene);
@@ -95,19 +94,30 @@ public class GUI  extends Application implements View {
             System.out.println("Disconnected GUI");
             Platform.exit();
             System.exit(0);
-            //if (owner != null)
-               // networkHandler.closeConnection();
         });
 
         primaryStage.show();
+    }
+
+    public void createSocketNetworkHandler(){
+        networkHandler = new SocketNetworkHandler(this);
+        executor.submit(networkHandler);
+    }
+
+    public void createLocalNetworkHandler(){
+        networkHandler = new LocalNetworkHandler(this);
+        executor.submit(networkHandler);
+    }
+
+    public NetworkHandler getNetworkHandler() {
+        return networkHandler;
     }
 
     /**
      * Sets the scene that asks for ip address and port
      */
     private void askConnection() {
-        ConnectionScene connectionScene = new ConnectionScene();
-        connectionScene.addObserver(networkHandler);
+        ConnectionScene connectionScene = new ConnectionScene(this);
         Platform.runLater(() -> TransitionHandler.setConnectionScene(connectionScene));
         Platform.runLater(TransitionHandler::toConnectionScene);
     }
@@ -427,9 +437,8 @@ public class GUI  extends Application implements View {
      */
     @Override
     public void updatePlayersNumber(int num) {
-        playersNumber = num;
         if(num > 1)
-            displayStringMessages("The game will have "+playersNumber+" players");
+            displayStringMessages("The game will have "+num+" players");
         else
             displayStringMessages("Let's start your single player match");
     }

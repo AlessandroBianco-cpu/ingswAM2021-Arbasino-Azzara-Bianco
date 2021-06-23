@@ -10,9 +10,9 @@ import java.util.List;
 
 public class ExtraDevSlot extends ProductionSlot{
 
-    private List<QuantityResource> productionPowerInput;
+    private final List<QuantityResource> productionPowerInput;
     private List<QuantityResource> productionPowerOutput;
-    private ExtraDevCard card;
+    private final ExtraDevCard card;
 
     public ExtraDevSlot(ExtraDevCard card){
         this.card = card;

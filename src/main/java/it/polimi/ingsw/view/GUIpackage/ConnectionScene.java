@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.GUIpackage;
 
 
-import it.polimi.ingsw.observer.UiObservable;
+import it.polimi.ingsw.observer.NetworkHandlerObservable;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
@@ -10,38 +10,56 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Scene that asks for ip and port needed to connect to the server
  */
-public class ConnectionScene extends UiObservable {
+public class ConnectionScene extends NetworkHandlerObservable {
     private Pane root;
-    private final ImageView readyButton;
+    private final ImageView connectButton;
+    private final ImageView localGameButton;
 
-    public ConnectionScene() {
+    public ConnectionScene(ConnectionCreator connectionCreator) {
         try {
-            root = FXMLLoader.load(getClass().getResource("/connectionScene.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/connectionScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         TextField ipText = (TextField) root.lookup("#IPtext");
         TextField portText = (TextField) root.lookup("#PORTtext");
-        readyButton = (ImageView) root.lookup("#readyButton");
+        connectButton = (ImageView) root.lookup("#connectButton");
+        localGameButton = (ImageView) root.lookup("#localGameButton");
         ipText.setText(null);
         portText.setText(null);
 
         DropShadow shadow = new DropShadow();
-        readyButton.setOnMouseEntered(event -> readyButton.setEffect(shadow));
-        readyButton.setOnMouseExited(event -> readyButton.setEffect(null));
+        connectButton.setOnMouseEntered(event -> connectButton.setEffect(shadow));
+        connectButton.setOnMouseExited(event -> connectButton.setEffect(null));
 
-        readyButton.setOnMouseClicked(event -> {
+        connectButton.setOnMouseClicked(event -> {
+            connectionCreator.createSocketNetworkHandler();
+            addObserver(connectionCreator.getNetworkHandler());
             if (ipText.getText() != null && portText.getText() != null) {
                 notifyConnection(ipText.getText(), portText.getText());
             } else
                 notifyConnection("127.0.0.1", "12345");
 
             WaitingScene waitingScene = new WaitingScene("Server is trying to add you in waiting room");
+            Platform.runLater(() -> TransitionHandler.setWaitingScene(waitingScene));
+            Platform.runLater(TransitionHandler::toWaitingScene);
+        });
+
+
+        localGameButton.setOnMouseEntered(event -> localGameButton.setEffect(shadow));
+        localGameButton.setOnMouseExited(event -> localGameButton.setEffect(null));
+
+        localGameButton.setOnMouseClicked(event -> {
+            connectionCreator.createLocalNetworkHandler();
+            addObserver(connectionCreator.getNetworkHandler());
+            notifyConnection("local" , "local");
+            WaitingScene waitingScene = new WaitingScene("Starting a local Single-player game...");
             Platform.runLater(() -> TransitionHandler.setWaitingScene(waitingScene));
             Platform.runLater(TransitionHandler::toWaitingScene);
         });

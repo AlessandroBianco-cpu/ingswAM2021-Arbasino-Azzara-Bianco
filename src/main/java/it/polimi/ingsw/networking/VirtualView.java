@@ -23,14 +23,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class VirtualView extends ViewObservable implements MarketObserver, PlayerItemsObserver, StrongboxObserver, FaithTrackObserver, WarehouseObserver, DevCardMarketObserver, LorenzoObserver, ProductionZoneObserver {
 
-    private Map<String, ClientHandler> clients = new ConcurrentHashMap<>();
+    private final Map<String, ClientHandler> clients = new ConcurrentHashMap<>();
     private String currentPlayer;
-    private final EndGameObserver endGameObserver;
     private final int lobbyID;
     private final Object lock;
 
-    public VirtualView(EndGameObserver waitingRoom, int lobbyID) {
-        this.endGameObserver = waitingRoom;
+    public VirtualView(int lobbyID) {
         this.lobbyID = lobbyID;
         this.lock = new Object();
     }
@@ -40,7 +38,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      * @param name player nickname
      * @param client recipient client
      */
-    public void addClient(String name, ClientHandler client){
+    public void addClient(String name, ClientHandler client) {
         synchronized (lock) {
             clients.put(name, client);
             lock.notifyAll();
@@ -155,11 +153,9 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     public void updateWinner(String winner) {
-        System.out.println("[LOBBY #"+lobbyID +"] The winner is " + winner);
+        System.out.println("[LOBBY #"+lobbyID +"] The winner is " + winner +", game ended");
         sendBroadcast(new WinnerMessage(winner));
         System.out.println();
-        System.out.println("[LOBBY #"+lobbyID +"] Game ended");
-        endGameObserver.manageEndGame(lobbyID);
     }
 
     /**
@@ -242,14 +238,11 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
      *This method send a message to the current player
      * @param m is the message
      */
-    public void sendToCurrentPlayer(Message m) {
-        clients.get(currentPlayer).send(m);
-    }
+    public void sendToCurrentPlayer(Message m){clients.get(currentPlayer).send(m);}
 
     public void sendDisconnectionInSetUpGame(String quitPlayerNickname) {
         //send to other client a message that close theirs connections
         sendBroadcast(new RemoveClientForErrors(quitPlayerNickname+" left the game in set-up phase, please reconnect in another match to play"));
-        endGameObserver.manageEndGame(lobbyID);
     }
 
     /**
@@ -318,9 +311,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     @Override
-    public void updateStrongboxState(Strongbox strongbox) {
-        sendBroadcast(createStrongboxUpdateMessage(currentPlayer, strongbox));
-    }
+    public void updateStrongboxState(Strongbox strongbox) { sendBroadcast(createStrongboxUpdateMessage(currentPlayer, strongbox)); }
 
     public FaithTrackUpdateMessage createFaithTrackUpdateMessage(FaithTrack faithTrack){
         return new FaithTrackUpdateMessage(faithTrack.getOwner(), faithTrack.getPosition(),
@@ -356,9 +347,7 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     @Override
-    public void updateDevCardMarketState(DevCardMarket devCardMarket) {
-        sendBroadcast(createDevCardMarketUpdateState(devCardMarket));
-    }
+    public void updateDevCardMarketState(DevCardMarket devCardMarket) { sendBroadcast(createDevCardMarketUpdateState(devCardMarket)); }
 
     public LorenzoUpdateMessage createLorenzoUpdateMessage(LorenzoIlMagnifico lorenzoIlMagnifico){
         return new LorenzoUpdateMessage(lorenzoIlMagnifico.getPosition(), lorenzoIlMagnifico.getLastTokenExecuted());
@@ -379,8 +368,6 @@ public class VirtualView extends ViewObservable implements MarketObserver, Playe
     }
 
     @Override
-    public void updateProductionZoneState(PersonalBoard personalBoard) {
-        sendBroadcast(createProductionZoneUpdateMessage(personalBoard));
-    }
+    public void updateProductionZoneState(PersonalBoard personalBoard) { sendBroadcast(createProductionZoneUpdateMessage(personalBoard)); }
 
 }

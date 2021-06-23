@@ -7,20 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Observable class used by CLI and GUI
+ * Observable class used by CLI and GUI (UI Observable)
  */
-public class UiObservable {
-    private final List<UiObserver> observers = new ArrayList<>();
+public class NetworkHandlerObservable {
+    private final List<NetworkHandler> observers = new ArrayList<>();
 
-    public void addObserver(UiObserver observer){
+    public void addObserver(NetworkHandler observer){
         synchronized (observers) {
             observers.add(observer);
         }
     }
 
+    public void removeObserver(NetworkHandler observer){
+        synchronized (observers) {
+            observers.remove(observer);
+        }
+    }
+
     public void notifyMessage(Message m){
         synchronized (observers) {
-            for(UiObserver observer : observers){
+            for(NetworkHandler observer : observers){
                 try {
                     observer.updateMessage(m);
                 } catch (IOException e) {
@@ -32,9 +38,10 @@ public class UiObservable {
 
     public void notifyConnection(String ip, String port){
         synchronized (observers) {
-            for(UiObserver observer : observers){
+            for(NetworkHandler observer : observers){
                 observer.updateConnection(ip, port);
             }
         }
     }
+
 }

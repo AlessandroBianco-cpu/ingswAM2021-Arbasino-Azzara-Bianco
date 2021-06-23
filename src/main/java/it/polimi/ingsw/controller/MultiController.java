@@ -23,7 +23,7 @@ public class MultiController implements Controller {
     private final UserInputManager uim;
     private final VirtualView virtualView;
 
-    private List<Player> gamePlayers;
+    private final List<Player> gamePlayers;
     private PlayerState currentState;
     private Player currentPlayer;
     private boolean currentPlayerWantsToEndTurn;

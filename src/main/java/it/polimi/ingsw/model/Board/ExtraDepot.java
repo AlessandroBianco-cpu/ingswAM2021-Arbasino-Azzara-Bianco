@@ -12,7 +12,7 @@ import static it.polimi.ingsw.utils.StaticUtils.EXTRA_DEPOT_MAX_SIZE;
  */
 public class ExtraDepot implements ResourceSpot {
 
-    private QuantityResource slot;
+    private final QuantityResource slot;
 
     public ExtraDepot(ResourceType resourceType) {
         this.slot = new QuantityResource(resourceType, 0);

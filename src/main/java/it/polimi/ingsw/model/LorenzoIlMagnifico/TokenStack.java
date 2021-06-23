@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TokenStack implements Serializable {
 
-    private List<ActionToken> tokenStack;
+    private final List<ActionToken> tokenStack;
 
     public TokenStack(LorenzoIlMagnifico caller,LorenzoGameMethods lorenzoGameMethods) {
         tokenStack = new LinkedList<>();

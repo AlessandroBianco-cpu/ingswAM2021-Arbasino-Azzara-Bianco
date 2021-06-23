@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.GUIpackage;
 
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.networking.message.ChooseResourcesMessage;
-import it.polimi.ingsw.observer.UiObservable;
+import it.polimi.ingsw.observer.NetworkHandlerObservable;
 import it.polimi.ingsw.view.GUIpackage.popup.AlertPopup;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -14,19 +14,17 @@ import javafx.scene.layout.Pane;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static it.polimi.ingsw.model.ResourceType.*;
 
 /**
  * Scene that displays that you must choose many resources for start game
  */
-public class InitialResourcesScene extends UiObservable {
+public class InitialResourcesScene extends NetworkHandlerObservable {
     private Pane root;
 
     private final ImageView readyButton;
-    private final List<ImageView> images;
-    private final Label messageLabel;
-    private final List<Pane> depots;
     private ResourceType toAdd = NOTHING;
     private int justAdded = 0;
 
@@ -34,14 +32,14 @@ public class InitialResourcesScene extends UiObservable {
         ChooseResourcesMessage resMessage = new ChooseResourcesMessage(numRes);
 
         try {
-            root = FXMLLoader.load(getClass().getResource("/initialResourcesScene.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/initialResourcesScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        images = new ArrayList<>();
-        depots = new ArrayList<>();
+        List<ImageView> images = new ArrayList<>();
+        List<Pane> depots = new ArrayList<>();
 
-        messageLabel = (Label) root.lookup("#messageLabel");
+        Label messageLabel = (Label) root.lookup("#messageLabel");
         messageLabel.setText("Choose "+numRes+" resources to add in your warehouse");
         readyButton = (ImageView) root.lookup("#readyButton");
         images.add( (ImageView) root.lookup("#coin") );
@@ -136,17 +134,14 @@ public class InitialResourcesScene extends UiObservable {
      * Adds an ImageView to a Pane
      * @param pane where to add the image
      * @param image path
-     * @return the new image
      */
-    private ImageView addImage(Pane pane, String image) {
+    private void addImage(Pane pane, String image) {
         ImageView view = new ImageView();
         view.setImage(new Image(image));
 
         pane.getChildren().add(view);
         view.fitWidthProperty().bind(pane.widthProperty());
         view.fitHeightProperty().bind(pane.heightProperty());
-
-        return view;
     }
 
     public Pane getRoot() {

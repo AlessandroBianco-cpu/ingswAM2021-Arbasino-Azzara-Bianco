@@ -12,8 +12,11 @@ import it.polimi.ingsw.model.Cards.ExtraDevCard;
 public interface LeaderCardPowerAdder {
 
     void addExtraDepotCardPower(ExtraDepotCard givenCard);
+
     void addConvertWhiteCardPower(ConvertWhiteCard givenCard);
+
     void addDiscountCardPower(DiscountCard givenCard);
+
     void addExtraDevCardPower(ExtraDevCard givenCard);
 
 }

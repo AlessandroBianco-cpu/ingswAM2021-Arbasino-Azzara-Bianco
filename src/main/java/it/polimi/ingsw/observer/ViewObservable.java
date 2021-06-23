@@ -17,6 +17,21 @@ public class ViewObservable {
         }
     }
 
+    public void removeObserver(ViewObserver observer){
+        synchronized (observers) {
+            observers.remove(observer);
+        }
+    }
+
+    public void notifyNickname(String nickname){
+        synchronized (observers) {
+            for(ViewObserver observer : observers){
+                observer.updateNickname(nickname);
+            }
+        }
+    }
+
+
     public void notifyPlayersNumber(int numbers){
         synchronized (observers) {
             for(ViewObserver observer : observers){
@@ -24,6 +39,7 @@ public class ViewObservable {
             }
         }
     }
+
 
     public void notifyNewMessage(Message m){
         synchronized (observers) {

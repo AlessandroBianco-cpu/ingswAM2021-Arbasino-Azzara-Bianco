@@ -1,4 +1,6 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.networking.socketGame;
+
+import it.polimi.ingsw.networking.ClientHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -8,10 +10,9 @@ import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_SIZE;
 
 public class Server implements Runnable {
 
-    ServerSocket serverSocket;
+    private ServerSocket serverSocket;
     private final int port;
     private final WaitingRoom waitingRoom;
-
 
     public Server(int port) {
         this.port = port;
@@ -35,10 +36,10 @@ public class Server implements Runnable {
                     System.out.println("[SERVER] Waiting for client connection...");
                     Socket newSocket = serverSocket.accept();
                     System.out.println("[SERVER] Client connected to server");
-                    ClientHandler clientHandler = new ClientHandler(newSocket);
-                    clientHandler.run();
+                    ClientHandler socketClientHandler = new SocketClientHandler(newSocket);
+                    socketClientHandler.run();
                     //the waitingRoom handles new client
-                    waitingRoom.addClientToList(clientHandler);
+                    waitingRoom.addClientToList(socketClientHandler);
 
                 } catch (IOException e) {
                     System.out.println("[SERVER] Restarting server...");

@@ -24,6 +24,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static it.polimi.ingsw.model.ResourceType.*;
 
@@ -35,20 +36,19 @@ public class BufferPopup extends SceneObservable implements Popup{
     private Pane root;
     private final ImageView discardButton;
     private final ImageView convertButton;
-    private ChoiceBox resourceBox;
+    private final ChoiceBox<String> resourceBox;
     private final List<Pane> depots;
     private final List<Pane> buffer;
     private final List<Pane> extraLeaders;
     private final ImageView swapButton;
-    private SwapPopup internalSwapping;
+    private final SwapPopup internalSwapping;
     private final List<ImageView> buttonsList;
-    private final List<Pane> extraDepots;
     private int chosenIndex = 0;
 
     public BufferPopup(WarehouseLight warehouse, BufferLight bufferLight, LeaderCardsInHandLight leaders) {
 
         try {
-            root = FXMLLoader.load(getClass().getResource("/bufferPopup.fxml"));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/bufferPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,7 +57,7 @@ public class BufferPopup extends SceneObservable implements Popup{
         extraLeaders = new ArrayList<>();
         extraLeaders.add((Pane) root.lookup("#leader1"));
         extraLeaders.add((Pane) root.lookup("#leader2"));
-        extraDepots = new ArrayList<>();
+        List<Pane> extraDepots = new ArrayList<>();
         extraDepots.add((Pane) root.lookup("#firstExtra1"));
         extraDepots.add((Pane) root.lookup("#firstExtra2"));
         extraDepots.add((Pane) root.lookup("#secondExtra1"));
@@ -82,7 +82,7 @@ public class BufferPopup extends SceneObservable implements Popup{
         discardButton = (ImageView) root.lookup("#discardButton");
         convertButton = (ImageView) root.lookup("#convertButton");
         swapButton = (ImageView) root.lookup("#swapButton");
-        resourceBox = (ChoiceBox) root.lookup("#resourceBox");
+        resourceBox = (ChoiceBox<String>) root.lookup("#resourceBox");
 
         buttonsList = new ArrayList<>();
         buttonsList.add(discardButton);
@@ -95,7 +95,7 @@ public class BufferPopup extends SceneObservable implements Popup{
         resourceBox.getItems().add("SERVANT");
         resourceBox.getItems().add("STONE");
 
-        resourceBox.setStyle("-fx-font: normal 14 'Avenir Book'");
+        resourceBox.setStyle("-fx-font: normal 13 'Avenir Book'");
 
         for(int i = 0; i < leaders.getActiveCards().size();i++){
             if(leaders.getActiveCards().get(i).isExtraDepotCard()) {
@@ -160,7 +160,7 @@ public class BufferPopup extends SceneObservable implements Popup{
 
        convertButton.setOnMouseClicked(event -> {
            if(chosenIndex != 0) {
-               notifyNewMessageFromClient(new ConvertWhiteMarbleMessage(chosenIndex, parseTextField(resourceBox.getValue().toString())));
+               notifyNewMessageFromClient(new ConvertWhiteMarbleMessage(chosenIndex, parseTextField(resourceBox.getValue())));
                stage.close();
            }
        });

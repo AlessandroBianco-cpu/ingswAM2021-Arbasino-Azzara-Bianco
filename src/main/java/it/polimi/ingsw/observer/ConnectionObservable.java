@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Observable class used by ClientHandler
+ * Observable class used by SocketClientHandler
  */
 public class ConnectionObservable {
     private final List<ConnectionObserver> observers = new ArrayList<>();

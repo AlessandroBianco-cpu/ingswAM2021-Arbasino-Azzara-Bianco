@@ -9,24 +9,21 @@ import java.util.List;
 import static it.polimi.ingsw.model.Cards.DevCardColor.*;
 import static it.polimi.ingsw.model.ResourceType.*;
 
-/**
- * Class used to implements the development cards decks
- */
 public class DevDeck extends Deck{
 
-    private List <DevCard> cards;
-    private List<QuantityResource> costOne;
-    private List<QuantityResource> costTwo;
-    private List<QuantityResource> costThree;
-    private List<QuantityResource> costFour;
-    private List<QuantityResource> powerInputOne;
-    private List<QuantityResource> powerInputTwo;
-    private List<QuantityResource> powerInputThree;
-    private List<QuantityResource> powerInputFour;
-    private List<QuantityResource> powerOutputOne;
-    private List<QuantityResource> powerOutputTwo;
-    private List<QuantityResource> powerOutputThree;
-    private List<QuantityResource> powerOutputFour;
+    private final List <DevCard> cards;
+    private final List<QuantityResource> costOne;
+    private final List<QuantityResource> costTwo;
+    private final List<QuantityResource> costThree;
+    private final List<QuantityResource> costFour;
+    private final List<QuantityResource> powerInputOne;
+    private final List<QuantityResource> powerInputTwo;
+    private final List<QuantityResource> powerInputThree;
+    private final List<QuantityResource> powerInputFour;
+    private final List<QuantityResource> powerOutputOne;
+    private final List<QuantityResource> powerOutputTwo;
+    private final List<QuantityResource> powerOutputThree;
+    private final List<QuantityResource> powerOutputFour;
 
     private final int ONE_LEVEL=1;
     private final int TWO_LEVEL=2;

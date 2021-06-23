@@ -1,5 +1,7 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.networking.socketGame;
 
+import it.polimi.ingsw.networking.ClientHandler;
+import it.polimi.ingsw.networking.Lobby;
 import it.polimi.ingsw.networking.message.*;
 
 import java.util.ArrayList;
@@ -15,8 +17,8 @@ public class WaitingRoom implements EndGameObserver {
     private final int MAX_SIZE;
     private int lobbySerial = 0;
     private boolean joinCurrent;
-    private List<Lobby> lobbyList;
-    private Map<String, Integer> nicknamesDB = new ConcurrentHashMap<>();
+    private final List<Lobby> lobbyList;
+    private final Map<String, Integer> nicknamesDB = new ConcurrentHashMap<>();
 
 
     public WaitingRoom(int size) {
