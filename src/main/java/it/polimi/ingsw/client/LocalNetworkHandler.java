@@ -47,7 +47,6 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
 
     @Override
     public void closeConnection() {
-        System.out.println("Closing client-side local connection...");
 
         synchronized (C2SMessages){
             C2SMessages.clear();
@@ -55,7 +54,7 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
         synchronized (S2CMessages){
             S2CMessages.clear();
         }
-        //System.out.println("Local connection closed.");
+        System.out.println("[LOCAL HANDLER]: Local connection closed.");
     }
 
     @Override
@@ -66,7 +65,7 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
         }
 
         try{
-            System.out.println("Creating \"local server\"");
+            System.out.println("[LOCAL HANDLER]: Creating a local game...");
             LocalGameServer localGameServer = new LocalGameServer(C2SMessages, S2CMessages);
             new Thread(localGameServer).start();
         } catch (IOException e){

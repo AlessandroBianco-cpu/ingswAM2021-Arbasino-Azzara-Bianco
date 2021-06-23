@@ -59,8 +59,6 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
         synchronized (S2CMessages){
             S2CMessages.clear();
         }
-        System.out.println("[SERVER] "+userNickname+"-socket connection closed server-side");
-        System.out.println();
     }
 
     /**
@@ -86,7 +84,7 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
                         }
                     }
                 } catch (NullPointerException | IllegalArgumentException e) {
-                    System.out.println("[SERVER] "+userNickname+"-socket connection closed client-side");
+                    System.out.println("[LOCAL-HANDLER] "+userNickname+"-local connection closed");
                     closeConnection();
                     notifyDisconnection(this);
                     break;
@@ -103,7 +101,7 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
     public Message read() {
 
             while (!answerReady) {
-                ;
+
             }
         answerReady = false;
         return answer;
@@ -113,7 +111,6 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
      * Initializes socket and starts ping management
      */
     public void run() {
-        System.out.println("[SERVER] New ClientSocket created");
         readFromClient();
     }
 

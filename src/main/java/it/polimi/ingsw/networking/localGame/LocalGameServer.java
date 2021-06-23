@@ -21,7 +21,7 @@ public class LocalGameServer implements Runnable{
     }
 
     @Override
-    public void run(){
+    public void run() {
         clientHandler.send(new ClientAcceptedMessage("You"));
         clientHandler.setUserNickname("You");
         lobby.addClientAndStartLocalGame(clientHandler);
