@@ -14,6 +14,7 @@ import java.util.Objects;
 /**
  * Scene used to get the number of players for the match
  */
+@SuppressWarnings("unchecked")
 public class NumPlayersScene extends NetworkHandlerObservable {
     private Pane root;
     private int number;
@@ -22,7 +23,7 @@ public class NumPlayersScene extends NetworkHandlerObservable {
 
     public NumPlayersScene() {
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/numPlayerScene.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/numPlayerScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

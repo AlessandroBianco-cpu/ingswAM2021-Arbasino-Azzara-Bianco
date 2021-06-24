@@ -15,5 +15,5 @@ public class YellowMarbleLight extends MarbleLight {
     }
 
     @Override
-    public String toImage() { return "/marbles/yellow.png"; }
+    public String toImage() { return "/graphics/marbles/yellow.png"; }
 }

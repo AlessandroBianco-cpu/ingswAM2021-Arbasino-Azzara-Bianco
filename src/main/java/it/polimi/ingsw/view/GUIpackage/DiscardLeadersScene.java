@@ -29,7 +29,7 @@ public class DiscardLeadersScene extends NetworkHandlerObservable {
     public DiscardLeadersScene(List<LeaderCard> leaders) {
 
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/discardLeadersScene.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/discardLeadersScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class DiscardLeadersScene extends NetworkHandlerObservable {
         checkList.add((CheckBox) root.lookup("#check04"));
 
         for (int i= 0; i<leaders.size(); i++)
-            cardList.get(i).setImage(new Image("/leaderCards/"+leaders.get(i).getId()+".png"));
+            cardList.get(i).setImage(new Image("/graphics/leaderCards/" +leaders.get(i).getId()+".png"));
 
         readyButton = (ImageView) root.lookup("#readyButton");
         DropShadow shadow = new DropShadow();

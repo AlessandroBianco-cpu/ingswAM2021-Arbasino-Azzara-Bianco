@@ -16,6 +16,6 @@ public class StoneLight extends ResourceLight{
 
     @Override
     public String toImage() {
-        return "/punchBoard/stone.png";
+        return "/graphics/punchBoard/stone.png";
     }
 }

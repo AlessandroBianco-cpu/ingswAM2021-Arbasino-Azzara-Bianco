@@ -24,7 +24,7 @@ public class AlertPopup implements Popup{
 
     public AlertPopup() {
         try {
-            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/alertPopup.fxml")));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/alertPopup.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -26,7 +26,7 @@ public class DevMarketPopup extends SceneObservable implements Popup{
     public DevMarketPopup(DevCard[] cards) {
 
         try {
-            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/devCardMarketPopup.fxml")));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/devCardMarketPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,7 +37,7 @@ public class DevMarketPopup extends SceneObservable implements Popup{
         for(int i = 0; i<3; i++)
             for(int j = 0; j < 4; j++) {
                 if (cards[k] != null)
-                    addImage((Pane) getNodeByRowColumnIndex(i,j,grid), "/devCards/"+cards[k].getId()+".png");
+                    addImage((Pane) getNodeByRowColumnIndex(i,j,grid), "/graphics/devCards/" +cards[k].getId()+".png");
                 k++;
             }
     }

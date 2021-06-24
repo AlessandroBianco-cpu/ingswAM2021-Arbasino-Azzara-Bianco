@@ -31,7 +31,7 @@ public class MarketPopup extends SceneObservable implements Popup{
     public MarketPopup(MarketLight market) {
 
         try {
-            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/marblesMarketPopup.fxml")));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/marblesMarketPopup.fxml")));
         }  catch (IOException e) {
         e.printStackTrace();
         }

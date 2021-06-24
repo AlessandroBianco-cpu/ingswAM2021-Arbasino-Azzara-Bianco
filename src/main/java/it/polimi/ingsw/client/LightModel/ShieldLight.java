@@ -16,6 +16,6 @@ public class ShieldLight extends ResourceLight{
 
     @Override
     public String toImage() {
-        return "/punchBoard/shield.png";
+        return "/graphics/punchBoard/shield.png";
     }
 }

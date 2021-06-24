@@ -31,7 +31,8 @@ import static it.polimi.ingsw.model.ResourceType.*;
 /**
  * Popup used to store the marbles buffer after interactions with the marbles market
  */
-public class BufferPopup extends SceneObservable implements Popup{
+@SuppressWarnings("unchecked")
+public class BufferPopup extends SceneObservable implements Popup {
 
     private Pane root;
     private final ImageView discardButton;
@@ -48,7 +49,7 @@ public class BufferPopup extends SceneObservable implements Popup{
     public BufferPopup(WarehouseLight warehouse, BufferLight bufferLight, LeaderCardsInHandLight leaders) {
 
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/bufferPopup.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/bufferPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,7 +83,7 @@ public class BufferPopup extends SceneObservable implements Popup{
         discardButton = (ImageView) root.lookup("#discardButton");
         convertButton = (ImageView) root.lookup("#convertButton");
         swapButton = (ImageView) root.lookup("#swapButton");
-        resourceBox = (ChoiceBox<String>) root.lookup("#resourceBox");
+        resourceBox = (ChoiceBox<String>)  root.lookup("#resourceBox");
 
         buttonsList = new ArrayList<>();
         buttonsList.add(discardButton);
@@ -99,7 +100,7 @@ public class BufferPopup extends SceneObservable implements Popup{
 
         for(int i = 0; i < leaders.getActiveCards().size();i++){
             if(leaders.getActiveCards().get(i).isExtraDepotCard()) {
-                addImage(extraLeaders.get(i),"/leaderCards/"+leaders.getActiveCards().get(i).getId() +".png"); //leader cards images
+                addImage(extraLeaders.get(i), "/graphics/leaderCards/" +leaders.getActiveCards().get(i).getId() +".png"); //leader cards images
                 for (int j = 0; j < warehouse.getExtraDepotsQuantity()[i]; j++) //leader cards resources on cards
                     addImage(extraDepots.get((2 * i) + j), warehouse.getExtraDepotsTypes()[i].toImage());
             }

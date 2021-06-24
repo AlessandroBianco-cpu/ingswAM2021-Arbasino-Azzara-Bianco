@@ -16,6 +16,6 @@ public class ServantLight extends ResourceLight {
 
     @Override
     public String toImage() {
-        return "/punchBoard/servant.png";
+        return "/graphics/punchBoard/servant.png";
     }
 }

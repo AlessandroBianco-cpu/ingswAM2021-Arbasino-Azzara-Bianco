@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0"
+      prefWidth="400.0" xmlns="http://javafx.com/javafx/15" >
+   <ImageView fitHeight="308.0" fitWidth="407.0" layoutX="-1.0" layoutY="-2.0">
+      <Image url="@../graphics/paperMap.png"/>
+   </ImageView>
+   <Label id="messageLabel" alignment="CENTER" layoutX="33.0" layoutY="34.0" prefHeight="145.0" prefWidth="340.0"
+          textAlignment="CENTER" textFill="#065488">
+      <font>
+         <Font name="Avenir Next Bold" size="22.0"/>
+      </font>
+   </Label>
+   <ImageView id="closeButton" fitHeight="30.0" fitWidth="127.0" layoutX="135.0" layoutY="236.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@../graphics/buttons/closeButton.png"/>
+   </ImageView>
+</Pane>

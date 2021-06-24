@@ -16,6 +16,6 @@ public class CoinLight extends ResourceLight{
 
     @Override
     public String toImage() {
-        return "/punchBoard/coin.png";
+        return "/graphics/punchBoard/coin.png";
     }
 }

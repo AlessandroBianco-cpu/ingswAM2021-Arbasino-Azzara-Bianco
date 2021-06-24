@@ -26,6 +26,7 @@ import static it.polimi.ingsw.model.ResourceType.*;
 /**
  * Popup that handles the production slots choice
  */
+@SuppressWarnings("unchecked")
 public class ProductionPopup extends SceneObservable implements Popup {
 
     private Pane root;
@@ -36,7 +37,7 @@ public class ProductionPopup extends SceneObservable implements Popup {
     public ProductionPopup(ProductionZoneLight zone, LeaderCardsInHandLight cards) {
 
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/productionPopup.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/productionPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,7 +69,7 @@ public class ProductionPopup extends SceneObservable implements Popup {
         int extraDevIndex = 0;
         for(int i = 0; i<cards.getActiveCards().size(); i++) {
             if (cards.getActiveCards().get(i).isExtraDevCard()) {
-                addImage(leaderCards.get(extraDevIndex), "/leaderCards/" + cards.getActiveCards().get(i).getId() + ".png");
+                addImage(leaderCards.get(extraDevIndex), "/graphics/leaderCards/" + cards.getActiveCards().get(i).getId() + ".png");
                 devSlots.get(extraDevIndex+4).setDisable(false);
                 extraDevIndex++;
             }
@@ -101,13 +102,13 @@ public class ProductionPopup extends SceneObservable implements Popup {
         }
 
         for(int i = 0; i<zone.getFirstSlot().size();i++)
-            addImage(slot1.get(i),"/devCards/"+zone.getFirstSlot().get(i).getId()+".png");
+            addImage(slot1.get(i), "/graphics/devCards/" +zone.getFirstSlot().get(i).getId()+".png");
 
         for(int i = 0; i<zone.getSecondSlot().size();i++)
-            addImage(slot2.get(i),"/devCards/"+zone.getSecondSlot().get(i).getId()+".png");
+            addImage(slot2.get(i), "/graphics/devCards/" +zone.getSecondSlot().get(i).getId()+".png");
 
         for(int i = 0; i<zone.getThirdSlot().size();i++)
-            addImage(slot3.get(i),"/devCards/"+zone.getThirdSlot().get(i).getId()+".png");
+            addImage(slot3.get(i), "/graphics/devCards/" +zone.getThirdSlot().get(i).getId()+".png");
     }
 
     @Override

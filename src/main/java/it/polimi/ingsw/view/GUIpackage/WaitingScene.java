@@ -16,7 +16,7 @@ public class WaitingScene extends NetworkHandlerObservable {
 
     public WaitingScene(String toPrint) {
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/waitingScene.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/waitingScene.fxml")));
 
         } catch (IOException e){
             e.printStackTrace();

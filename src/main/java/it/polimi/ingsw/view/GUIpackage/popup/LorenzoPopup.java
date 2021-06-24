@@ -24,7 +24,7 @@ public class LorenzoPopup implements Popup {
     public LorenzoPopup(int pos, ActionToken lastToken) {
 
         try {
-            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/lorenzoPopup.fxml")));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/lorenzoPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,12 +35,12 @@ public class LorenzoPopup implements Popup {
         for(int i = 0; i<25; i++)
             positions.add((Pane) root.lookup("#slot"+i));
 
-        addImage(positions.get(pos),"/punchBoard/blackCross.png");
+        addImage(positions.get(pos), "/graphics/punchBoard/blackCross.png");
 
         if (lastToken == null)
-            addImage(activatedToken, "/punchBoard/retroToken.png");
+            addImage(activatedToken, "/graphics/punchBoard/retroToken.png");
         else
-            addImage(activatedToken,"/punchBoard/"+lastToken.toImage());
+            addImage(activatedToken, "/graphics/punchBoard/" +lastToken.toImage());
 
     }
 

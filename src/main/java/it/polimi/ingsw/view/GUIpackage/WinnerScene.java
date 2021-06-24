@@ -16,7 +16,7 @@ public class WinnerScene extends NetworkHandlerObservable {
 
     public WinnerScene(String winner) {
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/winnerScene.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/winnerScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -29,6 +29,7 @@ import static it.polimi.ingsw.model.ResourceType.*;
 /**
  * Popup used to ask how to pay a chosen development card
  */
+@SuppressWarnings("unchecked")
 public class CardPaymentPopup extends SceneObservable implements Popup {
 
     private Pane root;
@@ -42,7 +43,7 @@ public class CardPaymentPopup extends SceneObservable implements Popup {
     public CardPaymentPopup(ResourceBufferLight resourcesToPay) {
 
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/cardPaymentPopup.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/cardPaymentPopup.fxml")));
         } catch (
                 IOException e) {
             e.printStackTrace();
@@ -58,7 +59,7 @@ public class CardPaymentPopup extends SceneObservable implements Popup {
         }
 
         doneButton = (ImageView) root.lookup("#doneButton");
-        leaderBox = (ChoiceBox) root.lookup("#leaderBox");
+        leaderBox = (ChoiceBox<String>) root.lookup("#leaderBox");
         leaderBox.setValue("no");
         leaderBox.getItems().add("no");
         leaderBox.getItems().add("yes");
@@ -104,10 +105,10 @@ public class CardPaymentPopup extends SceneObservable implements Popup {
         doneButton.setOnMouseExited(event -> doneButton.setEffect(null));
 
         for (Button b : positiveButtons)
-            b.setOnMouseClicked(event -> searchAndAddOnLabel(positiveButtons.indexOf(b)));
+            b.setOnMouseClicked(event -> searchAndModifyLabelQuantity(positiveButtons.indexOf(b),1));
 
         for (Button b : negativeButtons)
-            b.setOnMouseClicked(event -> searchAndDecreaseOnLabel(negativeButtons.indexOf(b)));
+            b.setOnMouseClicked(event -> searchAndModifyLabelQuantity(negativeButtons.indexOf(b),-1));
 
         doneButton.setOnMouseClicked(event -> {
             ResourceType toPay = parseCheckingList();
@@ -131,37 +132,19 @@ public class CardPaymentPopup extends SceneObservable implements Popup {
         return Integer.parseInt(label.getText());
     }
 
-    private void searchAndAddOnLabel(int indexOfButton) {
-        int toSet;
-        switch (indexOfButton) {
-            case 0 :
-                toSet = Integer.parseInt(quantityLabel.get(0).getText()) + 1;
-                setLabelIntText(quantityLabel.get(0),toSet);
-                break;
-            case 1:
-                toSet = Integer.parseInt(quantityLabel.get(1).getText()) +1;
-                setLabelIntText(quantityLabel.get(1),toSet);
-                break;
-            case 2 :
-                toSet = Integer.parseInt(quantityLabel.get(2).getText()) +1;
-                setLabelIntText(quantityLabel.get(2),toSet);
-                break;
-        }
-    }
-
-    private void searchAndDecreaseOnLabel(int indexOfButton) {
+    private void searchAndModifyLabelQuantity(int indexOfButton, int value) {
         int toSet;
         switch (indexOfButton) {
             case 0:
-                toSet = Integer.parseInt(quantityLabel.get(0).getText()) -1;
+                toSet = Integer.parseInt(quantityLabel.get(0).getText()) + value;
                 setLabelIntText(quantityLabel.get(0),toSet);
                 break;
             case 1 :
-                toSet = Integer.parseInt(quantityLabel.get(1).getText()) -1;
+                toSet = Integer.parseInt(quantityLabel.get(1).getText()) +value;
                 setLabelIntText(quantityLabel.get(1),toSet);
                 break;
             case 2 :
-                toSet = Integer.parseInt(quantityLabel.get(2).getText()) -1;
+                toSet = Integer.parseInt(quantityLabel.get(2).getText()) + value;
                 setLabelIntText(quantityLabel.get(2),toSet);
                 break;
         }

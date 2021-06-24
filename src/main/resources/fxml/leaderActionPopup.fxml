@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.Pane?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0"
+      prefWidth="350.0" xmlns="http://javafx.com/javafx/15" >
+   <ImageView fitHeight="333.0" fitWidth="435.0" layoutX="-49.0">
+      <Image url="@../graphics/paperMap.png"/>
+   </ImageView>
+   <Pane id="leader" layoutX="99.0" layoutY="24.0" prefHeight="214.0" prefWidth="140.0"/>
+   <ImageView id="activateButton" fitHeight="30.0" fitWidth="100.0" layoutX="50.0" layoutY="260.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@../graphics/buttons/activateButton.png"/>
+   </ImageView>
+   <ImageView id="discardButton" fitHeight="30.0" fitWidth="100.0" layoutX="200.0" layoutY="260.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@../graphics/buttons/discardButton.png"/>
+   </ImageView>
+</Pane>

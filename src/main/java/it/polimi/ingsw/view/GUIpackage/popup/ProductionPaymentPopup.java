@@ -40,7 +40,7 @@ public class ProductionPaymentPopup extends SceneObservable implements Popup {
     public ProductionPaymentPopup(ResourceBufferLight resourcesToPay) {
 
         try {
-            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/productionPaymentPopup.fxml")));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/productionPaymentPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }

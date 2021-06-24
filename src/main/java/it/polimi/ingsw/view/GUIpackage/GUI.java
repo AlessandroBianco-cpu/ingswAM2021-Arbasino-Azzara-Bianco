@@ -17,6 +17,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -38,6 +40,7 @@ public class GUI  extends Application implements View, ConnectionCreator {
 
     private boolean thereIsPopup = false;
     private Popup currentPopup;
+    private MediaPlayer mediaPlayer;
 
     //variables sent from Server
     private int resToAdd = 0;
@@ -54,7 +57,7 @@ public class GUI  extends Application implements View, ConnectionCreator {
         TransitionHandler.setPrimaryStage(primaryStage);
 
         try{
-            Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/masterLogo.fxml")));
+            Pane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/masterLogo.fxml")));
 
             Scene loadingScene = new Scene(root);
             TransitionHandler.setLoadingScene(loadingScene);
@@ -88,7 +91,18 @@ public class GUI  extends Application implements View, ConnectionCreator {
 
         primaryStage.setResizable(false);
         primaryStage.setTitle("Master of Renaissance");
-        primaryStage.getIcons().add(new Image("/punchBoard/inkwell.png"));
+        primaryStage.getIcons().add(new Image("/graphics/punchBoard/inkwell.png"));
+
+        Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
+                .getResource("media/delicateLute.mp3")).toExternalForm());
+        mediaPlayer = new MediaPlayer(pick);
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setVolume(25);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        });
 
         primaryStage.setOnCloseRequest(event -> {
             System.out.println("Disconnected GUI");

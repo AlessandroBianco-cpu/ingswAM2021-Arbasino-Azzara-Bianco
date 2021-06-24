@@ -17,7 +17,7 @@ public class EndScene extends NetworkHandlerObservable {
 
     public EndScene(String message) {
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/endScene.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/endScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

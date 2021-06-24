@@ -30,7 +30,7 @@ public class PlacementCardPopup extends SceneObservable implements Popup {
     public PlacementCardPopup(DevCard cardToPlace, ProductionZoneLight zone) {
 
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/placementCardPopup.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/placementCardPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,15 +49,15 @@ public class PlacementCardPopup extends SceneObservable implements Popup {
 
 
         for(int i = 0; i<zone.getFirstSlot().size();i++)
-            addImage(slot1.get(i),"/devCards/"+zone.getFirstSlot().get(i).getId()+".png");
+            addImage(slot1.get(i), "/graphics/devCards/" +zone.getFirstSlot().get(i).getId()+".png");
 
         for(int i = 0; i<zone.getSecondSlot().size();i++)
-            addImage(slot2.get(i),"/devCards/"+zone.getSecondSlot().get(i).getId()+".png");
+            addImage(slot2.get(i), "/graphics/devCards/" +zone.getSecondSlot().get(i).getId()+".png");
 
         for(int i = 0; i<zone.getThirdSlot().size();i++)
-            addImage(slot3.get(i),"/devCards/"+zone.getThirdSlot().get(i).getId()+".png");
+            addImage(slot3.get(i), "/graphics/devCards/" +zone.getThirdSlot().get(i).getId()+".png");
 
-        addImage(boughtCard,"/devCards/"+cardToPlace.getId()+".png");
+        addImage(boughtCard, "/graphics/devCards/" +cardToPlace.getId()+".png");
     }
 
     @Override

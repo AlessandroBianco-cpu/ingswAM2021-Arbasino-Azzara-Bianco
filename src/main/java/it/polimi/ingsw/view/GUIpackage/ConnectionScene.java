@@ -12,6 +12,9 @@ import javafx.scene.layout.Pane;
 import java.io.IOException;
 import java.util.Objects;
 
+import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_IP_ADDRESS;
+import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_SERVER_PORT;
+
 /**
  * Scene that asks for ip and port needed to connect to the server
  */
@@ -22,7 +25,7 @@ public class ConnectionScene extends NetworkHandlerObservable {
 
     public ConnectionScene(ConnectionCreator connectionCreator) {
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/connectionScene.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/connectionScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,7 +47,7 @@ public class ConnectionScene extends NetworkHandlerObservable {
             if (ipText.getText() != null && portText.getText() != null) {
                 notifyConnection(ipText.getText(), portText.getText());
             } else
-                notifyConnection("127.0.0.1", "12345");
+                notifyConnection(DEFAULT_IP_ADDRESS, DEFAULT_SERVER_PORT);
 
             WaitingScene waitingScene = new WaitingScene("Server is trying to add you in waiting room");
             Platform.runLater(() -> TransitionHandler.setWaitingScene(waitingScene));

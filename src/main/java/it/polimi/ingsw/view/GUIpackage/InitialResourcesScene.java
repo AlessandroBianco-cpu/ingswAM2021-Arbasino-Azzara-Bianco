@@ -32,7 +32,7 @@ public class InitialResourcesScene extends NetworkHandlerObservable {
         ChooseResourcesMessage resMessage = new ChooseResourcesMessage(numRes);
 
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/initialResourcesScene.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/initialResourcesScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,13 +82,13 @@ public class InitialResourcesScene extends NetworkHandlerObservable {
     private String toImage (ResourceType res) {
         switch (res) {
             case SERVANT:
-                return "/punchBoard/servant.png";
+                return "/graphics/punchBoard/servant.png";
             case COIN:
-                return "/punchBoard/coin.png";
+                return "/graphics/punchBoard/coin.png";
             case STONE:
-                return "/punchBoard/stone.png";
+                return "/graphics/punchBoard/stone.png";
             case SHIELD:
-                return "/punchBoard/shield.png";
+                return "/graphics/punchBoard/shield.png";
             default:
                 return  null;
         }

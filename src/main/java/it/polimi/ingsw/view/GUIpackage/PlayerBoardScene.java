@@ -27,6 +27,7 @@ import java.util.Objects;
 /**
  * Main scene of the game, it implements all the actions which player can do
  */
+@SuppressWarnings("unchecked")
 public class PlayerBoardScene extends NetworkHandlerObservable implements SceneObserver {
     private final ModelLight gameModel;
     private final String owner;
@@ -50,7 +51,7 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
         gameModel = model;
 
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/playerBoardScene.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/playerBoardScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -144,14 +145,14 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
         extraDepots.add((Pane) root.lookup("#secondExtra2"));
 
         if(model.getPlayerByNickname(owner).hasInkwell())
-            addImage(inkwell,"/punchBoard/inkwell.png");
+            addImage(inkwell, "/graphics/punchBoard/inkwell.png");
 
         faithTrack = new ArrayList<>();
         for (int i = 0; i < 25; i++)
             faithTrack.add((Pane) root.lookup("#slot" + i));
 
         //initial playerBoard setting
-        addImage(faithTrack.get(gameModel.getPlayerByNickname(owner).getFaithTrack().getPosition()), "/punchBoard/blackCross.png");
+        addImage(faithTrack.get(gameModel.getPlayerByNickname(owner).getFaithTrack().getPosition()), "/graphics/punchBoard/blackCross.png");
         displayWarehouse();
         displayStrongbox(gameModel.getPlayerByNickname(owner).getStrongbox());
         displayProductionZone();
@@ -224,19 +225,19 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
 
     private void updatePopeTiles() {
         if(gameModel.getPlayerByNickname(owner).getFaithTrack().isFirstPopeFavorAchieved())
-            addImage(popeSpaces.get(0),"/punchBoard/yellow_front_tile.png");
+            addImage(popeSpaces.get(0), "/graphics/punchBoard/yellow_front_tile.png");
         else
-            addImage(popeSpaces.get(0),"/punchBoard/yellow_back_tile.png");
+            addImage(popeSpaces.get(0), "/graphics/punchBoard/yellow_back_tile.png");
 
         if(gameModel.getPlayerByNickname(owner).getFaithTrack().isSecondPopeFavorAchieved())
-            addImage(popeSpaces.get(1),"/punchBoard/orange_front_tile.png");
+            addImage(popeSpaces.get(1), "/graphics/punchBoard/orange_front_tile.png");
         else
-            addImage(popeSpaces.get(1),"/punchBoard/orange_back_tile.png");
+            addImage(popeSpaces.get(1), "/graphics/punchBoard/orange_back_tile.png");
 
         if(gameModel.getPlayerByNickname(owner).getFaithTrack().isThirdPopeFavorAchieved())
-            addImage(popeSpaces.get(2),"/punchBoard/red_front_tile.png");
+            addImage(popeSpaces.get(2), "/graphics/punchBoard/red_front_tile.png");
         else
-            addImage(popeSpaces.get(2),"/punchBoard/red_back_tile.png");
+            addImage(popeSpaces.get(2), "/graphics/punchBoard/red_back_tile.png");
 
     }
 
@@ -250,15 +251,15 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
 
         ProductionZoneLight zone = gameModel.getPlayerByNickname(owner).getProductionZone();
         for(int i = 0; i<zone.getFirstSlot().size(); i++) {
-            addImage(slot1.get(i),"/devCards/"+zone.getFirstSlot().get(i).getId()+".png");
+            addImage(slot1.get(i), "/graphics/devCards/" +zone.getFirstSlot().get(i).getId()+".png");
         }
 
         for(int i = 0; i<zone.getSecondSlot().size(); i++) {
-            addImage(slot2.get(i),"/devCards/"+zone.getSecondSlot().get(i).getId()+".png");
+            addImage(slot2.get(i), "/graphics/devCards/" +zone.getSecondSlot().get(i).getId()+".png");
         }
 
         for(int i = 0; i<zone.getThirdSlot().size(); i++) {
-            addImage(slot3.get(i),"/devCards/"+zone.getThirdSlot().get(i).getId()+".png");
+            addImage(slot3.get(i), "/graphics/devCards/" +zone.getThirdSlot().get(i).getId()+".png");
         }
     }
 
@@ -294,7 +295,7 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
         for(Pane pane : popeSpaces)
             pane.getChildren().clear();
 
-        addImage(faithTrack.get(pos), "/punchBoard/blackCross.png");
+        addImage(faithTrack.get(pos), "/graphics/punchBoard/blackCross.png");
 
         updatePopeTiles();
     }
@@ -310,7 +311,7 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
 
         List<LeaderCard> cards = gameModel.getPlayerByNickname(owner).getLeaderCardsInHand().getCards();
         for(int i=0; i < cards.size(); i++) {
-            addImage(leaders.get(i), "/leaderCards/" + cards.get(i).getId() + ".png");
+            addImage(leaders.get(i), "/graphics/leaderCards/" + cards.get(i).getId() + ".png");
             if (cards.get(i).isActive())
                 leaders.get(i).setEffect(borderEffect);
         }

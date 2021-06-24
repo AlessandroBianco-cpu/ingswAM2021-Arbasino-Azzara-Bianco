@@ -23,7 +23,7 @@ public class NicknameScene extends NetworkHandlerObservable {
 
     public NicknameScene(String message) {
         try {
-            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/nicknameScene.fxml")));
+            root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/nicknameScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

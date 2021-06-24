@@ -5,9 +5,13 @@ package it.polimi.ingsw.utils;
  */
 public class StaticUtils {
 
-    //these are the int constants used
+    //default values
     public final static int DEFAULT_SIZE = 10;
     public final static int DEFAULT_LOCAL_LOBBY_ID = 7069;
+    public final static String DEFAULT_IP_ADDRESS = "127.0.0.1";
+    public final static String DEFAULT_SERVER_PORT = "12345";
+
+    //these are the int constants used
     public final static int EXTRA_DEPOT_MAX_SIZE = 2;
     public final static int FIRST_VATICAN_SECTION = 5;
     public final static int SECOND_VATICAN_SECTION = 12;

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.*?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0"
+      prefWidth="1200.0" xmlns="http://javafx.com/javafx/15" >
+   <ImageView fitHeight="726.0" fitWidth="1205.0" layoutY="-4.0">
+      <Image url="@../graphics/background.png"/>
+   </ImageView>
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fafafa5e" height="200.0" layoutX="260.0" layoutY="460.0"
+              stroke="#d8b32d" strokeType="INSIDE" strokeWidth="5.0" width="620.0"/>
+   <Text fill="#065488" layoutX="350.0" layoutY="510.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The winner is :"
+         textAlignment="CENTER" wrappingWidth="442.9040069580078">
+      <font>
+         <Font name="Avenir Next Bold" size="24.0"/>
+      </font>
+   </Text>
+   <Text id="winnerText" fill="#065488" layoutX="350.0" layoutY="600.0" strokeType="OUTSIDE" strokeWidth="0.0"
+         textAlignment="CENTER" wrappingWidth="442.9040069580078">
+      <font>
+         <Font name="Avenir Next Bold" size="24.0"/>
+      </font>
+   </Text>
+   <Text fill="#065488" layoutX="927.0" layoutY="639.0" strokeType="OUTSIDE" strokeWidth="0.0" text="developed by:"
+         textAlignment="CENTER" wrappingWidth="234.23597717285156">
+      <font>
+         <Font name="Avenir Next Bold" size="20.0"/>
+      </font>
+   </Text>
+   <Text fill="#268ed4ba" layoutX="940.0" layoutY="666.0" strokeType="OUTSIDE" strokeWidth="0.0"
+         text="Arbasino Andrea Paolo" textAlignment="CENTER" wrappingWidth="234.23597717285156">
+      <font>
+         <Font name="Avenir Next Bold" size="18.0"/>
+      </font>
+   </Text>
+   <Text fill="#268ed4ba" layoutX="940.0" layoutY="690.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Azzarà Daniele"
+         textAlignment="CENTER" wrappingWidth="234.23597717285156">
+      <font>
+         <Font name="Avenir Next Bold" size="18.0"/>
+      </font>
+   </Text>
+   <Text fill="#268ed4ba" layoutX="940.0" layoutY="711.0" strokeType="OUTSIDE" strokeWidth="0.0"
+         text="Bianco Alessandro" textAlignment="CENTER" wrappingWidth="234.23597717285156">
+      <font>
+         <Font name="Avenir Next Bold" size="18.0"/>
+      </font>
+   </Text>
+</Pane>

@@ -27,6 +27,7 @@ import static it.polimi.ingsw.model.ResourceType.NOTHING;
 /**
  * Popup that manages all the swapping actions
  */
+@SuppressWarnings("unchecked")
 public class SwapPopup extends SceneObservable implements Popup {
 
     private Pane root;
@@ -42,7 +43,7 @@ public class SwapPopup extends SceneObservable implements Popup {
     public SwapPopup(WarehouseLight warehouse, LeaderCardsInHandLight leaders, boolean isClosable) {
         this.isClosable = isClosable;
         try {
-            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/swapPopup.fxml")));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/swapPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,7 +85,7 @@ public class SwapPopup extends SceneObservable implements Popup {
 
         for(int i = 0; i < leaders.getActiveCards().size();i++){
             if(leaders.getActiveCards().get(i).isExtraDepotCard()) {
-                addImage(extraLeaders.get(i),"/leaderCards/"+leaders.getActiveCards().get(i).getId() +".png"); //leader cards images
+                addImage(extraLeaders.get(i), "/graphics/leaderCards/" +leaders.getActiveCards().get(i).getId() +".png"); //leader cards images
                 noExtra = false;
                 for (int j = 0; j < warehouse.getExtraDepotsQuantity()[i]; j++) //leader cards resources on cards
                     addImage(extraDepots.get(2 * i + j), warehouse.getExtraDepotsTypes()[i].toImage());

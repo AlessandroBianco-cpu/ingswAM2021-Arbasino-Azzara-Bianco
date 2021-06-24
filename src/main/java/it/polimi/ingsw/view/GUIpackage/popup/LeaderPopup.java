@@ -28,7 +28,7 @@ public class LeaderPopup extends SceneObservable implements Popup{
     public LeaderPopup(LeaderCard leaderCard,int indexInHand) {
         this.indexInHand = indexInHand+1;
         try {
-            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/leaderActionPopup.fxml")));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/leaderActionPopup.fxml")));
         }  catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,7 +37,7 @@ public class LeaderPopup extends SceneObservable implements Popup{
         activateButton = (ImageView) root.lookup("#activateButton");
         discardButton = (ImageView) root.lookup("#discardButton");
 
-        addImage(leader,"/leaderCards/"+leaderCard.getId()+".png");
+        addImage(leader, "/graphics/leaderCards/" +leaderCard.getId()+".png");
     }
 
     @Override
