@@ -12,17 +12,18 @@ public class MasterOfRenaissance {
             if (args[0].equals("-cli")) {
                 //start CLI ClientApp
                 CLI cli = new CLI();
-
-                new Thread(cli).start();
-            }//start ServerApp
-            else if (args[0].equals("-server")){
+                cli.run();
+            }
+            else if (args[0].equals("-server")) {
+                //start ServerApp
                 Server server;
                 int port = Integer.parseInt(args[1]);
-
                 server = new Server(port);
                 server.run();
             }
-        } else //start GUI ClientApp
+        } else {
+            //start GUI ClientApp
             Application.launch(GUI.class);
+        }
     }
 }
