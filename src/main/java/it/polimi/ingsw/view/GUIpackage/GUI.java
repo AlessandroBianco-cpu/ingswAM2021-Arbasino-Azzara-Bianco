@@ -93,15 +93,22 @@ public class GUI  extends Application implements View, ConnectionCreator {
         primaryStage.setTitle("Master of Renaissance");
         primaryStage.getIcons().add(new Image("/graphics/punchBoard/inkwell.png"));
 
-        Media pick = new Media(Objects.requireNonNull(getClass().getClassLoader()
-                .getResource("media/delicateLute.mp3")).toExternalForm());
-        mediaPlayer = new MediaPlayer(pick);
-        mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.setVolume(25);
+        //sound settings
+        Media pick1 = new Media(Objects.requireNonNull(getClass().getClassLoader().getResource("media/mastersOfRenaissanceAudio.mp3")).toExternalForm());
+        Media pick2 = new Media(Objects.requireNonNull(getClass().getClassLoader().getResource("media/delicateLute.mp3")).toExternalForm());
+
+        mediaPlayer = new MediaPlayer(pick1);
+        mediaPlayer.setVolume(22);
+        mediaPlayer.play();
         mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.seek(Duration.ZERO);
-            mediaPlayer.play();
+            mediaPlayer = new MediaPlayer(pick2);
+            mediaPlayer.setAutoPlay(true);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.setVolume(15);
+            mediaPlayer.setOnEndOfMedia(() -> {
+                mediaPlayer.seek(Duration.ZERO);
+                mediaPlayer.play();
+            });
         });
 
         primaryStage.setOnCloseRequest(event -> {

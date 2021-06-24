@@ -6,7 +6,7 @@ import it.polimi.ingsw.networking.message.StartTurnMessage;
 import it.polimi.ingsw.networking.message.updateMessage.*;
 
 /**
- * Is the main interface for client-side, all these methods are called from the ClientNetworkHandler after
+ * Is the interface for client-side: all these methods are called from the ClientNetworkHandler after
  * the dispatching of message received from server
  */
 public interface View {

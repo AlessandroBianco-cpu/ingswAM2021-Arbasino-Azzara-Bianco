@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Scene that displays the distributed cards and asks for discard
+ * Scene that displays the distributed leader cards and asks for discard
  */
 public class DiscardLeadersScene extends NetworkHandlerObservable {
     private Pane root;

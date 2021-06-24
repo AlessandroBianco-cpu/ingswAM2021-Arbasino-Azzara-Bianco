@@ -875,6 +875,10 @@ public class CLI extends NetworkHandlerObservable implements Runnable, View {
         askLogin();
     }
 
+    /**
+     * This method is called when Server sent a quit-Message
+     * @param message is a string message to print
+     */
     @Override
     public void quittingForProblem(String message) {
         System.out.println();
@@ -920,6 +924,10 @@ public class CLI extends NetworkHandlerObservable implements Runnable, View {
         System.exit(0);
     }
 
+    /**
+     * Prints a waiting message
+     * @param message is a string message to print
+     */
     @Override
     public void waitingOtherPlayers(String message) { System.out.println(message); }
 

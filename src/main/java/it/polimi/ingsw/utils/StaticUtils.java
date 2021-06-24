@@ -1,7 +1,7 @@
 package it.polimi.ingsw.utils;
 
 /**
- * Strings used to display messages to the client on the CLI
+ * Strings used to display messages to the client on the CLI and default constants declaration
  */
 public class StaticUtils {
 

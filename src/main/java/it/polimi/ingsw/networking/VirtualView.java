@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * This class implements the server's VirtualView, used to send messages to the game clients
+ */
 public class VirtualView extends ViewObservable implements MarketObserver, PlayerItemsObserver, StrongboxObserver, FaithTrackObserver, WarehouseObserver, DevCardMarketObserver, LorenzoObserver, ProductionZoneObserver {
 
     private final Map<String, ClientHandler> clients = new ConcurrentHashMap<>();

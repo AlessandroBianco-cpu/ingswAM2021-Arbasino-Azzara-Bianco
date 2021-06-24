@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * This scene is used after a brutal closing server-side
+ * This scene is used after a closing server-side
  */
 public class EndScene extends NetworkHandlerObservable {
 

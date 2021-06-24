@@ -8,6 +8,9 @@ import java.net.Socket;
 
 import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_SIZE;
 
+/**
+ * This class implements the Server Socket used to establish connections with clients
+ */
 public class Server implements Runnable {
 
     private ServerSocket serverSocket;
