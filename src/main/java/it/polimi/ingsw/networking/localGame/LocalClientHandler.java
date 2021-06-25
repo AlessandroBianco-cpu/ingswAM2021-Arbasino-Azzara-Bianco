@@ -8,6 +8,9 @@ import it.polimi.ingsw.observer.ConnectionObservable;
 
 import java.util.List;
 
+/**
+ * Client Handler class used in SP local game
+ */
 public class LocalClientHandler extends ConnectionObservable implements ClientHandler {
 
     private String userNickname;
@@ -44,7 +47,7 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
      * Closes connection with client
      */
     public void closeConnection() {
-        //handle the case of a disconnection before the login
+        //handles the case of a disconnection before the login
         if (userNickname == null) {
             synchronized (this) {
                 answer = null;
@@ -99,10 +102,9 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
      * @return message sent from client
      */
     public Message read() {
+        while (!answerReady) {
 
-            while (!answerReady) {
-
-            }
+        }
         answerReady = false;
         return answer;
     }

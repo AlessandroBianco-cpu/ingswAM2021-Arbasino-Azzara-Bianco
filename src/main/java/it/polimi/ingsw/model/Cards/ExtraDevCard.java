@@ -5,6 +5,10 @@ import it.polimi.ingsw.model.ResourceType;
 
 import java.util.List;
 
+/**
+ * Leader card of Extra Development type. It permits the player to have an additional
+ * Production Slot with an exclusive production power
+ */
 public class ExtraDevCard extends LeaderCard{
 
     public ExtraDevCard(List<Requirement> requirements, ResourceType resourceType, int id, int victoryPoints) {

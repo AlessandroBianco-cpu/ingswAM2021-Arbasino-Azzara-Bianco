@@ -6,7 +6,7 @@ import it.polimi.ingsw.networking.message.Message;
 import java.io.IOException;
 
 /**
- * Observer interface used by SocketNetworkHandler. It is a "NetworkHandler interface". It is observer of NetworkHandlerObservable (ex UI observable)
+ * It is observer of NetworkHandlerObservable (ex UI observable)
  */
 public interface NetworkHandler extends Runnable {
 

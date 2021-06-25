@@ -81,7 +81,7 @@ public class SocketClientHandler extends ConnectionObservable implements ClientH
     /**
      * Sends a ping message from Server to Client
      */
-    public void pingToClient() {
+    private void pingToClient() {
         Thread t = new Thread(() -> {
             int counter = 0;
             while (connected) {

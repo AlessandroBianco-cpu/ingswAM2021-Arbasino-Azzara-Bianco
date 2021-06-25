@@ -36,6 +36,7 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         this.victoryPoints = 0;
     }
 
+    // ------------------------ SETTERS ------------------------
     public void setGame(Game game) {
         this.game = game;
         this.market = game.getMarket();
@@ -43,9 +44,10 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         this.personalBoard = new PersonalBoard(this, game);
     }
 
-    public boolean isActive() { return active; }
-
     public void setActive(boolean active) { this.active = active; }
+
+    // ------------------------ GETTERS ------------------------
+    public boolean isActive() { return active; }
 
     public String getNickname() {
         return this.nickname;
@@ -53,14 +55,6 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
 
     public List<Marble> getBuffer() {
         return buffer;
-    }
-
-    /**
-     * Method used to update player position n spaces forward
-     * @param n number of spaces player has to move forward
-     */
-    public void moveForwardNPositions(int n) {
-        personalBoard.getFaithTrack().moveForwardNPositions(n);
     }
 
     public PersonalBoard getPersonalBoard() {
@@ -71,8 +65,33 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         return leaders;
     }
 
+    public int getTotalOfResources(){
+        return personalBoard.getTotalNumberOfResources();
+    }
+
+    public int getTotalVictoryPoints(){
+        return this.victoryPoints
+                + personalBoard.getFaithTrack().getPositionScore()
+                + personalBoard.getFaithTrack().getVaticanReportFaithPoints()
+                + getTotalOfResources() / 5;
+    }
+
+    // ------------------------ PLAYER'S ACTIONS ------------------------
+
+    /**
+     * Adds a leader card in player's hand
+     * @param l card to add
+     */
     public void addLeaderCard(LeaderCard l) {
         leaders.add(l);
+    }
+
+    /**
+     * Method used to update player position n spaces forward
+     * @param n number of spaces player has to move forward
+     */
+    public void moveForwardNPositions(int n) {
+        personalBoard.getFaithTrack().moveForwardNPositions(n);
     }
 
     /**
@@ -104,6 +123,10 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         return true;
     }
 
+    /**
+     * Method used to perform a discard of a card in the initial phase of the game
+     * @param index index of the card to remove
+     */
     public void initialDiscardLeaderCard(int index) {
         leaders.remove(index);
     }
@@ -144,21 +167,37 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         }
     }
 
+    /**
+     * Adds the power of a ConvertWhite LeaderCard. It adds the card in a list inside the player class
+     * @param givenCard ConvertWhite LeaderCard activated
+     */
     @Override
     public void addConvertWhiteCardPower(ConvertWhiteCard givenCard) {
         convertWhiteCards.add(givenCard.getAbilityResource());
     }
 
+    /**
+     * Adds the power of a Discount LeaderCard. It adds the card in a list inside the player class
+     * @param givenCard Discount LeaderCard activated
+     */
     @Override
     public void addDiscountCardPower(DiscountCard givenCard) {
         discountCards.add(new QuantityResource(givenCard.getAbilityResource(), givenCard.getDiscountAmount()));
     }
 
+    /**
+     * Adds the power of a ExtraDepot LeaderCard. It adds a new slot in the warehouse
+     * @param givenCard ExtraDepot LeaderCard activated
+     */
     @Override
     public void addExtraDepotCardPower(ExtraDepotCard givenCard) {
         personalBoard.getWarehouse().addExtraDepot(givenCard.getAbilityResource());
     }
 
+    /**
+     * Adds the power of a ExtraDevelopment LeaderCard. It adds the card in a new production slot inside the PB
+     * @param givenCard ExtraDevelopment LeaderCard activated
+     */
     @Override
     public void addExtraDevCardPower(ExtraDevCard givenCard) {
         personalBoard.addExtraDevSlot(givenCard);
@@ -176,6 +215,11 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         personalBoard.vaticanReport(vaticanReportNumber);
     }
 
+    /**
+     * Performs the action of discarding a leader card. After it is discarded, the player will earn a VP
+     * @param leaderCardIndex index of the card to discard
+     * @return true if can be removed, false otherwise
+     */
     public boolean discardLeaderCard(int leaderCardIndex) {
         //In bound check
         if(leaders.size() == 0 || leaderCardIndex < 0 || leaderCardIndex > leaders.size()-1)
@@ -269,31 +313,41 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         return canBuyIndexes;
     }
 
+    /**
+     * Increases player's VPs
+     * @param amount amount of points to increase
+     */
     public void increaseVictoryPoints(int amount){
         victoryPoints += amount;
     }
 
-    public int getTotalOfResources(){
-        return personalBoard.getTotalNumberOfResources();
-    }
-
-    public int getTotalVictoryPoints(){
-        return this.victoryPoints
-                + personalBoard.getFaithTrack().getPositionScore()
-                + personalBoard.getFaithTrack().getVaticanReportFaithPoints()
-                + getTotalOfResources() / 5;
-    }
-
+    /**
+     * Method used to know if the given resource can be added in the given shelf
+     * @param resourceType is the resource to add
+     * @param shelf is the chosen index to put the resource
+     */
     public boolean canAddResourceInWarehouse(ResourceType resourceType, int shelf){
         if(!(resourceType.canAddToSupply()))
             return false;
         return personalBoard.canAddResourceInWarehouse(resourceType,shelf);
     }
 
+    /**
+     * This method adds the given resources in the given shelf index
+     * Must be called only if canAddResourceInWarehouse returns true
+     * @param resourceType is the resource to add
+     * @param shelf is the chosen index to put the resource
+     */
     public void addResourceInWarehouse(ResourceType resourceType, int shelf){
         personalBoard.addResourceInWarehouse(resourceType,shelf);
     }
 
+    /**
+     * Method used to know if a resource in the buffer can be added in a certain shelf
+     * @param bufferIndex index of the marble in the buffer
+     * @param shelf index of the shelf of the warehouse
+     * @return true if can be added, false otherwise
+     */
     public boolean canAddResourceInWarehouseFromBuffer(int bufferIndex, int shelf){
         if (bufferIndex < 0 || (bufferIndex > buffer.size()-1))
             return false;
@@ -301,6 +355,12 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         return canAddResourceInWarehouse(toConvert.getResourceType(), shelf);
     }
 
+    /**
+     * Method used to add a resource from the buffer to a shelf of the warehouse
+     * It must be called only if canAddResourceInWarehouseFromBuffer returns true
+     * @param bufferIndex index of the marble in the buffer
+     * @param shelf index of the shelf of the warehouse
+     */
     public void addResourceInWarehouseFromBuffer(int bufferIndex, int shelf){
         Marble toConvert = buffer.get(bufferIndex);
         buffer.remove(bufferIndex);
@@ -308,12 +368,21 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         notifyMarbleBuffer(buffer);
     }
 
+    /**
+     * Method used to know if the given resource can be added in an extra depot
+     * @param resourceType is the resource to add
+     */
     public boolean canAddResourceInExtraDepot(ResourceType resourceType){
         if(!(resourceType.canAddToSupply()))
             return false;
         return personalBoard.canAddResourceInExtraDepot(resourceType);
     }
 
+    /**
+     * Method used to know if a resource in the buffer can be added in an extra depot
+     * @param bufferIndex index of the marble in the buffer
+     * @return true if can be added, false otherwise
+     */
     public boolean canAddResourceInExtraDepotFromBuffer(int bufferIndex){
         if (bufferIndex < 0 || (bufferIndex > buffer.size()-1))
             return false;
@@ -321,6 +390,11 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         return canAddResourceInExtraDepot(toConvert.getResourceType());
     }
 
+    /**
+     * Adds a resource from the buffer in an extra Depot.
+     * It must be called only if canAddResourceInExtraDepotFromBuffer returns true
+     * @param bufferIndex index of the marble in the buffer
+     */
     public void addResourceInExtraDepotFromBuffer(int bufferIndex){
         Marble toConvert = buffer.get(bufferIndex);
         buffer.remove(bufferIndex);
@@ -328,10 +402,20 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         notifyMarbleBuffer(buffer);
     }
 
+    /**
+     * Method used to know if a marble in the buffer can be discarded
+     * @param bufferIndex index of the marble in the buffer
+     * @return true if can be discarded, false otherwise
+     */
     public boolean canDiscardResourceFromBuffer(int bufferIndex){
         return bufferIndex >= 0 && (bufferIndex <= buffer.size() - 1);
     }
 
+    /**
+     * Method used to discard if a resource in the buffer can be discarded
+     * It must be called only if canDiscardResourceFromBuffer returns true
+     * @param bufferIndex index of the marble in the buffer
+     */
     public void discardResourceFromBuffer(int bufferIndex){
         Marble toDiscard  = buffer.get(bufferIndex);
         buffer.remove(bufferIndex);
@@ -345,6 +429,7 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
      * Should be invoked after selecting a row or a column from the market
      * because after that call White Marbles are already deleted if player
      * does not own convertWhiteCards
+     * @param resourceToConvert type of resource in which player wants to convert the white marble
      * @param bufferIndex index of the marble to evaluate
      * @return true or false
      */
@@ -355,19 +440,37 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
             && convertWhiteCards.contains(resourceToConvert));
     }
 
+    /**
+     * This method converts a given marble into an other
+     * @param resourceType type of resource in which player wants to convert the white marble
+     * @param bufferIndex index of the marble in the buffer player wants to convert
+     */
     public void convertWhiteMarble(ResourceType resourceType, int bufferIndex){
         ((WhiteMarble)buffer.get(bufferIndex)).convertWhiteToResource(resourceType);
         notifyMarbleBuffer(buffer);
     }
 
+    /**
+     * @param productionSlotsIndexes list of the indexes of the slots player wants to use for production
+     * @return true if the combo is valid, false otherwise
+     */
     public boolean canUseDevCards(List<Integer> productionSlotsIndexes){
         return personalBoard.canUseDevCards(productionSlotsIndexes);
     }
 
+    /**
+     * @param devCard card player wants to place
+     * @param devCardSlotIndex index of the Development Slot in which player wants to put the bought card
+     * @return true if the card can be placed, false otherwise
+     */
     public boolean canPlaceDevCardOnDevSlot(DevCard devCard, int devCardSlotIndex){
         return personalBoard.canPlaceDevCardOnDevSlot(devCard, devCardSlotIndex);
     }
 
+    /**
+     * @param resourceToDiscount type of resource player wants to discard
+     * @return true if the discount can be applied, false otherwise
+     */
     public boolean canApplyDiscount(ResourceType resourceToDiscount){
         for (QuantityResource q : discountCards){
             if (q.getResourceType() == resourceToDiscount)
@@ -376,6 +479,10 @@ public class Player extends PlayerItemsObservable implements LeaderCardPowerAdde
         return false;
     }
 
+    /**
+     * @param resourceToDiscount type of resource player wants to use discount
+     * @return the discount that can be applied thanks to the Discount Leader Card
+     */
     public int getDiscountAmount(ResourceType resourceToDiscount){
         for (QuantityResource q : discountCards){
             if (q.getResourceType() == resourceToDiscount)

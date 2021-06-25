@@ -10,7 +10,9 @@ import it.polimi.ingsw.model.VaticanReporter;
 
 import java.util.LinkedList;
 import java.util.List;
-
+/**
+ * Class representing a game
+ */
 public abstract class Game implements VaticanReporter {
 
     List<Player> players = new LinkedList<>();
@@ -46,8 +48,6 @@ public abstract class Game implements VaticanReporter {
         this.leaderDeck = new LeaderDeck();
     }
 
-    public abstract void advanceAfterDiscard(Player discardingPlayer);
-
     public DevCard popDevCardFromIndex(int index) {
         return devCardMarket.popDevCardFromIndex(index);
     }
@@ -60,6 +60,10 @@ public abstract class Game implements VaticanReporter {
         return devCardMarket.getDevCardFromIndex(index);
     }
 
+    /**
+     * Performs a vatican report for each player of the game.
+     * If the last vatican report is activated, the last round of the game wil start
+     */
     @Override
     public void vaticanReport() {
         vaticanReportCounter++;
@@ -70,6 +74,13 @@ public abstract class Game implements VaticanReporter {
         }
     }
 
+    /**
+     * Method called after a player discards a non-white marble during a market action.
+     * Each opponent of the player who discarded the marble will advance one space in the faith track
+     * @param discardingPlayer player who discarded the marble
+     */
+    public abstract void advanceAfterDiscard(Player discardingPlayer);
+
     public void activateLastRound() {
         lastRound = true;
     }
@@ -78,6 +89,12 @@ public abstract class Game implements VaticanReporter {
         return lastRound;
     }
 
+    /**
+     * Computes the score of each player at the end of the game and returns the winner
+     * The player scoring the most VPs is the winner. In case of a tie between two players, the player with the
+     * most Resources left in the supply between them is the winner.
+     * @return the player who won the game.
+     */
     public Player computeWinnerPlayer() {
         int max = 0, maxResources = 0;
         int currentScore;

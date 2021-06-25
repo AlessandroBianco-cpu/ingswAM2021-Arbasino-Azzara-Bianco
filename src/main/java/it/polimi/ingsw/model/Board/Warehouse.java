@@ -45,6 +45,14 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
         return true;
     }
 
+    /**
+     * Method used to know if an action of swapping a certain resource from a shelf of the warehouse to one of
+     * an extraDepot is valid
+     * @param depotFrom index of the shelf of the warehouse from which player wants to move resource
+     * @param extraDepotTo index of the extra depot in which player wants to move resources
+     * @param quantity quantity player wants to move
+     * @return true if the action is valid, false otherwise
+     */
     public boolean canMoveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity){
         if(!(extraDepotIndexIsInBound(extraDepotTo) && depotIndexIsInBound(depotFrom)))
             return false;
@@ -54,6 +62,13 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
                 && depots[depotFrom].getResourceType() == extraDepots.get(extraDepotTo).getExtraDepotResourceType());
     }
 
+    /**
+     * Method used to swap a certain resource from a shelf of the warehouse to one an extraDepot
+     * It must be called only if the method canMoveFromWarehouseToExtraDepot returns true
+     * @param depotFrom index of the shelf of the warehouse from which player wants to move resource
+     * @param extraDepotTo index of the extra depot in which player wants to move resources
+     * @param quantity quantity player wants to move
+     */
     public void moveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity){
         depots[depotFrom].decrease(quantity);
         if (depots[depotFrom].getQuantity() == 0)
@@ -62,6 +77,14 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
         notifyWarehouseState(this);
     }
 
+    /**
+     * Method used to know if an action of swapping a certain resource from an extra depot to a shelf of
+     * the warehouse is valid
+     * @param extraDepotFrom index of the extra depot from which player wants to move resource
+     * @param depotTo index of the depot of the warehouse in which player wants to move resources
+     * @param quantity quantity player wants to move
+     * @return true if the action is valid, false otherwise
+     */
     public boolean canMoveFromExtraDepotToWarehouse(int extraDepotFrom, int depotTo, int quantity){
         if(!(extraDepotIndexIsInBound(extraDepotFrom) && depotIndexIsInBound(depotTo)))
             return false;
@@ -75,6 +98,13 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
                             || (depots[depotTo].getResourceType()==NOTHING) );
     }
 
+    /**
+     * Method used to swap a certain resource from an extra depot to a shelf of the warehouse
+     * It must be called only if the method canMoveFromExtraDepotToWarehouse returns true
+     * @param extraDepotFrom index of the extra depot from which player wants to move resource
+     * @param depotTo index of the depot of the warehouse in which player wants to move resources
+     * @param quantity quantity player wants to move
+     */
     public void moveFromExtraDepotToWarehouse(int extraDepotFrom, int depotTo, int quantity){
         extraDepots.get(extraDepotFrom).removeQuantityResource(quantity);
         for(int i=0; i < quantity; i++){
@@ -83,6 +113,12 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
         notifyWarehouseState(this);
     }
 
+    /**
+     * Method used to know if a resource can be added in a shelf of the warehouse
+     * @param type type of the resource player wants to add
+     * @param shelfIndex index of the shelf of the warehouse in which player wants to add the resource
+     * @return true if the action can be performed, false otherwise
+     */
     public boolean canAddResourceInWarehouse(ResourceType type, int shelfIndex){
         if(!(depotIndexIsInBound(shelfIndex)))
             return false;
@@ -103,6 +139,7 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
 
     /**
      * This method adds the given resource in the given Depot
+     * It must be called only if the method canAddResourceInWarehouse returns true
      * @param type type of resource to add
      * @param shelfIndex index of the depot in which caller wants to put the resource to add
      */
@@ -121,7 +158,7 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
     /**
      * method used to retrieve the index of the depot containing resources of the same type given as parameter
      * @param type type of resource looking for
-     * @return the index of the depot containing the resource type given as parameter
+     * @return the index of the depot containing the resource type given as parameter, DEFAULT_ERROR_NUM if not contained
      */
     public int indexWithSameResource(ResourceType type){
         for(int i=0; i<NUMBER_OF_WAR_DEPOTS; i++){
@@ -192,6 +229,7 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
     /**
      * This method adds the given resource into the corresponding extraDepot (it should be invoked after a true result
      * from the CanAddInExtraDepot method
+     * It must be called only if the method canAddInExtraDepot returns true
      * @param resourceType resource to add
      */
     public void addInExtraDepot(ResourceType resourceType){
@@ -214,7 +252,12 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
         notifyWarehouseState(this);
     }
 
-    public int getExtraDepotIndexByResourceType(ResourceType resourceType){
+    /**
+     * Method used to retrieve the index of the extraDepot containing the resourceType given in input
+     * @param resourceType resource type of the extra depot looked for
+     * @return the index of the extra depot if available, DEFAULT_ERROR_NUM otherwise
+     */
+    private int getExtraDepotIndexByResourceType(ResourceType resourceType){
         for(int i = 0; i < extraDepots.size(); i++)
             if (extraDepots.get(i).getExtraDepotResourceType() == resourceType)
                 return i;
@@ -256,11 +299,21 @@ public class Warehouse extends WarehouseObservable implements ResourceSpot {
         return warehouseStatus;
     }
 
-    public boolean depotIndexIsInBound(int depotIndex){
+    /**
+     * In bound check of the index given to do a certain operation on a depot of the warehouse
+     * @param depotIndex index of the depot to look for
+     * @return true if in bound, false otherwise
+     */
+    private boolean depotIndexIsInBound(int depotIndex){
         return depotIndex >= 0 && depotIndex < NUMBER_OF_WAR_DEPOTS;
     }
 
-    public boolean extraDepotIndexIsInBound(int extraDepotIndex){
+    /**
+     * In bound check of the index given to do a certain operation on an Extra Depot
+     * @param extraDepotIndex index of the depot to look for
+     * @return true if in bound, false otherwise
+     */
+    private boolean extraDepotIndexIsInBound(int extraDepotIndex){
         if (extraDepots.size() == 0)
             return false;
         return extraDepotIndex >= 0 && (extraDepotIndex <= extraDepots.size() - 1);

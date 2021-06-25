@@ -36,7 +36,7 @@ public class SocketNetworkHandler implements Runnable, NetworkHandler {
     /**
      * Sends a ping message from Client to Server
      */
-    public void pingToServer() {
+    private void pingToServer() {
         Thread t = new Thread(() -> {
             int counter = 0;
             while (connected) {
@@ -123,6 +123,9 @@ public class SocketNetworkHandler implements Runnable, NetworkHandler {
         }
     }
 
+    /**
+     * Closes connection of the client
+     */
     @Override
     public synchronized void closeConnection() {
         connected = false;

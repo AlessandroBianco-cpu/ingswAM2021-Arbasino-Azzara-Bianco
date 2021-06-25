@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
 
+import static it.polimi.ingsw.utils.StaticUtils.COLORED_TOKEN_CARDS_TO_DESTROY;
 import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_ERROR_NUM;
 
 public class SinglePlayerGame extends Game implements LorenzoGameMethods, Serializable {
@@ -36,13 +37,16 @@ public class SinglePlayerGame extends Game implements LorenzoGameMethods, Serial
         }
     }
 
+    /**
+     * Method used to discard cards when Lorenzo draws a colored token
+     * @param color color of the cards to discard
+     */
     @Override
     public void throwCardByColor(DevCardColor color){
-        final int cardsToDestroy = 2;
         int destroyedCards = 0;
         int colorCode = devCardMarket.colorParser(color);
         int indexAvailable = devCardMarket.firstAvailableDeckByColor(colorCode);
-        while(destroyedCards < cardsToDestroy && indexAvailable != DEFAULT_ERROR_NUM){
+        while(destroyedCards < COLORED_TOKEN_CARDS_TO_DESTROY && indexAvailable != DEFAULT_ERROR_NUM){
             devCardMarket.getDeckByIndex(indexAvailable).popFirstCard();
             destroyedCards++;
             indexAvailable = devCardMarket.firstAvailableDeckByColor(colorCode);
@@ -53,6 +57,11 @@ public class SinglePlayerGame extends Game implements LorenzoGameMethods, Serial
         }
     }
 
+    /**
+     * Method called after a player discards a non-white marble during a market action.
+     * Lorenzo will advance one space in the faith track
+     * @param discardingPlayer player who discarded the marble
+     */
     @Override
     public void advanceAfterDiscard(Player discardingPlayer) {
         lorenzoIlMagnifico.advance();

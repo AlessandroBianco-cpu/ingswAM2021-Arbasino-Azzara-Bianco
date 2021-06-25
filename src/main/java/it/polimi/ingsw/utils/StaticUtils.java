@@ -10,6 +10,8 @@ public class StaticUtils {
     public final static int DEFAULT_LOCAL_LOBBY_ID = 7069;
     public final static String DEFAULT_IP_ADDRESS = "127.0.0.1";
     public final static String DEFAULT_SERVER_PORT = "12345";
+    public final static String LOCAL = "local";
+    public final static String LOCAL_GAME_USERNAME = "you";
 
     //these are the int constants used
     public final static int EXTRA_DEPOT_MAX_SIZE = 2;
@@ -23,6 +25,7 @@ public class StaticUtils {
     public final static int ROW_SIZE = 4;
     public final static int COL_SIZE = 3;
     public final static int BLACK_TOKEN_SPACES = 2;
+    public final static int COLORED_TOKEN_CARDS_TO_DESTROY = 2;
 
     //faith track constants
     public final static int FAITH_TRACK_SIZE = 25;

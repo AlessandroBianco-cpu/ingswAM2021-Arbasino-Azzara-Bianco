@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.ResourceType;
 
 import java.util.List;
 
+/**
+ * Leader card of ExtraDepot Card type. It permits the player to store more resources in the slots given by this card
+ */
 public class ExtraDepotCard extends LeaderCard {
 
     public ExtraDepotCard(List<Requirement> requirements, ResourceType resourceType, int id, int victoryPoints) {

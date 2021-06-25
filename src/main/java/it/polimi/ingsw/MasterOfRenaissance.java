@@ -21,7 +21,7 @@ public class MasterOfRenaissance {
                 cli.run();
             } else if (args[0].equals("-server")) {
                 int port;
-                if(args[1].equals("-port"))
+                if(args.length > 1 && args[1].equals("-port"))
                     port = Integer.parseInt(args[2]);
                 else
                     port = Integer.parseInt(DEFAULT_SERVER_PORT);

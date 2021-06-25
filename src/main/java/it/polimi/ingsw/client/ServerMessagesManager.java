@@ -4,6 +4,9 @@ import it.polimi.ingsw.networking.message.*;
 import it.polimi.ingsw.networking.message.updateMessage.*;
 import it.polimi.ingsw.view.View;
 
+/**
+ * Class used to manage the message sent from the Server
+ */
 public class ServerMessagesManager {
 
     private final View view;
@@ -13,7 +16,7 @@ public class ServerMessagesManager {
     }
 
     /**
-     * Manages all types of messages sent from Server
+     * Manages all types of messages sent from the Server
      * @param inputObject message from server
      */
     public void manageInputFromServer(Object inputObject) {

@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.ResourceType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class used to represent a production slot created and used by an extra production leader card
+ */
 public class ExtraDevSlot extends ProductionSlot{
 
     private final List<QuantityResource> productionPowerInput;
@@ -27,6 +30,10 @@ public class ExtraDevSlot extends ProductionSlot{
         return card;
     }
 
+    /**
+     * Sets the output of the production power of the extra production leader card
+     * @param output output player wants to set
+     */
     public void setProductionPowerOutput(ResourceType output) {
         productionPowerOutput = new ArrayList<>();
         productionPowerOutput.add(new QuantityResource(ResourceType.FAITH,1));

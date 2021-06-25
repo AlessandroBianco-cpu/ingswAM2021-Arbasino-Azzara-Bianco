@@ -23,7 +23,7 @@ public class Server implements Runnable {
     }
 
     /**
-     * Manages clients' reception and creates new clientHandlers
+     * Manages clients reception and creates new clientHandlers
      */
     public void run() {
             try {

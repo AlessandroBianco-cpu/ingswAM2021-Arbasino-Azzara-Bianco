@@ -618,7 +618,7 @@ public class CLI extends NetworkHandlerObservable implements Runnable, View {
             networkHandler = new LocalNetworkHandler(this);
             addObserver(networkHandler);
             new Thread(networkHandler).start();
-            notifyConnection("local", "local");
+            notifyConnection(LOCAL, LOCAL);
         } else {
             networkHandler = new SocketNetworkHandler(this);
             addObserver(networkHandler);

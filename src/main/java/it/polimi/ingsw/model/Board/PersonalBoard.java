@@ -43,6 +43,7 @@ public class PersonalBoard extends ProductionZoneObservable {
         faithTrack.vaticanReport(vaticanReportCounter);
     }
 
+    // ------------------------ GETTERS ------------------------
     public Warehouse getWarehouse() {
         return warehouse;
     }
@@ -55,11 +56,6 @@ public class PersonalBoard extends ProductionZoneObservable {
         return faithTrack;
     }
 
-    public void addExtraDevSlot(ExtraDevCard card){
-        devCardSlots.add(new ExtraDevSlot(card));
-        notifyPersonalBoardState(this);
-    }
-
     public int getNumOfExtraDevCards(){
         return devCardSlots.size()-4;
     }
@@ -68,10 +64,42 @@ public class PersonalBoard extends ProductionZoneObservable {
         return owner;
     }
 
+    public int getTotalNumberOfResources() {
+        return generalResource.getTotalNumberOfResources();
+    }
+
+    public ResourcesStock getGeneralResource() {
+        return generalResource;
+    }
+
+    public List<DevCard> getProductionSlotByIndex(int index){
+        return ((DevCardSlot) devCardSlots.get(index)).getCards();
+    }
+
+    public List<ExtraDevCard> getTopExtraDevCardsInSlots() {
+        List<ExtraDevCard> topExtra = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            if (i < getNumOfExtraDevCards()) {
+                topExtra.add(((ExtraDevSlot) devCardSlots.get(i + 4)).getCard());
+            } else {
+                topExtra.add(null);
+            }
+        }
+        return topExtra;
+    }
+
+    // ------------------------ SETTERS ------------------------
+
+    /**
+     * Sets the production power input of the base power.
+     */
     public void setBasePowerInput(ResourceType firstInput, ResourceType secondInput){
         ((BaseDevSlot)(devCardSlots.get(0))).setProductionPowerInput(firstInput, secondInput);
     }
 
+    /**
+     * Sets the production power input of the base power.
+     */
     public void setBasePowerOutput(ResourceType output){
         ((BaseDevSlot)(devCardSlots.get(0))).setProductionPowerOutput(output);
     }
@@ -87,22 +115,65 @@ public class PersonalBoard extends ProductionZoneObservable {
         ((ExtraDevSlot)(devCardSlots.get(leaderSlotIndex))).setProductionPowerOutput(output);
     }
 
+    public void addExtraDevSlot(ExtraDevCard card){
+        devCardSlots.add(new ExtraDevSlot(card));
+        notifyPersonalBoardState(this);
+    }
+
+    // ------------------------ PERSONAL BOARD "ACTIONS"  ------------------------
+
+    /**
+     * Method used to perform the action of swapping the resources from one shelf of the warehouse into an other
+     * @param depotFrom index of the first depot of the warehouse
+     * @param depotTo index of the second depot of the warehouse
+     * @return true if can be swapped, false otherwise
+     */
     public boolean swap(int depotFrom, int depotTo) {
         return warehouse.swap(depotFrom,depotTo);
     }
 
-    public boolean canMoveFromWarehouseToExtraDepot(int depotFrom, int toExtraDepot, int quantity) {
-        return warehouse.canMoveFromWarehouseToExtraDepot(depotFrom, toExtraDepot, quantity);
+    /**
+     * Method used to know if an action of swapping a certain resource from a shelf of the warehouse to one of
+     * an extraDepot is valid
+     * @param depotFrom index of the shelf of the warehouse from which player wants to move resource
+     * @param extraDepotTo index of the extra depot in which player wants to move resources
+     * @param quantity quantity player wants to move
+     * @return true if the action is valid, false otherwise
+     */
+    public boolean canMoveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity) {
+        return warehouse.canMoveFromWarehouseToExtraDepot(depotFrom, extraDepotTo, quantity);
     }
 
-    public void moveFromWarehouseToExtraDepot(int depotFrom, int toExtraDepot, int quantity){
-        warehouse.moveFromWarehouseToExtraDepot(depotFrom,toExtraDepot,quantity);
+    /**
+     * Method used to swap a certain resource from a shelf of the warehouse to one an extraDepot
+     * It must be called only if the method canMoveFromWarehouseToExtraDepot returns true
+     * @param depotFrom index of the shelf of the warehouse from which player wants to move resource
+     * @param extraDepotTo index of the extra depot in which player wants to move resources
+     * @param quantity quantity player wants to move
+     */
+    public void moveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity){
+        warehouse.moveFromWarehouseToExtraDepot(depotFrom,extraDepotTo,quantity);
     }
 
+    /**
+     * Method used to know if an action of swapping a certain resource from an extra depot to a shelf of
+     * the warehouse is valid
+     * @param extraDepotFrom index of the extra depot from which player wants to move resource
+     * @param depotTo index of the depot of the warehouse in which player wants to move resources
+     * @param quantity quantity player wants to move
+     * @return true if the action is valid, false otherwise
+     */
     public boolean canMoveFromExtraDepotToWarehouse(int extraDepotFrom, int depotTo, int quantity){
         return warehouse.canMoveFromExtraDepotToWarehouse(extraDepotFrom,depotTo,quantity);
     }
 
+    /**
+     * Method used to swap a certain resource from an extra depot to a shelf of the warehouse
+     * It must be called only if the method canMoveFromExtraDepotToWarehouse returns true
+     * @param extraDepotFrom index of the extra depot from which player wants to move resource
+     * @param depotTo index of the depot of the warehouse in which player wants to move resources
+     * @param quantity quantity player wants to move
+     */
     public void moveFromExtraDepotToWarehouse(int extraDepotFrom, int depotTo, int quantity){
         warehouse.moveFromExtraDepotToWarehouse(extraDepotFrom,depotTo,quantity);
     }
@@ -159,6 +230,11 @@ public class PersonalBoard extends ProductionZoneObservable {
         return sumResources;
     }
 
+    /**
+     * Method used to know if the given resource can be added in the given shelf
+     * @param resourceType is the resource to add
+     * @param shelfIndex is the chosen index to put the resource
+     */
     public boolean canAddResourceInWarehouse(ResourceType resourceType, int shelfIndex){
         return warehouse.canAddResourceInWarehouse(resourceType,shelfIndex);
     }
@@ -174,6 +250,10 @@ public class PersonalBoard extends ProductionZoneObservable {
         generalResource.increaseStock(new QuantityResource(resourceType,1));
     }
 
+    /**
+     * Method used to know if the given resource can be added in an extra depot
+     * @param resourceType is the resource to add
+     */
     public boolean canAddResourceInExtraDepot(ResourceType resourceType){
         return warehouse.canAddInExtraDepot(resourceType);
     }
@@ -182,7 +262,6 @@ public class PersonalBoard extends ProductionZoneObservable {
      * This method adds the given resources in the extra depot of the same type
      * Must be called only if canAddResourceInExtraDepot returns true
      * @param resourceType is the resource to add
-     *
      */
     public void addResourceInExtraDepot(ResourceType resourceType){
         warehouse.addInExtraDepot(resourceType);
@@ -328,13 +407,9 @@ public class PersonalBoard extends ProductionZoneObservable {
         }
     }
 
-    public int getTotalNumberOfResources() {
-        return generalResource.getTotalNumberOfResources();
-    }
-
-    public ResourcesStock getGeneralResource() {
-        return generalResource;
-    }
+    /**
+     * @return true if a production action can be performed, false otherwise
+     */
 
     public boolean canActivateProductionAction(){
         if (generalResource.getTotalNumberOfResources() >= 2)
@@ -361,26 +436,15 @@ public class PersonalBoard extends ProductionZoneObservable {
         notifyPersonalBoardState(this);
     }
 
+    /**
+     * @param devCard card player wants to place
+     * @param devCardSlotIndex index of the slot in which player wants to place the card
+     * @return true if the card can be placed in the given spot, false otherwise
+     */
     public boolean canPlaceDevCardOnDevSlot(DevCard devCard, int devCardSlotIndex){
         if(devCardSlotIndex < 1 || devCardSlotIndex > 3)
             return false;
 
         return devCard.getLevel() == ( ((DevCardSlot) (devCardSlots.get(devCardSlotIndex))).getTopCardLevel() + 1);
-    }
-
-    public List<DevCard> getProductionSlotByIndex(int index){
-        return ((DevCardSlot) devCardSlots.get(index)).getCards();
-    }
-
-    public List<ExtraDevCard> getTopExtraDevCardsInSlots() {
-        List<ExtraDevCard> topExtra = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            if (i < getNumOfExtraDevCards()) {
-                topExtra.add(((ExtraDevSlot) devCardSlots.get(i + 4)).getCard());
-            } else {
-                topExtra.add(null);
-            }
-        }
-        return topExtra;
     }
 }

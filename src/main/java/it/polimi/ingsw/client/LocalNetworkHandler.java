@@ -13,6 +13,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Network handler used in local SP game
+ */
 public class LocalNetworkHandler implements Runnable, NetworkHandler {
 
     private final ServerMessagesManager serverMessagesManager;
@@ -31,6 +34,10 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
         serverMessagesManager = new ServerMessagesManager(view);
     }
 
+    /**
+     * This method sends the method to the local server
+     * @param message message to send
+     */
     @Override
     public void updateMessage(Message message) throws IOException {
         synchronized (C2SMessages){
@@ -38,6 +45,9 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
         }
     }
 
+    /**
+     * This method is used to set that the client is ready to connect to the server
+     */
     @Override
     public void updateConnection(String ip, String port) {
         ready = true;
@@ -45,6 +55,10 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
     }
 
 
+    /**
+     * Closes the connection between client and sever. It deletes the elements of the lists used by
+     * LocalNetworkHandler and LocalClientHandler to exchange messages
+     */
     @Override
     public void closeConnection() {
 

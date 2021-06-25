@@ -9,6 +9,9 @@ import java.util.List;
 import static it.polimi.ingsw.model.Cards.DevCardColor.*;
 import static it.polimi.ingsw.model.ResourceType.*;
 
+/**
+ * Deck of Development Cards
+ */
 public class DevDeck extends Deck{
 
     private final List <DevCard> cards;

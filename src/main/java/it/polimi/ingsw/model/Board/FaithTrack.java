@@ -8,6 +8,9 @@ import java.util.Map;
 
 import static it.polimi.ingsw.utils.StaticUtils.*;
 
+/**
+ * Class representing the Faith Track
+ */
 public class FaithTrack extends FaithTrackObservable {
 
     private final Map<Integer, Integer> faithTrack = new HashMap<>();
@@ -67,6 +70,10 @@ public class FaithTrack extends FaithTrackObservable {
         return position;
     }
 
+    /**
+     * Increases the position of the player in the faith track. If he reaches a vaticanReport activation tile
+     * and the vatican report has not occurred yet, a vatican report will start
+     */
     public void updatePosition(){
         position++;
 

@@ -35,12 +35,21 @@ public class BaseDevSlot extends ProductionSlot{
         return 0;
     }
 
+    /**
+     * Sets the production base power input of the personal board
+     * @param firstInput first resource of the base power to set in input
+     * @param secondInput second resource of the base power to set in input
+     */
     public void setProductionPowerInput(ResourceType firstInput, ResourceType secondInput) {
         productionPowerInput = new ArrayList<>();
         productionPowerInput.add( new QuantityResource(firstInput, 1));
         productionPowerInput.add( new QuantityResource(secondInput, 1));
     }
 
+    /**
+     * Sets the production base power output of the personal board
+     * @param output output of the resource of the base power to set in output
+     */
     public void setProductionPowerOutput(ResourceType output) {
         productionPowerOutput = new ArrayList<>();
         productionPowerOutput.add(new QuantityResource(output,1));

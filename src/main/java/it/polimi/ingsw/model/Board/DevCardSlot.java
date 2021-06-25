@@ -19,12 +19,19 @@ public class DevCardSlot extends ProductionSlot {
         this.cards = new ArrayList<>();
     }
 
+    /**
+     * @return the card on top of the slot if present, null otherwise
+     */
     public DevCard getTopCard () {
         if(cards.size()>0)
             return cards.get(cards.size() - 1);
         return null;
     }
 
+    /**
+     * Adds a card in the slot
+     * @param card card to add
+     */
     public void addCard (DevCard card) {
         cards.add(card);
     }
@@ -49,6 +56,9 @@ public class DevCardSlot extends ProductionSlot {
         return counter;
     }
 
+    /**
+     * @return the level of the card on top of the deck if present, 0 otherwise
+     */
     public int getTopCardLevel(){
         return cards.size();
     }

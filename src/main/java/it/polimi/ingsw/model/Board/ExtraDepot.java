@@ -18,10 +18,18 @@ public class ExtraDepot implements ResourceSpot {
         this.slot = new QuantityResource(resourceType, 0);
     }
 
+    /**
+     * Adds a resource in the ExtraDepot
+     * @param quantityResource resource to add
+     */
     public void addResource(QuantityResource quantityResource){
         slot.increase(quantityResource.getQuantity());
     }
 
+    /**
+     * Removes a certain quantity from the extraDepot
+     * @param amount quantity to remove
+     */
     public void removeQuantityResource(int amount){
             slot.decrease(amount);
     }

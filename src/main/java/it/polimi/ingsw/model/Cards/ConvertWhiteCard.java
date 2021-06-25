@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.ResourceType;
 
 import java.util.List;
 
+/**
+ * Leader card that converts a white marble into a marble of the type of the card
+ */
 public class ConvertWhiteCard extends LeaderCard{
 
     public ConvertWhiteCard(List <Requirement> requirements, ResourceType resourceType, int id, int victoryPoints) {

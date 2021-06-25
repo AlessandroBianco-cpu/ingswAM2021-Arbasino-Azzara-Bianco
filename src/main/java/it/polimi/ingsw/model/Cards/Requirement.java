@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.QuantityResource;
 
 import java.io.Serializable;
 
+/**
+ * Class used to represent a Requirement necessary to activate a leader card
+ */
 public abstract class Requirement implements Serializable {
 
     public boolean isCardRequirement(){

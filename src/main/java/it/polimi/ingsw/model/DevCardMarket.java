@@ -56,6 +56,12 @@ public class DevCardMarket extends DevCardMarketObservable {
         return colorMap.get(color);
     }
 
+    /**
+     * Methods used to get the index of the first deck available given a color code
+     * @param colorCode code of the color to look for
+     * @return the index of the deck with the lowest level and same level of the card.
+     * It returns DEFAULT_ERROR_NUM if there are no available decks of the color looked for.
+     */
     public int firstAvailableDeckByColor(int colorCode){
         for(int index = colorCode; index<NUMBER_OF_DEV_DECKS; index+=4){
             if(devDecks[index].getDeckSize()>0){
@@ -73,6 +79,9 @@ public class DevCardMarket extends DevCardMarketObservable {
         return devDecks[index];
     }
 
+    /**
+     * @return the cards on top of each deck
+     */
     public DevCard[] getTopCards(){
         DevCard[] devCards = new DevCard[12];
         for(int i = 0; i < 12; i++) {

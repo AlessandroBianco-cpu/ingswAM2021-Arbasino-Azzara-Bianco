@@ -8,7 +8,12 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 import static it.polimi.ingsw.utils.StaticUtils.DEFAULT_LOCAL_LOBBY_ID;
+import static it.polimi.ingsw.utils.StaticUtils.LOCAL_GAME_USERNAME;
 
+/**
+ * Class used to create a "server" used in local games.
+ * It creates a lobby and starts a SP game using a ClientHandler of LocalClientHandler type
+ */
 public class LocalGameServer implements Runnable{
 
     private final ClientHandler clientHandler;
@@ -20,10 +25,13 @@ public class LocalGameServer implements Runnable{
         this.lobby = new Lobby(DEFAULT_LOCAL_LOBBY_ID);
     }
 
+    /**
+     * Sets the username of the player and starts a SP game
+     */
     @Override
     public void run() {
-        clientHandler.send(new ClientAcceptedMessage("You"));
-        clientHandler.setUserNickname("You");
+        clientHandler.send(new ClientAcceptedMessage(LOCAL_GAME_USERNAME));
+        clientHandler.setUserNickname(LOCAL_GAME_USERNAME);
         lobby.addClientAndStartLocalGame(clientHandler);
     }
 

@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.Cards;
 
+/**
+ * This class represents a requirement of card type (i.e LVL1 Green Card)
+ */
 public class CardRequirement extends Requirement {
 
     private final int level;
