@@ -47,9 +47,6 @@ class PlayerTest {
 
         assertTrue(player.getPersonalBoard().canUseDevCards(indexActivated));
 
-        List<Integer> list = new ArrayList<>();
-        list.add(0);
-
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(ResourceType.SERVANT,1));
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(ResourceType.COIN,1));
 
@@ -67,6 +64,9 @@ class PlayerTest {
 
     @Test
     void activateAComboSlotsWithExtraDevCard(){
+        //cover  methods in PersonalBoard
+        assertEquals(player,player.getPersonalBoard().getOwner());
+
         LinkedList<Requirement> requirementProductionWithServant = new LinkedList<>();
         requirementProductionWithServant.add(new CardRequirement(1,1,BLUE));
         LeaderCard productionWithServant = new ExtraDevCard(requirementProductionWithServant, SERVANT, 2232, 2);

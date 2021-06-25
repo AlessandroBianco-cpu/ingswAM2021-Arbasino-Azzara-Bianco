@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.GameMode.MultiPlayerGame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class FaithTrackTest {
 
@@ -18,7 +18,8 @@ class FaithTrackTest {
     }
 
     @Test
-    void getPosition(){
+    void getPositionAndOwner() {
+        assertEquals( "player", faithTrack.getOwner());
         assertEquals(0, faithTrack.getPosition());
         faithTrack.moveForwardNPositions(5);
         assertEquals(5, faithTrack.getPosition());
@@ -93,6 +94,7 @@ class FaithTrackTest {
         assertEquals(16, faithTrack.getPositionScore());
         faithTrack.moveForwardNPositions(1);
         assertEquals(20, faithTrack.getPositionScore()); //24
+
     }
 
     @Test
@@ -101,6 +103,9 @@ class FaithTrackTest {
         faithTrack.vaticanReport(1);
         faithTrack.vaticanReport(2);
         faithTrack.vaticanReport(3);
+        assertTrue(faithTrack.isFirstVaticanSectionPointsAchieved());
+        assertTrue(faithTrack.isSecondVaticanSectionPointsAchieved());
+        assertFalse(faithTrack.isThirdVaticanSectionPointsAchieved());
         assertEquals(5, faithTrack.getVaticanReportFaithPoints());
     }
 
