@@ -26,7 +26,6 @@ class PlayerTest {
         this.player.setGame(game);
     }
 
-
     @Test
     void activateBaseProductionPower(){
 
@@ -48,8 +47,8 @@ class PlayerTest {
 
         assertTrue(player.getPersonalBoard().canUseDevCards(indexActivated));
 
-        List<Integer> lista = new ArrayList<>();
-        lista.add(0);
+        List<Integer> list = new ArrayList<>();
+        list.add(0);
 
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(ResourceType.SERVANT,1));
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(ResourceType.COIN,1));
@@ -274,7 +273,7 @@ class PlayerTest {
         //Player's marbles will be filtered: Red ones will update his position, white ones will be discarded if
         //player does not own a ConvertWhiteLeaderCard
         player.marbleFilter(marbles);
-        List<Marble> filteredMarbles = new ArrayList<>();
+        List<Marble> filteredMarbles ;
         filteredMarbles = player.getBuffer();
 
         assertEquals(2, filteredMarbles.size());
@@ -320,8 +319,8 @@ class PlayerTest {
         List<Marble> marbles = new ArrayList<>();
         marbles.add(new WhiteMarble());
         marbles.add(new WhiteMarble());
-        marbles.add(new GreyMarble());
-        marbles.add(new BlueMarble());
+        marbles.add(new WhiteMarble());
+        marbles.add(new WhiteMarble());
 
         //Creation of a ConvertWhiteCard that converts White into Servant
         LinkedList<Requirement> requirementConvertToServant = new LinkedList<>();
@@ -335,10 +334,26 @@ class PlayerTest {
         requirementConvertToShield.add(new CardRequirement(1, 1, PURPLE));
         LeaderCard convertToShield = new ConvertWhiteCard(requirementConvertToShield, SHIELD, 3, 5);
 
+        //Creation of a ConvertWhiteCard that converts White into Stone
+        LinkedList<Requirement> requirementConvertToStone = new LinkedList<>();
+        requirementConvertToShield.add(new CardRequirement(1, 2, PURPLE));
+        requirementConvertToShield.add(new CardRequirement(1, 1, YELLOW));
+        LeaderCard convertToStone = new ConvertWhiteCard(requirementConvertToStone, STONE, 3, 5);
+
+        //Creation of a ConvertWhiteCard that converts White into Coin
+        LinkedList<Requirement> requirementConvertToCoin = new LinkedList<>();
+        requirementConvertToShield.add(new CardRequirement(1, 2, BLUE));
+        requirementConvertToShield.add(new CardRequirement(1, 1, GREEN));
+        LeaderCard convertToCoin = new ConvertWhiteCard(requirementConvertToCoin, COIN, 3, 5);
+
         player.addLeaderCard(convertToServant);
         player.activateLeader(0);
         player.addLeaderCard(convertToShield);
         player.activateLeader(1);
+        player.addLeaderCard(convertToStone);
+        player.activateLeader(2);
+        player.addLeaderCard(convertToCoin);
+        player.activateLeader(3);
 
         player.marbleFilter(marbles);
         List<Marble> filteredMarbles;
@@ -347,17 +362,27 @@ class PlayerTest {
         assertEquals(4, filteredMarbles.size());
         assertTrue(filteredMarbles.get(0) instanceof WhiteMarble);
         assertTrue(filteredMarbles.get(1) instanceof WhiteMarble);
-        assertTrue(filteredMarbles.get(2) instanceof GreyMarble);
-        assertTrue(filteredMarbles.get(3) instanceof BlueMarble);
+        assertTrue(filteredMarbles.get(2) instanceof WhiteMarble);
+        assertTrue(filteredMarbles.get(3) instanceof WhiteMarble);
 
-        player.addResourceInWarehouseFromBuffer(2,0);
-        player.addResourceInWarehouseFromBuffer(2,1);
         assertTrue(player.canConvertWhiteMarble(SHIELD,0));
         assertTrue(player.canConvertWhiteMarble(SERVANT, 1));
+        assertTrue(player.canConvertWhiteMarble(STONE,2));
+        assertTrue(player.canConvertWhiteMarble(COIN,3));
+
         player.convertWhiteMarble(SHIELD, 0);
         player.addResourceInWarehouseFromBuffer(0,1);
+
         player.convertWhiteMarble(SERVANT, 0);
         player.addResourceInWarehouseFromBuffer(0,2);
+
+        player.convertWhiteMarble(STONE, 0);
+        player.addResourceInWarehouseFromBuffer(0,0);
+
+        player.convertWhiteMarble(COIN, 0);
+        player.discardResourceFromBuffer(0);
+
+
 
     }
 
@@ -453,8 +478,6 @@ class PlayerTest {
         player.getPersonalBoard().addDevCardInSlot(cardFour,3);
         player.getPersonalBoard().addDevCardInSlot(cardFive,3);
         player.getPersonalBoard().addDevCardInSlot(cardSix,3);
-
-        //aggiungere i leader
 
         LinkedList<Requirement> requirementProductionWithShield = new LinkedList<>();
         LinkedList<Requirement> requirementProductionWithServant = new LinkedList<>();
@@ -583,7 +606,6 @@ class PlayerTest {
         player.getPersonalBoard().addDevCardInSlot(cardFive, 3);
         player.getPersonalBoard().addDevCardInSlot(cardSix, 3);
 
-        //aggiungere i leader
 
         LinkedList<Requirement> requirementProductionWithShield = new LinkedList<>();
         LinkedList<Requirement> requirementProductionWithServant = new LinkedList<>();

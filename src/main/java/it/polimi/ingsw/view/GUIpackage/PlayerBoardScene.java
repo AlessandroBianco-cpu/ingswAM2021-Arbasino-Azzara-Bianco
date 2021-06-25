@@ -16,6 +16,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -46,7 +47,7 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
     private final List<Pane> faithTrack;
 
 
-    public PlayerBoardScene(ModelLight model,String owner) {
+    public PlayerBoardScene(ModelLight model, String owner, MediaPlayer mp) {
         this.owner = owner;
         gameModel = model;
 
@@ -63,6 +64,7 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
         ImageView showButton = (ImageView) root.lookup("#showButton");
         ImageView productionButton = (ImageView) root.lookup("#productionButton");
         ImageView endTurnButton = (ImageView) root.lookup("#endButton");
+        ImageView volumeButton = (ImageView) root.lookup("#volumeButton");
         Pane inkwell = (Pane) root.lookup("#inkwell");
 
         showChoice = (ChoiceBox<String>) root.lookup("#showChoice");
@@ -169,6 +171,8 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
                     popup.display();
                 }
             });
+
+        volumeButton.setOnMouseClicked(event -> mp.setMute(!mp.isMute()));
 
         marketButton.setOnMouseClicked(event -> {
             MarketPopup popup = new MarketPopup(model.getMarbleMarket());

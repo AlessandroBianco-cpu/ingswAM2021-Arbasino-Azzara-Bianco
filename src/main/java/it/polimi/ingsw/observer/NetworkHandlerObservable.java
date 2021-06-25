@@ -18,12 +18,6 @@ public class NetworkHandlerObservable {
         }
     }
 
-    public void removeObserver(NetworkHandler observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-
     public void notifyMessage(Message m){
         synchronized (observers) {
             for(NetworkHandler observer : observers){

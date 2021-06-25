@@ -22,6 +22,13 @@ public class WarehouseTest {
         wh.swap(1,0);
         wh.swap(2,1);
 
+        QuantityResource[] qt = wh.getDepots();
+
+        //checking method getDepots
+        assertEquals((new QuantityResource(COIN, 1)), qt[0], "Wrong first shelf status");
+        assertEquals((new QuantityResource(STONE, 1)), qt[1], "Wrong first shelf status");
+        assertEquals((new QuantityResource(SHIELD, 1)), qt[2], "Wrong first shelf status");
+
         //checking correct final status of the warehouse after the swaps
         assertEquals((new QuantityResource(COIN, 1)), wh.getDepot(0), "Wrong first shelf status");
         assertEquals((new QuantityResource(STONE, 1)), wh.getDepot(1), "Wrong second shelf status");
@@ -153,6 +160,7 @@ public class WarehouseTest {
 
         wh.addExtraDepot(SERVANT);
         assertTrue(wh.canMoveFromWarehouseToExtraDepot(0,2,1));
+        assertFalse(wh.canMoveFromWarehouseToExtraDepot(0,4,1));
         wh.moveFromWarehouseToExtraDepot(0,2,1);
         assertTrue(wh.extraDepotHasEnoughResources(new QuantityResource(SERVANT,1)));
         wh.removeResourceFromExtraDepot(new QuantityResource(SERVANT,1));

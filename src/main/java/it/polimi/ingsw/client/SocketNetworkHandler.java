@@ -113,7 +113,6 @@ public class SocketNetworkHandler implements Runnable, NetworkHandler {
     @Override
     public void updateMessage(Message message) throws IOException {
         try {
-
             socketOut.reset();
             socketOut.writeObject(message);
             socketOut.flush();

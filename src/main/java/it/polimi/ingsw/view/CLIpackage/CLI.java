@@ -920,7 +920,7 @@ public class CLI extends NetworkHandlerObservable implements Runnable, View {
      */
     @Override
     public void displayNetworkError() {
-        System.out.println("Connection closed from server side");
+        System.out.println("Network error: connection closed from Server side! :(");
         System.exit(0);
     }
 

@@ -52,9 +52,7 @@ public abstract class Game implements VaticanReporter {
         return devCardMarket.popDevCardFromIndex(index);
     }
 
-    public List<QuantityResource> getDevCardRequirementsFromIndex(int index) {
-        return devCardMarket.getDevCardFromIndex(index).getCost();
-    }
+    public List<QuantityResource> getDevCardRequirementsFromIndex(int index) { return devCardMarket.getDevCardFromIndex(index).getCost(); }
 
     public DevCard getDevCardFromIndex(int index) {
         return devCardMarket.getDevCardFromIndex(index);

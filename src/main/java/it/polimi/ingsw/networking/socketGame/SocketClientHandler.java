@@ -116,7 +116,7 @@ public class SocketClientHandler extends ConnectionObservable implements ClientH
                     try {
                         fromClient = (Message) socketIn.readObject();
                     } catch (ClassNotFoundException e) {
-                        System.out.println("[SERVER] client killed");
+                        e.printStackTrace();
                     }
                     if( !(fromClient instanceof PingMessage) ) {
                         if (myTurn) {

@@ -202,7 +202,7 @@ public class GUI  extends Application implements View, ConnectionCreator {
      */
     @Override
     public void gameStarted() {
-        playerBoardScene = new PlayerBoardScene(model,owner);
+        playerBoardScene = new PlayerBoardScene(model,owner, mediaPlayer);
         gameCreated = true;
         playerBoardScene.addObserver(networkHandler);
         Platform.runLater(() -> TransitionHandler.setPlayerBoardScene(playerBoardScene));
@@ -224,7 +224,12 @@ public class GUI  extends Application implements View, ConnectionCreator {
      * Displays a popup when server interrupt the connection
      */
     @Override
-    public void displayNetworkError() { new AlertPopup().displayStringMessages("Networking error! Connection closed server-side"); }
+    public void displayNetworkError() {
+        EndScene endScene = new EndScene("Network error: connection closed from Server side! :(");
+        endScene.addObserver(networkHandler);
+        Platform.runLater(() -> TransitionHandler.setEndScene(endScene));
+        Platform.runLater(TransitionHandler::toEndScene);
+    }
 
     /**
      * Handles the displaying of messages sent from server, if there is a popup open, re-open it updated
