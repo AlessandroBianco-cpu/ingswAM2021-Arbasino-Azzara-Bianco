@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -49,6 +50,7 @@ public class DevMarketPopup extends SceneObservable implements Popup{
 
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
+        stage.initStyle(StageStyle.UTILITY);
 
         for(Node card : grid.getChildren()) {
             card.setOnMouseClicked(event -> {

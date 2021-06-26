@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.ResourceType;
  *      - @fromStrongbox: how many resources he wants to pay from the strongbox
  *      - @fromExtraDepot: how many resources he wants to pay from the extra depot
  */
-public class ResourcePlayerWantsToSpendMessage extends Client2Server{
+public class ProductionPaymentMessage extends Client2Server{
     private static final long serialVersionUID = 5976649949967856397L;
 
     private final ResourceType resourceType;
@@ -18,7 +18,7 @@ public class ResourcePlayerWantsToSpendMessage extends Client2Server{
     private final int fromStrongbox;
     private final int fromExtraDepot;
 
-    public ResourcePlayerWantsToSpendMessage(int fromWarehouse, int fromStrongbox, int fromExtraDepot, ResourceType resourceType) {
+    public ProductionPaymentMessage(int fromWarehouse, int fromStrongbox, int fromExtraDepot, ResourceType resourceType) {
         this.resourceType = resourceType;
         this.fromWarehouse = fromWarehouse;
         this.fromStrongbox = fromStrongbox;

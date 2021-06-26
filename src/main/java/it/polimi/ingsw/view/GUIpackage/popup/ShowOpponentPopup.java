@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -155,6 +156,7 @@ public class ShowOpponentPopup implements Popup {
         stage.setTitle(title);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
+        stage.initStyle(StageStyle.UTILITY);
 
         stage.setScene(scene);
         stage.show();

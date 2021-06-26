@@ -5,7 +5,6 @@ import it.polimi.ingsw.networking.message.ChooseLeaderMessage;
 import it.polimi.ingsw.observer.NetworkHandlerObservable;
 import it.polimi.ingsw.view.GUIpackage.popup.AlertPopup;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.CheckBox;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,8 +21,7 @@ import java.util.Objects;
 public class DiscardLeadersScene extends NetworkHandlerObservable {
     private Pane root;
     private final ImageView readyButton;
-    private final ArrayList<CheckBox> checkList;
-    private final List<Integer> indexes = new ArrayList<>();
+    private final List<Integer> indexes;
 
 
     public DiscardLeadersScene(List<LeaderCard> leaders) {
@@ -34,36 +32,37 @@ public class DiscardLeadersScene extends NetworkHandlerObservable {
             e.printStackTrace();
         }
 
-        ArrayList<ImageView> cardList = new ArrayList<>();
-        cardList.add((ImageView) root.lookup("#firstCard"));
-        cardList.add((ImageView) root.lookup("#secondCard"));
-        cardList.add((ImageView) root.lookup("#thirdCard"));
-        cardList.add((ImageView) root.lookup("#fourthCard"));
+        ArrayList<Pane> cardList = new ArrayList<>();
+        cardList.add((Pane) root.lookup("#firstCard"));
+        cardList.add((Pane) root.lookup("#secondCard"));
+        cardList.add((Pane) root.lookup("#thirdCard"));
+        cardList.add((Pane) root.lookup("#fourthCard"));
 
-        checkList = new ArrayList<>();
-        checkList.add((CheckBox) root.lookup("#check01"));
-        checkList.add((CheckBox) root.lookup("#check02"));
-        checkList.add((CheckBox) root.lookup("#check03"));
-        checkList.add((CheckBox) root.lookup("#check04"));
 
         for (int i= 0; i<leaders.size(); i++)
-            cardList.get(i).setImage(new Image("/graphics/leaderCards/" +leaders.get(i).getId()+".png"));
+            addImage(cardList.get(i),"/graphics/leaderCards/" +leaders.get(i).getId()+".png");
 
         readyButton = (ImageView) root.lookup("#readyButton");
         DropShadow shadow = new DropShadow();
         readyButton.setOnMouseEntered(event -> readyButton.setEffect(shadow));
         readyButton.setOnMouseExited(event -> readyButton.setEffect(null));
 
-        readyButton.setOnMouseClicked(event -> {
-            int num = 0;
-            for(int j=0; j< checkList.size(); j++) {
-                if (checkList.get(j).isSelected()) {
-                    num++;
-                    indexes.add(j+1);
+        indexes = new ArrayList<>();
+        for(Pane pane : cardList)
+            pane.setOnMouseClicked(event -> {
+                if ( ! (indexes.contains(cardList.indexOf(pane)+1)) ) {
+                    addImage(pane,"/graphics/leaderCards/retroLeader.png");
+                    indexes.add(cardList.indexOf(pane) + 1);
                 }
-            }
+                else {
+                    addImage(pane,"/graphics/leaderCards/" +leaders.get(cardList.indexOf(pane)).getId()+".png");
+                    Integer flip = cardList.indexOf(pane) + 1;
+                    indexes.remove(flip);
+                }
+            });
 
-            if (num == 2)
+        readyButton.setOnMouseClicked(event -> {
+            if (indexes.size() == 2)
                 notifyMessage(new ChooseLeaderMessage(indexes));
             else
                 new AlertPopup().displayStringMessages("Select 2 cards!");
@@ -71,6 +70,20 @@ public class DiscardLeadersScene extends NetworkHandlerObservable {
 
     }
 
+    /**
+     * Adds an ImageView to a Pane
+     * @param pane where to add the image
+     * @param image path
+     */
+    private void addImage(Pane pane, String image) {
+        ImageView view = new ImageView();
+        view.setImage(new Image(image));
+        pane.getChildren().clear();
+        pane.getChildren().add(view);
+        view.fitWidthProperty().bind(pane.widthProperty());
+        view.fitHeightProperty().bind(pane.heightProperty());
+
+    }
     public Pane getRoot() {
         return root;
     }

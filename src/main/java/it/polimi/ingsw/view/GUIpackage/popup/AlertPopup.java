@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -45,6 +46,7 @@ public class AlertPopup implements Popup{
 
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
+        stage.initStyle(StageStyle.UTILITY);
 
         messageLabel.setText(s);
         messageLabel.setWrapText(true);

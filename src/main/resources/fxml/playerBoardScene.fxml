@@ -58,7 +58,7 @@
    <Pane id="popeSpace1" layoutX="503.0" layoutY="186.0" prefHeight="58.0" prefWidth="58.0" />
    <Pane id="popeSpace2" layoutX="720.0" layoutY="148.0" prefHeight="58.0" prefWidth="58.0" />
    <Pane id="popeSpace3" layoutX="982.0" layoutY="186.0" prefHeight="58.0" prefWidth="58.0" />
-   <Text id="consoleText" fill="#065488" layoutX="1.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="288.9040069580078">
+   <Text id="consoleText" fill="#065488" layoutX="20.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="270.9040069580078">
       <font>
          <Font name="Avenir Next Bold" size="24.0" />
       </font>
@@ -122,9 +122,8 @@
       <Image url="@../graphics/buttons/endTurnButton.png" />
    </ImageView>
    <Pane id="inkwell" layoutX="1080.0" layoutY="210.0" prefHeight="70.0" prefWidth="70.0" />
-   <ImageView id="cheatButton" fitHeight="60.0" fitWidth="60.0" layoutX="310.0" layoutY="120.0" pickOnBounds="true"
-              preserveRatio="true">
-      <Image url="@../graphics/punchBoard/cheatCoin.png"/>
+   <ImageView id="cheatButton" fitHeight="60.0" fitWidth="60.0" layoutX="310.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/punchBoard/cheatCoin.png" />
    </ImageView>
    <Pane id="soundButton" layoutX="210.0" layoutY="660.0" prefHeight="50.0" prefWidth="50.0" />
 </Pane>

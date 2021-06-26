@@ -326,7 +326,7 @@ public class CLI extends NetworkHandlerObservable implements Runnable, View {
         int fromStrongBox = askAQuantity("strongbox");
         int fromExtra = askAQuantity("extra depot");
 
-        notifyMessage(new ResourcePlayerWantsToSpendMessage( fromWarehouse, fromStrongBox, fromExtra, resourceType));
+        notifyMessage(new ProductionPaymentMessage( fromWarehouse, fromStrongBox, fromExtra, resourceType));
     }
 
     /**

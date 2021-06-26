@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.QuantityResource;
 import it.polimi.ingsw.model.ResourceType;
 import it.polimi.ingsw.networking.message.Message;
-import it.polimi.ingsw.networking.message.ResourcePlayerWantsToSpendMessage;
+import it.polimi.ingsw.networking.message.ProductionPaymentMessage;
 import it.polimi.ingsw.networking.message.updateMessage.ProductionResourceBufferUpdateMessage;
 
 import java.util.ArrayList;
@@ -30,8 +30,8 @@ public class ProductionState extends PlayerState{
 
     @Override
     public void performAction(Message message) {
-        if (message instanceof ResourcePlayerWantsToSpendMessage){
-            handleResourcePlayerWantsToSpendMessage((ResourcePlayerWantsToSpendMessage) message);
+        if (message instanceof ProductionPaymentMessage){
+            handleResourcePlayerWantsToSpendMessage((ProductionPaymentMessage) message);
         } else baseActionsDuringMainAction(message);
     }
 
@@ -39,7 +39,7 @@ public class ProductionState extends PlayerState{
      * Handles a message of resourcePlayerWantsToSpend type
      * @param message message containing the resourcePlayerWantsToSpend action player wants to perform
      */
-    private void handleResourcePlayerWantsToSpendMessage(ResourcePlayerWantsToSpendMessage message){
+    private void handleResourcePlayerWantsToSpendMessage(ProductionPaymentMessage message){
         ResourceType resourceType = message.getResourceType();
 
         if (!(resourceTypeIsInListToPay(resourceType))){ //The resource should not be paid

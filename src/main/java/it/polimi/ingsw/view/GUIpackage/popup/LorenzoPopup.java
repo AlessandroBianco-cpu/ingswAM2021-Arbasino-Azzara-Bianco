@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,9 +21,10 @@ import java.util.Objects;
 public class LorenzoPopup implements Popup {
 
     private Pane root;
+    private final String title;
 
     public LorenzoPopup(int pos, ActionToken lastToken) {
-
+        title = "Lorenzo's playerBoard";
         try {
             root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/lorenzoPopup.fxml")));
         }  catch (IOException e) {
@@ -49,8 +51,10 @@ public class LorenzoPopup implements Popup {
         Stage stage = new Stage();
         Scene scene = new Scene(root);
 
+        stage.setTitle(title);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
+        stage.initStyle(StageStyle.UTILITY);
 
         stage.setScene(scene);
         stage.show();

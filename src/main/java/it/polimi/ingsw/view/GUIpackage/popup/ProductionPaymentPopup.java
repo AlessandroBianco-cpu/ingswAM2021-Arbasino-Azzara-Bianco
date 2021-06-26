@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.GUIpackage.popup;
 
 import it.polimi.ingsw.client.LightModel.ResourceBufferLight;
 import it.polimi.ingsw.model.ResourceType;
-import it.polimi.ingsw.networking.message.ResourcePlayerWantsToSpendMessage;
+import it.polimi.ingsw.networking.message.ProductionPaymentMessage;
 import it.polimi.ingsw.view.GUIpackage.SceneObservable;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -102,7 +102,7 @@ public class ProductionPaymentPopup extends SceneObservable implements Popup {
         doneButton.setOnMouseClicked(event -> {
             ResourceType toPay = parseCheckingList();
             if ( !(toPay.equals(NOTHING)) ) {
-                notifyNewMessageFromClient(new ResourcePlayerWantsToSpendMessage(getQuantity(quantityLabel.get(0)), getQuantity(quantityLabel.get(1)),
+                notifyNewMessageFromClient(new ProductionPaymentMessage(getQuantity(quantityLabel.get(0)), getQuantity(quantityLabel.get(1)),
                         getQuantity(quantityLabel.get(2)), toPay));
                 stage.close();
             }
