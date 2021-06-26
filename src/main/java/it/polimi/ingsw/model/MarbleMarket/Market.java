@@ -106,7 +106,6 @@ public class Market extends MarketObservable {
 
     }
 
-
     public Marble getMarbleByIndexes(int i, int j){
         return marbleMatrix[i][j];
     }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class SinglePlayerGameTest {
 
@@ -41,6 +42,9 @@ class SinglePlayerGameTest {
         player.discardResourceFromBuffer(0);
 
         assertEquals(2, lorenzoIlMagnifico.getPosition());
+
+        singlePlayerGame.vaticanReport();
+        assertFalse(player.getPersonalBoard().getFaithTrack().isFirstVaticanSectionPointsAchieved());
     }
 
 }

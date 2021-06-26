@@ -18,12 +18,6 @@ public class LorenzoObservable {
         }
     }
 
-    public void removeObserver(LorenzoObserver observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-
     public void notifyLorenzoState(LorenzoIlMagnifico lorenzoIlMagnifico){
         synchronized (observers) {
             for(LorenzoObserver observer : observers){

@@ -135,12 +135,16 @@ public class MultiController implements Controller {
         return count;
     }
 
+    private boolean isLastTurnOfGame () {
+        return game.isLastRound() && currentPlayer.getNickname().equals(gamePlayers.get(0).getNickname());
+    }
+
     /**
      * Handles players turn shifts
      */
     public void play() {
 
-        while (numOfActivePlayers() > 1 && !game.isLastRound() ) {
+        while (numOfActivePlayers() > 1 && !isLastTurnOfGame()) {
             if (currentPlayer.isActive())
                 performTurn(currentPlayer);
             updateCurrentPlayer();

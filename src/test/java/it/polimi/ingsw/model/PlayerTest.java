@@ -189,7 +189,6 @@ class PlayerTest {
         assertTrue(player.discardLeaderCard(0));
     }
 
-
     @Test
     void activateLeaderCardCardReq(){
         //add a new leader card in player's deck
@@ -198,7 +197,11 @@ class PlayerTest {
         LeaderCard productionWithServant = new ExtraDevCard(requirementProductionWithServant, SERVANT, 69, 2);
         player.addLeaderCard(productionWithServant);
 
+        //player activation status tests
         assertFalse(player.canActivateLeaderCard(0));
+        player.setActive(false);
+        assertFalse(player.isActive());
+        player.setActive(true);
 
         List<QuantityResource> costOne = new LinkedList<>();
         List<QuantityResource> powerInputOne = new LinkedList<>();
@@ -308,6 +311,8 @@ class PlayerTest {
         player.marbleFilter(marbles);
 
         player.discardResourceFromBuffer(1);
+        assertFalse(player.canAddResourceInExtraDepotFromBuffer(0));
+        assertTrue(player.canAddResourceInWarehouseFromBuffer(0,1));
         player.discardResourceFromBuffer(0);
 
         assertEquals(1, player.getPersonalBoard().getFaithTrack().getPosition());
@@ -346,6 +351,8 @@ class PlayerTest {
         requirementConvertToShield.add(new CardRequirement(1, 1, GREEN));
         LeaderCard convertToCoin = new ConvertWhiteCard(requirementConvertToCoin, COIN, 3, 5);
 
+        assertFalse(player.discardLeaderCard(-2));
+
         player.addLeaderCard(convertToServant);
         player.activateLeader(0);
         player.addLeaderCard(convertToShield);
@@ -354,6 +361,8 @@ class PlayerTest {
         player.activateLeader(2);
         player.addLeaderCard(convertToCoin);
         player.activateLeader(3);
+
+        assertFalse(player.discardLeaderCard(0));
 
         player.marbleFilter(marbles);
         List<Marble> filteredMarbles;
@@ -388,6 +397,12 @@ class PlayerTest {
 
     @Test
     void buyDevCardByMarket() {
+
+        //checks method popFirst for DevCardMarket class
+        DevCardMarket cardMarket = new DevCardMarket();
+        assertEquals(cardMarket.getDevCardFromIndex(1),cardMarket.popDevCardFromIndex(1));
+        assertFalse(player.getPersonalBoard().canActivateProductionAction());
+
         LinkedList<Requirement> requirementDiscountStone = new LinkedList<>();
         requirementDiscountStone.add(new CardRequirement(1, 1, GREEN));
         LeaderCard discountStone = new DiscountCard(requirementDiscountStone, STONE, 8, 2, -1);
@@ -411,9 +426,6 @@ class PlayerTest {
     @Test
     void allSlotsActivated(){
 
-
-
-        assertFalse(player.getPersonalBoard().canActivateProductionAction());
         //slot1 Cards
         List<QuantityResource> costOne = new LinkedList<>();
         List<QuantityResource> powerInputOne = new LinkedList<>();

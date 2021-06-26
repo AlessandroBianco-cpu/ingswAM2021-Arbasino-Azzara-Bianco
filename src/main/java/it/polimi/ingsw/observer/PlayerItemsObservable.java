@@ -19,12 +19,6 @@ public class PlayerItemsObservable {
         }
     }
 
-    public void removeObserver(PlayerItemsObserver observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-
     public void notifyMarbleBuffer(List<Marble> marbleLinkedList) {
         synchronized (observers) {
             for(PlayerItemsObserver observer : observers){

@@ -18,12 +18,6 @@ public class ProductionZoneObservable {
         }
     }
 
-    public void removeObserver(ProductionZoneObserver observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-
     public void notifyPersonalBoardState(PersonalBoard personalBoard){
         synchronized (observers) {
             for(ProductionZoneObserver observer : observers){

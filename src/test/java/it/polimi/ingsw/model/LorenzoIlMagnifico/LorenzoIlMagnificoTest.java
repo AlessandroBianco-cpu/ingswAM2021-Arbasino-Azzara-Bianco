@@ -39,29 +39,29 @@ class LorenzoIlMagnificoTest {
         BlackToken blackToken = new BlackToken(lory);
         ShuffleToken shuffleToken = new ShuffleToken(lory, tokenStack);
 
+        assertTrue(blackToken.isBlack());
         blackToken.doAction();
         assertEquals(2, lory.getPosition(), "Incorrect position after BlackToken");
         shuffleToken.doAction();
         assertEquals(3, lory.getPosition(), "Incorrect position after ShuffleToken");
         blackToken.doAction();
         assertEquals(5, lory.getPosition(), "Incorrect position after BlackToken");
-
     }
 
     @Test
     public void destroyCardsWithSameColor(){
         SinglePlayerGame game = new SinglePlayerGame();
-        LorenzoIlMagnifico lory = new LorenzoIlMagnifico(game);
-
+        game.vaticanReport();
         BlueToken token = new BlueToken(game);
+        assertTrue(token.isBlue());
+        assertEquals("blueToken.png",token.toImage());
 
         for(int i=0; i<6; i++){
             token.doAction();
         }
-
+        game.vaticanReport();
+        game.vaticanReport();
         assertTrue(game.isLorenzoWinner());
-
     }
-
 
 }

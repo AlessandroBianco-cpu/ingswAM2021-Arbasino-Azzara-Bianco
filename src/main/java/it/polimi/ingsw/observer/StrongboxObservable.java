@@ -18,12 +18,6 @@ public class StrongboxObservable {
         }
     }
 
-    public void removeObserver(StrongboxObserver observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
-
     public void notifyStrongboxState(Strongbox strongbox) {
         synchronized (observers) {
             for(StrongboxObserver observer : observers){

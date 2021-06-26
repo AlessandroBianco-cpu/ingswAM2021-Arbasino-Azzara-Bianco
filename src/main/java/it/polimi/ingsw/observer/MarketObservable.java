@@ -18,11 +18,6 @@ public class MarketObservable {
         }
     }
 
-    public void removeObserver(MarketObserver observer){
-        synchronized (observers) {
-            observers.remove(observer);
-        }
-    }
 
     public void notifyMarketState(Market market){
         synchronized (observers) {
