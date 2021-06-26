@@ -204,6 +204,11 @@ public class SingleController implements Controller{
     public boolean swap(int indexFrom, int indexTo) { return currentPlayer.getPersonalBoard().swap(indexFrom, indexTo); }
 
     @Override
+    public void cheatCurrentPlayer() {
+        currentPlayer.getPersonalBoard().goldButtonCheat();
+    }
+
+    @Override
     public boolean canMoveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity) {
         return currentPlayer.getPersonalBoard().canMoveFromWarehouseToExtraDepot(depotFrom, extraDepotTo, quantity);
     }

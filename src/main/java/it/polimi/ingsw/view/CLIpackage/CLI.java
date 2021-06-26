@@ -71,6 +71,14 @@ public class CLI extends NetworkHandlerObservable implements Runnable, View {
         notifyMessage(new EndTurnMessage());
     }
 
+
+    /**
+     * Sends an endTurn message
+     */
+    public void cheatRequest(){
+        notifyMessage(new CheatRequestMessage());
+    }
+
     @Override
     public void gameStarted() {
         gameStarted = true;
@@ -136,6 +144,10 @@ public class CLI extends NetworkHandlerObservable implements Runnable, View {
                         break;
                     case "ENDTURN":
                         endTurn();
+                        break;
+
+                    case ":)" :
+                        cheatRequest();
                         break;
 
                     default:

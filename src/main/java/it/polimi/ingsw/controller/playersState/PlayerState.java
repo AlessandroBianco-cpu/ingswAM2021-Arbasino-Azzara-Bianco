@@ -27,6 +27,8 @@ public abstract class PlayerState {
             handleActivateLeaderMessage((ActivateLeaderMessage) message);
         } else if (message instanceof DiscardLeaderMessage){
             handleDiscardLeaderMessage((DiscardLeaderMessage) message);
+        } else if (message instanceof CheatRequestMessage){
+            handleCheatingMessage();
         } else {
             swapAndErrorActions(message);
         }
@@ -53,6 +55,13 @@ public abstract class PlayerState {
     }
 
     /**
+     * Handles a cheating request message
+     */
+    private void handleCheatingMessage() {
+        controller.cheatCurrentPlayer();
+    }
+
+    /**
      * Actions player can do during the execution of a mainAction (i.e. activate or discard a leader card)
      * @param message action sent by the player
      */
@@ -71,7 +80,7 @@ public abstract class PlayerState {
             handleMoveFromExtraDepotMessage((MoveFromExtraDepotMessage) message);
         } else if (message instanceof MoveToExtraDepotMessage){
             handleMoveToExtraDepotMessage((MoveToExtraDepotMessage) message);
-        }else {
+        } else {
             controller.sendErrorToCurrentPlayer("Invalid command in current game state");
         }
     }

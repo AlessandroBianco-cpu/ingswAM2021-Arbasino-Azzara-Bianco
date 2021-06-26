@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.LightModel.ProductionZoneLight;
 import it.polimi.ingsw.client.LightModel.ResourceLight;
 import it.polimi.ingsw.client.LightModel.StrongboxLight;
 import it.polimi.ingsw.model.Cards.LeaderCard;
+import it.polimi.ingsw.networking.message.CheatRequestMessage;
 import it.polimi.ingsw.networking.message.EndTurnMessage;
 import it.polimi.ingsw.networking.message.Message;
 import it.polimi.ingsw.observer.NetworkHandlerObservable;
@@ -57,6 +58,9 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
             e.printStackTrace();
         }
 
+        Pane soundButton = (Pane) root.lookup("#soundButton");
+        addImage(soundButton,"/graphics/volumeOnIcon.png");
+
         List<ImageView> buttonsList = new ArrayList<>();
         ImageView buyButton = (ImageView) root.lookup("#buyButton");
         ImageView swapButton = (ImageView) root.lookup("#swapButton");
@@ -64,7 +68,7 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
         ImageView showButton = (ImageView) root.lookup("#showButton");
         ImageView productionButton = (ImageView) root.lookup("#productionButton");
         ImageView endTurnButton = (ImageView) root.lookup("#endButton");
-        ImageView volumeButton = (ImageView) root.lookup("#volumeButton");
+        ImageView cheatButton = (ImageView) root.lookup("#cheatButton");
         Pane inkwell = (Pane) root.lookup("#inkwell");
 
         showChoice = (ChoiceBox<String>) root.lookup("#showChoice");
@@ -76,6 +80,7 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
         buttonsList.add(marketButton);
         buttonsList.add(endTurnButton);
         buttonsList.add(productionButton);
+        buttonsList.add(cheatButton);
 
         strongboxLabel = new ArrayList<>();
         strongboxLabel.add((Label) root.lookup("#qtaCoin"));
@@ -106,7 +111,6 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
             im.setOnMouseEntered(event -> im.setEffect(shadow));
             im.setOnMouseExited(event -> im.setEffect(null));
         }
-
 
         if (model.getNumberOfPlayers() == 1) {
             showChoice.setValue("LorenzoIlMagnifico");
@@ -172,7 +176,16 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
                 }
             });
 
-        volumeButton.setOnMouseClicked(event -> mp.setMute(!mp.isMute()));
+        soundButton.setOnMouseClicked(event -> {
+            if (!mp.isMute()) {
+                mp.setMute(true);
+                addImage(soundButton,"/graphics/volumeOffIcon.png");
+            }
+            else {
+                mp.setMute(false);
+                addImage(soundButton,"/graphics/volumeOnIcon.png");
+            }
+        });
 
         marketButton.setOnMouseClicked(event -> {
             MarketPopup popup = new MarketPopup(model.getMarbleMarket());
@@ -193,6 +206,8 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
         });
 
         endTurnButton.setOnMouseClicked(event -> notifyMessage(new EndTurnMessage()));
+
+        cheatButton.setOnMouseClicked(event -> notifyMessage(new CheatRequestMessage()));
 
         showButton.setOnMouseClicked(event -> {
             if (showChoice.getValue().equals("LorenzoIlMagnifico"))
@@ -352,7 +367,7 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
     private void addImage(Pane pane, String image) {
         ImageView view = new ImageView();
         view.setImage(new Image(image));
-
+        pane.getChildren().clear();
         pane.getChildren().add(view);
         view.fitWidthProperty().bind(pane.widthProperty());
         view.fitHeightProperty().bind(pane.heightProperty());

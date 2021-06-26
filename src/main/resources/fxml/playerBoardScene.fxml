@@ -122,8 +122,9 @@
       <Image url="@../graphics/buttons/endTurnButton.png" />
    </ImageView>
    <Pane id="inkwell" layoutX="1080.0" layoutY="210.0" prefHeight="70.0" prefWidth="70.0" />
-   <ImageView id="volumeButton" fitHeight="50.0" fitWidth="50.0" layoutX="212.0" layoutY="650.0" pickOnBounds="true"
+   <ImageView id="cheatButton" fitHeight="60.0" fitWidth="60.0" layoutX="310.0" layoutY="120.0" pickOnBounds="true"
               preserveRatio="true">
-      <Image url="@../graphics/volumeIcon.png"/>
+      <Image url="@../graphics/punchBoard/cheatCoin.png"/>
    </ImageView>
+   <Pane id="soundButton" layoutX="210.0" layoutY="660.0" prefHeight="50.0" prefWidth="50.0" />
 </Pane>

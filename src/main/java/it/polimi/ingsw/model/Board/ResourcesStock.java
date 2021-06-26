@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.ResourceType;
 import java.util.HashMap;
 import java.util.Map;
 
+import static it.polimi.ingsw.model.ResourceType.*;
+
 /**
  * The class represents a summary of the total number of resources a player owns
  * in order to make faster the access to these quantity and improve the performances
@@ -29,6 +31,16 @@ public class ResourcesStock implements ResourceSpot {
      */
     public void increaseStock(QuantityResource resource){
         resources.put(resource.getResourceType(), resources.get(resource.getResourceType()) + resource.getQuantity());
+    }
+
+    /**
+     * This method adds 10 resources for every type resource
+     */
+    public void goldButtonCheat() {
+        resources.put(SERVANT, resources.get(SERVANT) + 10);
+        resources.put(COIN, resources.get(COIN) + 10);
+        resources.put(STONE, resources.get(STONE) + 10);
+        resources.put(SHIELD, resources.get(SHIELD) + 10);
     }
 
     /**

@@ -53,6 +53,7 @@ public interface Controller {
     void activateLeader(int index);
     boolean discardLeaderCard(int index);
     boolean swap(int indexFrom, int indexTo);
+    void cheatCurrentPlayer();
 
     boolean canMoveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity);
     void moveFromWarehouseToExtraDepot(int depotFrom, int extraDepotTo, int quantity);

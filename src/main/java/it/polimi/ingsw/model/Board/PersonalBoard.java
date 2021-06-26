@@ -407,6 +407,11 @@ public class PersonalBoard extends ProductionZoneObservable {
         }
     }
 
+    public void goldButtonCheat() {
+        strongbox.goldButtonCheat();
+        generalResource.goldButtonCheat();
+    }
+
     /**
      * @return true if a production action can be performed, false otherwise
      */
