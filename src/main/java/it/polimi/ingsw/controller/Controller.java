@@ -35,6 +35,8 @@ public interface Controller {
 
     void performTurn(Player currentPlayer);
 
+    boolean getGameEnded();
+
     void setCurrentPlayerState(PlayerState state);
 
     void setCurrentPlayerWantToEndTurn(boolean wantToEndTurn);

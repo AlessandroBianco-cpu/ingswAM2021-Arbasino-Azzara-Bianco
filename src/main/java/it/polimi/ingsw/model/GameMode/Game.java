@@ -94,10 +94,11 @@ public abstract class Game implements VaticanReporter {
      * @return the player who won the game.
      */
     public Player computeWinnerPlayer() {
-        int max = 0, maxResources = 0;
         int currentScore;
         Player currentPlayer;
         Player winner = players.get(0);
+        int max = winner.getTotalVictoryPoints();
+        int maxResources = winner.getTotalOfResources();
         for (int i = 1; i < players.size(); i++){
             currentPlayer = players.get(i);
             currentScore = currentPlayer.getTotalVictoryPoints();

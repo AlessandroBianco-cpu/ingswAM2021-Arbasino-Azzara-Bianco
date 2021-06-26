@@ -161,7 +161,6 @@ public class WaitingRoom implements EndGameObserver {
      */
     @Override
     public void manageEndGame(int lobbyID) {
-        getLobbyByID(lobbyID).setGameEnded(true);
         refreshUsers(lobbyID);
         System.out.println("[WAIT_ROOM] Removing lobby #"+lobbyID+"...");
         lobbyList.remove(getLobbyByID(lobbyID));

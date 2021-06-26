@@ -34,7 +34,6 @@ public class Lobby implements ConnectionObserver {
     private final Object lock;
     private final int ID;
     private int playersNumber;
-    private boolean gameEnded;
     private boolean lobbyIsReady; //lobby have the right number of players
     private boolean lobbyIsSettingUp; //distribution of cards and initial setting phase
 
@@ -49,7 +48,6 @@ public class Lobby implements ConnectionObserver {
         playersNumber = -1;
         lobbyIsReady = false;
         lobbyIsSettingUp = false;
-        gameEnded = false;
 
         virtualView.addObserver(userInputManager);
     }
@@ -66,7 +64,6 @@ public class Lobby implements ConnectionObserver {
         this.ID = ID;
         lock = new Object();
         lobbyIsSettingUp = false;
-        gameEnded = false;
 
         virtualView.addObserver(userInputManager);
     }
@@ -101,8 +98,6 @@ public class Lobby implements ConnectionObserver {
         return null;
     }
 
-    public void setGameEnded(boolean gameEnded) { this.gameEnded = gameEnded; }
-
     /**
      * Calculate how many player are active
      * @return number of active player
@@ -123,7 +118,7 @@ public class Lobby implements ConnectionObserver {
     @Override
     public void updateDisconnection(ClientHandler client) {
 
-        if (!gameEnded) {
+        if (!controller.getGameEnded()) {
             if (lobbyIsSettingUp)
                 updateDisconnectionInSettingPhase(client);
             else if (lobbyIsReady)
@@ -305,11 +300,14 @@ public class Lobby implements ConnectionObserver {
         getPlayerByNickname(disconnectedClient.getUserNickname()).setActive(false);
         virtualView.sendToEveryoneExceptQuitPlayer(disconnectedClient.getUserNickname());
         //is a single player started match...manage it
-        if(numOfActivePlayers() == 0)
+        if(numOfActivePlayers() == 0) {
+            deregisterConnection(disconnectedClient);
             endGameObserver.manageEndGame(ID);
+        }
         //there is only one active player... he wins
         else if (numOfActivePlayers() == 1) {
             System.out.println("[LOBBY #"+ID+"] Closing lobby: only one active player in started game");
+            deregisterConnection(disconnectedClient);
             controller.manageAEndGameForQuitting();
         }
         //advance turn in current game
@@ -329,7 +327,6 @@ public class Lobby implements ConnectionObserver {
             endGameObserver.manageEndGame(ID);
         }
         else {
-            gameEnded = true;
             controller.manageDisconnectionInSetUp(disconnectedClient.getUserNickname());
         }
     }

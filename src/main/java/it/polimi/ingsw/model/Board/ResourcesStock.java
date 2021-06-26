@@ -17,10 +17,10 @@ public class ResourcesStock implements ResourceSpot {
     private final Map<ResourceType, Integer> resources = new HashMap<>();
 
     public ResourcesStock(){
-        resources.put(ResourceType.SERVANT, 0);
-        resources.put(ResourceType.STONE, 0);
-        resources.put(ResourceType.SHIELD, 0);
-        resources.put(ResourceType.COIN, 0);
+        resources.put(ResourceType.SERVANT, 50);
+        resources.put(ResourceType.STONE, 50);
+        resources.put(ResourceType.SHIELD, 50);
+        resources.put(ResourceType.COIN, 50);
     }
 
     /**

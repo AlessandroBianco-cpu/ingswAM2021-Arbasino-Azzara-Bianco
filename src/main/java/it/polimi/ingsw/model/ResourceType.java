@@ -6,7 +6,7 @@ public enum ResourceType {
     SERVANT(true, false),
     STONE(true, false),
     FAITH(false, true),
-    NOTHING(false, false    );
+    NOTHING(false, false);
 
     private final boolean canAddToSupply;
     private final boolean canAddToFaithTrack;

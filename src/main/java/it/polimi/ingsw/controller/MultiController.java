@@ -27,6 +27,7 @@ public class MultiController implements Controller {
     private PlayerState currentState;
     private Player currentPlayer;
     private boolean currentPlayerWantsToEndTurn;
+    private boolean gameEnded;
 
     public MultiController(Game game, UserInputManager uim, VirtualView virtualView, List<Player> activePlayers) {
         this.game = game;
@@ -35,7 +36,13 @@ public class MultiController implements Controller {
         this.gamePlayers = activePlayers;
         this.currentState = new BeforeMainActionState(this);
         this.currentPlayerWantsToEndTurn = false;
+        this.gameEnded = false;
         this.currentPlayer = activePlayers.get(0);
+    }
+
+    @Override
+    public boolean getGameEnded() {
+        return gameEnded;
     }
 
     /**
@@ -140,6 +147,7 @@ public class MultiController implements Controller {
         }
 
         String winner = game.computeWinnerPlayer().getNickname();
+        gameEnded = true;
         virtualView.updateWinner(winner);
     }
 
@@ -214,6 +222,7 @@ public class MultiController implements Controller {
     @Override
     public void manageAEndGameForQuitting() {
         String nickname = "";
+        gameEnded = true;
         for (Player p : gamePlayers) {
             if (p.isActive())
                 nickname = p.getNickname();
@@ -224,6 +233,7 @@ public class MultiController implements Controller {
 
     @Override
     public void manageDisconnectionInSetUp(String quitNickname) {
+        gameEnded = true;
         virtualView.sendDisconnectionInSetUpGame(quitNickname);
     }
 

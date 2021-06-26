@@ -26,6 +26,7 @@ public class SingleController implements Controller{
     private final Player currentPlayer;
     private PlayerState currentState;
     private boolean currentPlayerWantsToEndTurn;
+    private boolean gameEnded;
     private final LorenzoIlMagnifico lorenzoIlMagnifico;
 
     public SingleController(Game game, UserInputManager uim, VirtualView virtualView, Player singlePlayer) {
@@ -35,7 +36,13 @@ public class SingleController implements Controller{
         this.currentPlayer = singlePlayer;
         this.currentState = new BeforeMainActionState(this);
         this.currentPlayerWantsToEndTurn = false;
+        this.gameEnded = false;
         lorenzoIlMagnifico = ((SinglePlayerGame) game).getLorenzoIlMagnifico();
+    }
+
+    @Override
+    public boolean getGameEnded() {
+        return gameEnded;
     }
 
     /**
@@ -108,6 +115,7 @@ public class SingleController implements Controller{
         }else{
             winner = currentPlayer.getNickname();
         }
+        gameEnded = true;
         virtualView.updateWinner(winner);
 
     }
