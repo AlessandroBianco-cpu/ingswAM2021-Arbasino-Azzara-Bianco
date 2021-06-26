@@ -56,7 +56,7 @@ public class BaseDevSlot extends ProductionSlot{
     }
 
     @Override
-    boolean hasCards() {
+    public boolean hasCards() {
         return false;
     }
 }

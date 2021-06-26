@@ -9,6 +9,7 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.Cards.DevCardColor.*;
 import static it.polimi.ingsw.model.ResourceType.*;
+import static it.polimi.ingsw.utils.StaticUtils.*;
 
 /**
  * Deck of leaders cards
@@ -18,12 +19,6 @@ public class LeaderDeck extends Deck {
     private final List<LeaderCard> cards;
 
     public LeaderDeck() {
-
-        final int DISCOUNT_POINTS = 2;
-        final int DEPOT_POINTS = 3;
-        final int PRODUCTION_POINTS = 4;
-        final int CONVERT_POINTS = 5;
-        final int DISCOUNT_AMOUNT = -1;
 
         cards= new LinkedList<>();
         LinkedList<Requirement> requirementExtraDepotStone = new LinkedList<>();

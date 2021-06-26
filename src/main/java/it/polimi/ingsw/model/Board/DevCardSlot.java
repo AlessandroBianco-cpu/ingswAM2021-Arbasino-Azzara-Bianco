@@ -64,7 +64,7 @@ public class DevCardSlot extends ProductionSlot {
     }
 
     @Override
-    boolean hasCards() {
+    public boolean hasCards() {
         return (cards.size() > 0);
     }
 

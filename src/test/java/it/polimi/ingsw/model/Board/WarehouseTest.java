@@ -15,6 +15,7 @@ public class WarehouseTest {
         wh.addResource(SHIELD,0);
         wh.addResource(COIN,1);
         wh.addResource(STONE,2);
+        assertFalse(wh.swap(-1,5));
         wh.swap(0,1);
         wh.swap(0,2);
         wh.swap(1,2);
@@ -154,6 +155,7 @@ public class WarehouseTest {
         assertTrue(wh.canMoveFromWarehouseToExtraDepot(2,1,2));
         wh.moveFromWarehouseToExtraDepot(2,1,2);
         wh.addResource(STONE, 2);
+        assertFalse(wh.canMoveFromExtraDepotToWarehouse(1,5,2));
         assertFalse(wh.canMoveFromExtraDepotToWarehouse(1,2,2));
         assertTrue(wh.canMoveFromExtraDepotToWarehouse(1,2,1));
         wh.moveFromExtraDepotToWarehouse(1,2,1);
@@ -173,4 +175,5 @@ public class WarehouseTest {
         assertEquals(new QuantityResource(SERVANT,0), wh.getExtraDepot(2));
 
     }
+
 }

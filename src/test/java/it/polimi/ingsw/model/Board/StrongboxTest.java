@@ -77,4 +77,5 @@ class StrongboxTest {
         assertEquals(2, strongbox.getNumResource(COIN));
         assertEquals(1, strongbox.getNumResource(SERVANT));
     }
+
 }

@@ -13,6 +13,8 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.Cards.DevCardColor.*;
 import static it.polimi.ingsw.model.ResourceType.*;
+import static it.polimi.ingsw.utils.StaticUtils.DISCOUNT_AMOUNT;
+import static it.polimi.ingsw.utils.StaticUtils.DISCOUNT_POINTS;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
@@ -27,18 +29,18 @@ class PlayerTest {
     }
 
     @Test
-    void activateBaseProductionPower(){
+    void activateBaseProductionPower() {
 
-        assertTrue(player.canAddResourceInWarehouse(ResourceType.COIN,0));
-        player.addResourceInWarehouse(ResourceType.COIN,0);
+        assertTrue(player.canAddResourceInWarehouse(COIN,0));
+        assertFalse(player.canAddResourceInWarehouse(NOTHING,0));
+        player.addResourceInWarehouse(COIN,0);
 
-        assertFalse(player.canAddResourceInWarehouse(ResourceType.COIN,0));
+        assertFalse(player.canAddResourceInWarehouse(COIN,1));
 
         assertTrue(player.canAddResourceInWarehouse(ResourceType.SERVANT,1));
         player.addResourceInWarehouse(ResourceType.SERVANT,1);
         assertTrue(player.canAddResourceInWarehouse(ResourceType.SERVANT,1));
         player.addResourceInWarehouse(ResourceType.SERVANT,1);
-
         List<Integer> indexActivated = new ArrayList<>();
         indexActivated.add(0);
 
@@ -46,6 +48,12 @@ class PlayerTest {
         player.getPersonalBoard().setBasePowerOutput(ResourceType.SHIELD);
 
         assertTrue(player.getPersonalBoard().canUseDevCards(indexActivated));
+        List<Integer> fakeList = new ArrayList<>();
+        fakeList.add(-1);
+        assertFalse(player.canUseDevCards(fakeList));
+        fakeList.remove(0);
+        fakeList.add(8);
+        assertFalse(player.getPersonalBoard().canUseDevCards(fakeList));
 
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(ResourceType.SERVANT,1));
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(ResourceType.COIN,1));
@@ -72,7 +80,7 @@ class PlayerTest {
         LeaderCard productionWithServant = new ExtraDevCard(requirementProductionWithServant, SERVANT, 2232, 2);
         player.addLeaderCard(productionWithServant);
         player.activateLeader(0);
-
+        assertEquals(productionWithServant, player.getPersonalBoard().getTopExtraDevCardsInSlots().get(0));
         List<QuantityResource> costOne = new LinkedList<>();
         List<QuantityResource> powerInputOne = new LinkedList<>();
         List<QuantityResource> powerOutputOne = new LinkedList<>();
@@ -80,18 +88,18 @@ class PlayerTest {
         powerInputOne.add(new QuantityResource(COIN,1));
         powerOutputOne.add(new QuantityResource(FAITH,1));
         DevCard cardOne = new DevCard(1,1,2020,costOne,GREEN,powerInputOne,powerOutputOne);
+        assertTrue(player.canPlaceDevCardOnDevSlot(cardOne,1));
         player.getPersonalBoard().addDevCardInSlot(cardOne,1);
 
-
-        player.addResourceInWarehouse(COIN,0);
-        player.addResourceInWarehouse(SERVANT,1);
         List<Integer> indexActivated = new ArrayList<>();
 
         indexActivated.add(1);
         indexActivated.add(4);
 
         player.getPersonalBoard().setLeaderPowerOutput(4, SHIELD);
-
+        assertFalse(player.getPersonalBoard().canUseDevCards(indexActivated));
+        player.addResourceInWarehouse(COIN,0);
+        player.addResourceInWarehouse(SERVANT,1);
         assertTrue(player.getPersonalBoard().canUseDevCards(indexActivated));
 
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(COIN,1));
@@ -122,6 +130,7 @@ class PlayerTest {
         powerInputTwo.add(new QuantityResource(SERVANT,2));
         powerOutputTwo.add(new QuantityResource(STONE,2));
 
+
         DevCard cardOne = new DevCard(1,1,2020,costOne,GREEN,powerInputOne,powerOutputOne);
         DevCard cardTwo= new DevCard(2,1,2021,costTwo, BLUE,powerInputTwo,powerOutputTwo);
         player.getPersonalBoard().addDevCardInSlot(cardOne,1);
@@ -135,7 +144,7 @@ class PlayerTest {
         indexActivated.add(1);
         indexActivated.add(2);
 
-        assertTrue(player.getPersonalBoard().canUseDevCards(indexActivated));
+        assertTrue(player.canUseDevCards(indexActivated));
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(COIN,1));
         player.getPersonalBoard().removeResourcesFromWarehouse(new QuantityResource(SERVANT,2));
 
@@ -159,10 +168,11 @@ class PlayerTest {
         LinkedList<Requirement> requirementExtraDepotStone = new LinkedList<>();
         requirementExtraDepotStone.add(new ResourceRequirement(new QuantityResource(COIN, 5)));
         LeaderCard extraDepotStone = new ExtraDepotCard(requirementExtraDepotStone, STONE, 12, 3);
-        player.getPersonalBoard().getStrongbox().increaseStrongbox(new QuantityResource(COIN,5));
-        player.getPersonalBoard().getGeneralResource().increaseStock(new QuantityResource(COIN,5));
         player.addLeaderCard(extraDepotStone);
 
+        assertFalse(player.canActivateLeaderCard(0));
+        player.getPersonalBoard().getStrongbox().increaseStrongbox(new QuantityResource(COIN,5));
+        player.getPersonalBoard().getGeneralResource().increaseStock(new QuantityResource(COIN,5));
         assertTrue(player.canActivateLeaderCard(0));
         player.activateLeader(0);
 
@@ -178,8 +188,6 @@ class PlayerTest {
     }
 
 
-
-
     @Test
     void discardLeaderCard(){
         LinkedList<Requirement> requirementProductionWithServant = new LinkedList<>();
@@ -187,6 +195,10 @@ class PlayerTest {
         LeaderCard productionWithServant = new ExtraDevCard(requirementProductionWithServant, SERVANT, 2254, 2);
         player.addLeaderCard(productionWithServant);
         assertTrue(player.discardLeaderCard(0));
+
+        player.addLeaderCard(productionWithServant);
+        player.initialDiscardLeaderCard(0);
+        assertEquals(0,player.getPersonalBoard().getFaithTrack().getPositionScore());
     }
 
     @Test
@@ -199,6 +211,8 @@ class PlayerTest {
 
         //player activation status tests
         assertFalse(player.canActivateLeaderCard(0));
+        assertFalse(player.canActivateLeaderCard(8));
+
         player.setActive(false);
         assertFalse(player.isActive());
         player.setActive(true);
@@ -244,12 +258,14 @@ class PlayerTest {
         assertFalse(player.getPersonalBoard().canMoveFromExtraDepotToWarehouse(0,0,2));
         player.getPersonalBoard().addResourceInExtraDepot(STONE);
         assertFalse(player.canAddResourceInExtraDepot(STONE)); //extraDepot is full
+        assertFalse(player.canAddResourceInExtraDepot(NOTHING));
 
         assertFalse(player.getPersonalBoard().canMoveFromExtraDepotToWarehouse(0,0,2));
         assertTrue(player.getPersonalBoard().canMoveFromExtraDepotToWarehouse(0,0,1));
         player.getPersonalBoard().moveFromExtraDepotToWarehouse(0,0,1);
 
         assertTrue(player.canAddResourceInExtraDepot(STONE));
+        assertFalse(player.canAddResourceInExtraDepot(COIN));
         assertTrue(player.getPersonalBoard().canMoveFromWarehouseToExtraDepot(0,0,1));
         player.getPersonalBoard().moveFromWarehouseToExtraDepot(0,0,1);
 
@@ -291,7 +307,8 @@ class PlayerTest {
         assertTrue(player.canAddResourceInExtraDepot(filteredMarbles.get(0).getResourceType()));
         player.addResourceInExtraDepotFromBuffer(0);
         assertEquals(1, player.getPersonalBoard().getWarehouse().getExtraDepot(0).getQuantity());
-
+        player.getPersonalBoard().removeResourcesFromExtraDepot(new QuantityResource(SHIELD,1));
+        assertEquals(0, player.getPersonalBoard().getWarehouse().getExtraDepot(0).getQuantity());
     }
 
     @Test
@@ -312,7 +329,10 @@ class PlayerTest {
 
         player.discardResourceFromBuffer(1);
         assertFalse(player.canAddResourceInExtraDepotFromBuffer(0));
+        assertFalse(player.canAddResourceInExtraDepotFromBuffer(-1));
         assertTrue(player.canAddResourceInWarehouseFromBuffer(0,1));
+        assertFalse(player.canAddResourceInWarehouseFromBuffer(0,4));
+        assertFalse(player.canAddResourceInWarehouseFromBuffer(0,-2));
         player.discardResourceFromBuffer(0);
 
         assertEquals(1, player.getPersonalBoard().getFaithTrack().getPosition());
@@ -376,6 +396,8 @@ class PlayerTest {
 
         assertTrue(player.canConvertWhiteMarble(SHIELD,0));
         assertTrue(player.canConvertWhiteMarble(SERVANT, 1));
+        assertFalse(player.canConvertWhiteMarble(SERVANT, 8));
+        assertFalse(player.canConvertWhiteMarble(SERVANT, -1));
         assertTrue(player.canConvertWhiteMarble(STONE,2));
         assertTrue(player.canConvertWhiteMarble(COIN,3));
 
@@ -390,8 +412,6 @@ class PlayerTest {
 
         player.convertWhiteMarble(COIN, 0);
         player.discardResourceFromBuffer(0);
-
-
 
     }
 
@@ -419,9 +439,23 @@ class PlayerTest {
         player.getPersonalBoard().getGeneralResource().increaseStock(new QuantityResource(STONE, 15));
 
         assertEquals(4, player.devCardsPlayerCanBuy().size());
+        assertFalse(player.canBuyDevCardFromMarket(-1));
         assertTrue(player.canBuyDevCardFromMarket(1));
+
         player.getPersonalBoard().addDevCardInSlot(game.getDevCardFromIndex(1), 1);
     }
+
+    @Test
+    void resourcesCheckFromPlayerBoard() {
+        player.getPersonalBoard().getStrongbox().increaseStrongbox(new QuantityResource(COIN,4));
+        assertTrue(player.getPersonalBoard().strongboxHasEnoughResources(new QuantityResource(COIN,3)));
+        assertFalse(player.getPersonalBoard().extraDepotHasEnoughResources(new QuantityResource(COIN,3)) );
+        player.getPersonalBoard().getWarehouse().addResource(COIN,2);
+        player.getPersonalBoard().getWarehouse().addResource(COIN,2);
+        assertFalse(player.getPersonalBoard().warehouseHasEnoughResources(new QuantityResource(COIN,3)));
+        player.getPersonalBoard().removeResourcesInResourceSpots(2,2,0,COIN);
+    }
+
 
     @Test
     void allSlotsActivated(){
@@ -562,7 +596,11 @@ class PlayerTest {
         powerOutputOne.add(new QuantityResource(FAITH, 1));
         DevCard cardOne = new DevCard(1, 1, 2020, costOne, GREEN, powerInputOne, powerOutputOne);
 
+        assertTrue(player.getPersonalBoard().canPlaceDevCardOnDevSlot(cardOne,1));
         player.getPersonalBoard().addDevCardInSlot(cardOne, 1);
+        assertFalse(player.getPersonalBoard().canPlaceDevCardOnDevSlot(cardOne,1));
+        assertFalse(player.getPersonalBoard().canPlaceDevCardOnDevSlot(cardOne,0));
+        assertFalse(player.getPersonalBoard().canPlaceDevCardOnDevSlot(cardOne,7));
 
         //slot2 cards
         List<QuantityResource> costTwo = new LinkedList<>();
@@ -671,5 +709,37 @@ class PlayerTest {
 
         assertTrue(player.getPersonalBoard().canActivateProductionAction());
     }
+
+    @Test
+    void useDiscountLeaderCard() {
+        LinkedList<Requirement> requirementDiscountStone = new LinkedList<>();
+        requirementDiscountStone.add(new CardRequirement(1,1,GREEN));
+        requirementDiscountStone.add(new CardRequirement(1,1,BLUE));
+        DiscountCard discountStone = new DiscountCard(requirementDiscountStone, STONE, 8, DISCOUNT_POINTS, DISCOUNT_AMOUNT);
+        player.addLeaderCard(discountStone);
+        player.activateLeader(0);
+        player.addDiscountCardPower(discountStone);
+        assertTrue(player.canApplyDiscount(STONE));
+        assertFalse(player.canApplyDiscount(COIN));
+
+        assertEquals(-1,player.getDiscountAmount(STONE));
+        assertEquals(0,player.getDiscountAmount(COIN));
+    }
+
+
+    @Test
+    void stupidCheatingButton() {
+        player.getPersonalBoard().goldButtonCheat();
+        assertEquals(10,  player.getPersonalBoard().getStrongbox().getNumResource(COIN));
+        assertEquals(10, player.getPersonalBoard().getStrongbox().getNumResource(SERVANT));
+        assertEquals(10, player.getPersonalBoard().getStrongbox().getNumResource(STONE));
+        assertEquals(10, player.getPersonalBoard().getStrongbox().getNumResource(SHIELD));
+        assertEquals(10,  player.getPersonalBoard().getGeneralResource().getNumberOfResource(COIN));
+        assertEquals(10,  player.getPersonalBoard().getGeneralResource().getNumberOfResource(SERVANT));
+        assertEquals(10,  player.getPersonalBoard().getGeneralResource().getNumberOfResource(SHIELD));
+        assertEquals(10,  player.getPersonalBoard().getGeneralResource().getNumberOfResource(STONE));
+
+    }
+
 
 }

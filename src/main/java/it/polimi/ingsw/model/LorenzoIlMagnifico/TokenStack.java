@@ -34,6 +34,7 @@ public class TokenStack implements Serializable {
 
     /**
      * Executes the action of the Token on top of the TokenStack
+     * @return return the executed token
      */
     public ActionToken executeFirstToken(){
         ActionToken currentToken = ((LinkedList<ActionToken>)tokenStack).pop();

@@ -39,6 +39,13 @@ public class StaticUtils {
     public final static int SECOND_POPE_FAVOR_TILE_SCORE = 3;
     public final static int THIRD_POPE_FAVOR_TILE_SCORE = 4;
 
+    //leaders deck constants
+    public final static int DISCOUNT_POINTS = 2;
+    public final static int DEPOT_POINTS = 3;
+    public final static int PRODUCTION_POINTS = 4;
+    public final static int CONVERT_POINTS = 5;
+    public final static int DISCOUNT_AMOUNT = -1;
+
     //printing facilities
     public final static String listOfResources = printGreen(" 1")+ "-> " + printYellow("coin") + ", " + printGreen("2") +"-> " + printGrey("stone") + ", " + printGreen("3") + "-> " + printBlue("shield") + ", " + printGreen("4") +"-> " + printPurple("servant");
     public final static String listOfLeaderAction = printGreen(" act1") + " -> activate first leader card," + printGreen(" act2") + " -> activate second leader card," + printGreen(" dis1") + " -> discard first leader card," + printGreen(" dis2") + " -> discard second leader card";

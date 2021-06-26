@@ -22,8 +22,7 @@ public abstract class ActionToken implements Serializable {
         return false;
     }
 
-    public boolean isYellow(){
-        return false;
+    public boolean isYellow() { return false;
     }
 
     public boolean isShuffle(){

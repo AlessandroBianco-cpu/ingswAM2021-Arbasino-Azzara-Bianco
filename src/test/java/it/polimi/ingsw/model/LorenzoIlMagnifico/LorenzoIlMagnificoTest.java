@@ -46,10 +46,11 @@ class LorenzoIlMagnificoTest {
         assertEquals(3, lory.getPosition(), "Incorrect position after ShuffleToken");
         blackToken.doAction();
         assertEquals(5, lory.getPosition(), "Incorrect position after BlackToken");
+        assertEquals("blackToken.png",blackToken.toImage());
     }
 
     @Test
-    public void destroyCardsWithSameColor(){
+    public void destroyCardsWithBlueColor(){
         SinglePlayerGame game = new SinglePlayerGame();
         game.vaticanReport();
         BlueToken token = new BlueToken(game);
@@ -60,8 +61,24 @@ class LorenzoIlMagnificoTest {
             token.doAction();
         }
         game.vaticanReport();
-        game.vaticanReport();
         assertTrue(game.isLorenzoWinner());
     }
 
+    @Test
+    public void destroyCardsWithYellowPurpleColor(){
+        SinglePlayerGame game = new SinglePlayerGame();
+
+        YellowToken yellowToken = new YellowToken(game);
+        assertTrue(yellowToken.isYellow());
+        assertEquals("yellowToken.png",yellowToken.toImage());
+        PurpleToken purpleToken = new PurpleToken(game);
+        assertTrue(purpleToken.isPurple());
+        assertEquals("purpleToken.png",purpleToken.toImage());
+
+        for(int i=0; i<3; i++){
+            purpleToken.doAction();
+            yellowToken.doAction();
+        }
+
+    }
 }

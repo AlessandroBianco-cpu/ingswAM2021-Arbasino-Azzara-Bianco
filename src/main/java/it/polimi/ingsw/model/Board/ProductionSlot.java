@@ -10,9 +10,9 @@ import java.util.List;
  */
 public abstract class ProductionSlot {
 
-    abstract List<QuantityResource> getProductionPowerInput();
-    abstract List<QuantityResource> getProductionPowerOutput();
-    abstract boolean hasCards();
+    public abstract List<QuantityResource> getProductionPowerInput();
+    public abstract List<QuantityResource> getProductionPowerOutput();
+    public abstract boolean hasCards();
     /**
      * This method is used to count the number of Cards in the slot that satisfy the given requirement
      * @param cardRequirement is the Requirement player wants to see if and how many times is respected in the slot

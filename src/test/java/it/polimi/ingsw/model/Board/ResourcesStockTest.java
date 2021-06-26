@@ -85,6 +85,6 @@ class ResourcesStockTest {
         assertFalse(resourcesStock.hasEnoughResources(new QuantityResource(SHIELD, 4)));
 
         assertFalse(resourcesStock.hasEnoughResources(new QuantityResource(STONE, 5)));
-
     }
+
 }
