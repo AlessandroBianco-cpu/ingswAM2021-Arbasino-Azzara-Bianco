@@ -45,11 +45,10 @@ public class ProductionPopup extends SceneObservable implements Popup {
         List<Pane> slot1 = new ArrayList<>();
         List<Pane> slot2 = new ArrayList<>();
         List<Pane> slot3 = new ArrayList<>();
-        for(int i = 0; i<3; i++) {
-            int j = i+1;
-            slot1.add((Pane) root.lookup("#slot1card"+j));
-            slot2.add((Pane) root.lookup("#slot2card"+j));
-            slot3.add((Pane) root.lookup("#slot3card"+j));
+        for(int i = 1; i<4; i++) {
+            slot1.add((Pane) root.lookup("#slot1card"+i));
+            slot2.add((Pane) root.lookup("#slot2card"+i));
+            slot3.add((Pane) root.lookup("#slot3card"+i));
         }
 
         startButton = (ImageView) root.lookup("#startButton");

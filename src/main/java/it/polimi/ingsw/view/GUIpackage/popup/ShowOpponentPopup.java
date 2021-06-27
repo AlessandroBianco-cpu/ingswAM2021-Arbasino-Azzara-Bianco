@@ -52,27 +52,23 @@ public class ShowOpponentPopup implements Popup {
         depots.add((Pane) root.lookup("#thirdDepot3"));
 
         List<Pane> slot1 = new ArrayList<>();
-        for(int i = 0; i<3; i++) {
-            int j = i+1;
-            slot1.add((Pane) root.lookup("#slot1card"+j));
+        for(int i = 1; i<4; i++) {
+            slot1.add((Pane) root.lookup("#slot1card"+i));
         }
 
         List<Pane> slot2 = new ArrayList<>();
-        for(int i = 0; i<3; i++) {
-            int j = i+1;
-            slot2.add((Pane) root.lookup("#slot2card"+j));
+        for(int i = 1; i<4; i++) {
+            slot2.add((Pane) root.lookup("#slot2card"+i));
         }
 
         List<Pane> slot3 = new ArrayList<>();
-        for(int i = 0; i<3; i++) {
-            int j = i+1;
-            slot3.add((Pane) root.lookup("#slot3card"+j));
+        for(int i = 1; i<4; i++) {
+            slot3.add((Pane) root.lookup("#slot3card"+i));
         }
 
         List<Pane> popeSpaces = new ArrayList<>();
-        for(int i = 0; i<3; i++) {
-            int j = i+1;
-            popeSpaces.add((Pane) root.lookup("#popeSpace"+j));
+        for(int i = 1; i<4; i++) {
+            popeSpaces.add((Pane) root.lookup("#popeSpace"+i));
         }
 
         List<Pane> extraDepots = new ArrayList<>();

@@ -65,9 +65,8 @@ public class BufferPopup extends SceneObservable implements Popup {
         extraDepots.add((Pane) root.lookup("#secondExtra2"));
 
         depots = new ArrayList<>();
-        for(int i=0; i<6; i++) {
-            int j = i+1;
-            depots.add((Pane) root.lookup("#"+j));
+        for(int i=1; i<7; i++) {
+            depots.add((Pane) root.lookup("#"+i));
         }
 
         buffer = new ArrayList<>();

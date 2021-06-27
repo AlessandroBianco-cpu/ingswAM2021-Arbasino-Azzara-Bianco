@@ -59,9 +59,8 @@ public class SwapPopup extends SceneObservable implements Popup {
         quantityBox.getItems().add("2");
 
         List<Pane> depots = new ArrayList<>();
-        for(int i=0; i<6; i++) {
-            int j = i+1;
-            depots.add((Pane) root.lookup("#"+j));
+        for(int i=1; i<7; i++) {
+            depots.add((Pane) root.lookup("#"+i));
         }
 
         for(int i =0; i < warehouse.getDepots().length; i++)

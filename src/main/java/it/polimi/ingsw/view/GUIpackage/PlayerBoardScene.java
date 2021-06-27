@@ -92,9 +92,8 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
             setLabelIntText(l,0);
 
         popeSpaces = new ArrayList<>();
-        for(int i = 0; i<3; i++) {
-            int j = i+1;
-            popeSpaces.add((Pane) root.lookup("#popeSpace"+j));
+        for(int i = 1; i<4; i++) {
+            popeSpaces.add((Pane) root.lookup("#popeSpace"+i));
         }
 
         depots = new ArrayList<>();
