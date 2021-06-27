@@ -5,13 +5,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1">
    <ImageView fitHeight="409.0" fitWidth="616.0" layoutX="-9.0" layoutY="-4.0">
       <Image url="@../graphics/wall.png" />
    </ImageView>
    <ImageView fitHeight="141.0" fitWidth="607.0" layoutY="-4.0" pickOnBounds="true" preserveRatio="true">
       <image>
-         <Image url="@../graphics/banner.png" />
+         <Image url="@../graphics/bannerPlayerBoard.png" />
       </image>
    </ImageView>
    <Pane id="coinImg" layoutX="25.0" layoutY="165.0" prefHeight="75.0" prefWidth="75.0">
@@ -38,7 +38,7 @@
    <CheckBox id="shield" layoutX="170.0" layoutY="245.0" mnemonicParsing="false" />
    <CheckBox id="servant" layoutX="50.0" layoutY="360.0" mnemonicParsing="false" />
    <CheckBox id="stone" layoutX="170.0" layoutY="360.0" mnemonicParsing="false" />
-   <Label layoutX="25.0" layoutY="6.0" prefHeight="27.0" prefWidth="501.0" text="You have to pay these resources to activate production :" textFill="WHITE">
+   <Label layoutX="25.0" layoutY="11.0" prefHeight="27.0" prefWidth="501.0" text="You have to pay these resources to activate production :" textFill="WHITE">
       <font>
          <Font name="Avenir Next Bold" size="18.0" />
       </font>

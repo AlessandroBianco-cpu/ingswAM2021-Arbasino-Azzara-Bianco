@@ -2,18 +2,20 @@
 
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.Pane?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0"
-      prefWidth="350.0" xmlns="http://javafx.com/javafx/15" >
-   <ImageView fitHeight="333.0" fitWidth="435.0" layoutX="-49.0">
-      <Image url="@../graphics/paperMap.png"/>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1">
+   <ImageView fitHeight="300.0" fitWidth="350.0">
+      <Image url="@../graphics/wall.png" />
    </ImageView>
-   <Pane id="leader" layoutX="99.0" layoutY="24.0" prefHeight="214.0" prefWidth="140.0"/>
-   <ImageView id="activateButton" fitHeight="30.0" fitWidth="100.0" layoutX="50.0" layoutY="260.0" pickOnBounds="true"
-              preserveRatio="true">
-      <Image url="@../graphics/buttons/activateButton.png"/>
+   <ImageView fitHeight="251.0" fitWidth="184.0" layoutX="84.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../graphics/cardHolder.png" />
+      </image>
    </ImageView>
-   <ImageView id="discardButton" fitHeight="30.0" fitWidth="100.0" layoutX="200.0" layoutY="260.0" pickOnBounds="true"
-              preserveRatio="true">
-      <Image url="@../graphics/buttons/discardButton.png"/>
+   <Pane id="leader" layoutX="102.0" layoutY="27.0" prefHeight="215.0" prefWidth="131.0" />
+   <ImageView id="activateButton" fitHeight="30.0" fitWidth="100.0" layoutX="50.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/buttons/activateButton.png" />
+   </ImageView>
+   <ImageView id="discardButton" fitHeight="30.0" fitWidth="100.0" layoutX="200.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/buttons/discardButton.png" />
    </ImageView>
 </Pane>
