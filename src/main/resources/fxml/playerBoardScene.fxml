@@ -28,7 +28,7 @@
    </ImageView>
    <ImageView id="topbordo" fitHeight="120.0" fitWidth="1200.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
       <image>
-         <Image url="@../graphics/banner.png" />
+         <Image url="@../graphics/bannerPlayerBoard.png" />
       </image>
    </ImageView>
    <ChoiceBox id="showChoice" layoutX="1020.0" layoutY="18.0" prefHeight="33.0" prefWidth="160.0" />

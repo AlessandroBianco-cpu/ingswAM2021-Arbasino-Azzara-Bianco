@@ -39,7 +39,7 @@
    </ImageView>
    <ImageView fitHeight="121.0" fitWidth="922.0" layoutX="151.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
       <image>
-         <Image url="@../graphics/banner.png" />
+         <Image url="@../graphics/bannerPlayerBoard.png" />
       </image>
    </ImageView>
    <Text fill="WHITE" layoutX="-4.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Discard two of these leaders from your deck :" textAlignment="CENTER" wrappingWidth="1219.6288375854492">
