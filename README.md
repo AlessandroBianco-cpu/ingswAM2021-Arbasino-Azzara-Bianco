@@ -84,9 +84,12 @@ java -jar MastersOfRenaissance.jar -server -port [port_number]
 - `-port 12345`: allows you to enter the number of server port (only for server launching). If not specified the default value is __12345__;
 
 ## **The Team [*JavaComeLava*]**
-- [__Andrea Paolo Arbasino__](https://github.com/AndreaArbasino)
-- [__Daniele Azzarà__](https://github.com/cicabuca)
-- [__Alessandro Bianco__](https://github.com/AlessandroBianco-cpu)
+- [__Arbasino Andrea Paolo__](https://github.com/AndreaArbasino)
+- [__Azzarà Daniele__](https://github.com/cicabuca)
+- [__Bianco Alessandro__](https://github.com/AlessandroBianco-cpu)
+
+## **Special Thanks**
+A big thank you to [__Perico Marco__](https://www.instagram.com/eternit_tm/?hl=it) for the artworks that compose the GUI.
 
 ### Copyright and license
 Masters Of Renaissance is copyrighted 2020.
