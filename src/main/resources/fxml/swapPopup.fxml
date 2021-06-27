@@ -3,34 +3,46 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-      prefWidth="600.0" xmlns="http://javafx.com/javafx/15" >
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <ImageView fitHeight="400.0" fitWidth="608.0">
-      <Image url="@../graphics/paperMap.png"/>
+      <Image url="@../graphics/wall.png" />
    </ImageView>
-   <ImageView fitHeight="229.0" fitWidth="230.0" layoutX="26.0" layoutY="140.0" pickOnBounds="true"
-              preserveRatio="true">
-      <Image url="@../graphics/punchBoard/warehouse.png"/>
+   <ImageView id="settala" fitHeight="55.0" fitWidth="607.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../graphics/woodBanner.png" />
+      </image>
    </ImageView>
-   <Pane id="1" layoutX="121.0" layoutY="193.0" prefHeight="40.0" prefWidth="40.0"/>
-   <Pane id="2" layoutX="88.0" layoutY="241.0" prefHeight="40.0" prefWidth="40.0"/>
-   <Pane id="3" layoutX="153.0" layoutY="241.0" prefHeight="40.0" prefWidth="40.0"/>
-   <Pane id="4" layoutX="73.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0"/>
-   <Pane id="5" layoutX="121.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0"/>
-   <Pane id="6" layoutX="169.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0"/>
-   <Pane id="leader1" layoutX="285.0" layoutY="134.0" prefHeight="214.0" prefWidth="140.0"/>
-   <Pane id="leader2" layoutX="446.0" layoutY="134.0" prefHeight="214.0" prefWidth="140.0"/>
-   <CheckBox id="depot1" layoutX="38.0" layoutY="190.0" mnemonicParsing="false"/>
-   <CheckBox id="depot2" layoutX="17.0" layoutY="253.0" mnemonicParsing="false"/>
-   <CheckBox id="depot3" layoutX="8.0" layoutY="309.0" mnemonicParsing="false"/>
-   <ChoiceBox id="choiceBox" layoutX="340.0" layoutY="74.0" prefWidth="150.0"/>
-   <ChoiceBox id="quantityBox" layoutX="515.0" layoutY="74.0" prefHeight="24.0" prefWidth="55.0"/>
-   <ImageView id="swapButton" fitHeight="26.0" fitWidth="123.0" layoutX="80.0" layoutY="81.0" pickOnBounds="true"
-              preserveRatio="true">
-      <Image url="@../graphics/buttons/swapButton.png"/>
+   <ImageView fitHeight="229.0" fitWidth="230.0" layoutX="26.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/punchBoard/warehouse.png" />
    </ImageView>
-   <Pane id="firstExtra1" layoutX="309.0" layoutY="304.0" prefHeight="35.0" prefWidth="35.0"/>
-   <Pane id="firstExtra2" layoutX="365.0" layoutY="304.0" prefHeight="35.0" prefWidth="35.0"/>
-   <Pane id="secondExtra1" layoutX="472.0" layoutY="304.0" prefHeight="35.0" prefWidth="35.0"/>
-   <Pane id="secondExtra2" layoutX="528.0" layoutY="304.0" prefHeight="35.0" prefWidth="35.0"/>
+   <ImageView fitHeight="221.0" fitWidth="152.0" layoutX="280.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../graphics/cardHolder.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="221.0" fitWidth="152.0" layoutX="440.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../graphics/cardHolder.png" />
+      </image>
+   </ImageView>
+   <Pane id="1" layoutX="121.0" layoutY="193.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="2" layoutX="88.0" layoutY="241.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="3" layoutX="153.0" layoutY="241.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="4" layoutX="73.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="5" layoutX="121.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="6" layoutX="169.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="leader1" layoutX="292.0" layoutY="141.0" prefHeight="196.0" prefWidth="123.0" />
+   <Pane id="leader2" layoutX="454.0" layoutY="139.0" prefHeight="196.0" prefWidth="123.0" />
+   <CheckBox id="depot1" layoutX="40.0" layoutY="190.0" mnemonicParsing="false" />
+   <CheckBox id="depot2" layoutX="17.0" layoutY="253.0" mnemonicParsing="false" />
+   <CheckBox id="depot3" layoutX="8.0" layoutY="309.0" mnemonicParsing="false" />
+   <ChoiceBox id="choiceBox" layoutX="273.0" layoutY="16.0" prefWidth="150.0" />
+   <ChoiceBox id="quantityBox" layoutX="483.0" layoutY="17.0" prefHeight="24.0" prefWidth="55.0" />
+   <ImageView id="swapButton" fitHeight="35.0" fitWidth="147.0" layoutX="15.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/buttons/swapButton.png" />
+   </ImageView>
+   <Pane id="firstExtra1" layoutX="313.0" layoutY="292.0" prefHeight="35.0" prefWidth="35.0" />
+   <Pane id="firstExtra2" layoutX="360.0" layoutY="292.0" prefHeight="35.0" prefWidth="35.0" />
+   <Pane id="secondExtra1" layoutX="475.0" layoutY="289.0" prefHeight="35.0" prefWidth="35.0" />
+   <Pane id="secondExtra2" layoutX="522.0" layoutY="289.0" prefHeight="35.0" prefWidth="35.0" />
 </Pane>
