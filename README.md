@@ -92,7 +92,7 @@ java -jar MastersOfRenaissance.jar -server -port [port_number]
 A big thank you to [__Perico Marco__](https://www.instagram.com/eternit_tm/?hl=it) for the artworks that compose the GUI.
 
 ### Copyright and license
-Masters Of Renaissance is copyrighted 2020.
+Masters Of Renaissance is copyrighted by [Cranio Creations](http://www.craniocreations.it) in 2020.
 Licensed under the **[MIT License](https://github.com/cicabuca/ingswAM2021-Arbasino-Azzara-Bianco/blob/main/LICENSE)** : you may not use this software except in compliance with the License.
 
 
