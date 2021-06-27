@@ -4,69 +4,75 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
-      prefWidth="750.0" xmlns="http://javafx.com/javafx/15" >
-   <ImageView fitHeight="500.0" fitWidth="750.0">
-      <Image url="@../graphics/paperMap.png"/>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <ImageView fitHeight="550.0" fitWidth="780.0">
+      <Image url="@../graphics/wall.png" />
    </ImageView>
-   <ImageView fitHeight="413.0" fitWidth="551.0" layoutX="31.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true"
-              translateY="-30.0">
-      <Image url="@../graphics/punchBoard/devSlots.png"/>
+   <ImageView fitHeight="413.0" fitWidth="551.0" layoutX="31.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true" translateY="-12.0">
+      <Image url="@../graphics/punchBoard/devSlots.png" />
    </ImageView>
-   <Pane id="slot1card1" layoutX="147.0" layoutY="176.0" prefHeight="184.0" prefWidth="120.0"/>
-   <Pane id="slot1card2" layoutX="147.0" layoutY="136.0" prefHeight="184.0" prefWidth="120.0"/>
-   <Pane id="slot1card3" layoutX="147.0" layoutY="96.0" prefHeight="184.0" prefWidth="120.0"/>
-   <Pane id="slot2card1" layoutX="284.0" layoutY="176.0" prefHeight="184.0" prefWidth="120.0"/>
-   <Pane id="slot2card2" layoutX="284.0" layoutY="136.0" prefHeight="184.0" prefWidth="120.0"/>
-   <Pane id="slot2card3" layoutX="284.0" layoutY="96.0" prefHeight="184.0" prefWidth="120.0"/>
-   <Pane id="slot3card1" layoutX="425.0" layoutY="176.0" prefHeight="184.0" prefWidth="120.0"/>
-   <Pane id="slot3card2" layoutX="425.0" layoutY="136.0" prefHeight="184.0" prefWidth="120.0"/>
-   <Pane id="slot3card3" layoutX="425.0" layoutY="96.0" prefHeight="184.0" prefWidth="120.0"/>
-   <Pane id="leaderCard1" layoutX="600.0" layoutY="31.0" prefHeight="184.0" prefWidth="120.0" translateY="-20.0"/>
-   <Pane id="leaderCard2" layoutX="600.0" layoutY="251.0" prefHeight="184.0" prefWidth="120.0" translateY="-20.0"/>
-   <CheckBox id="devSlot0" layoutX="84.0" layoutY="428.0" mnemonicParsing="false" translateY="-35.0">
+   <Pane id="slot1card1" layoutX="147.0" layoutY="176.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
+   <Pane id="slot1card2" layoutX="147.0" layoutY="136.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
+   <Pane id="slot1card3" layoutX="147.0" layoutY="96.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
+   <Pane id="slot2card1" layoutX="284.0" layoutY="176.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
+   <Pane id="slot2card2" layoutX="284.0" layoutY="136.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
+   <Pane id="slot2card3" layoutX="284.0" layoutY="96.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
+   <Pane id="slot3card1" layoutX="425.0" layoutY="176.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
+   <Pane id="slot3card2" layoutX="425.0" layoutY="136.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
+   <Pane id="slot3card3" layoutX="425.0" layoutY="96.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
+   <ImageView fitHeight="220.0" fitWidth="180.0" layoutX="605.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true" translateY="-20.0">
+      <image>
+         <Image url="@../graphics/cardHolder.png" />
+      </image>
+   </ImageView>
+   <Pane id="leaderCard1" layoutX="620.0" layoutY="50.0" prefHeight="190.0" prefWidth="115.0" translateY="-20.0" />
+   <ImageView fitHeight="220.0" fitWidth="150.0" layoutX="605.0" layoutY="275.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../graphics/cardHolder.png" />
+      </image>
+   </ImageView>
+   <Pane id="leaderCard2" layoutX="618.0" layoutY="257.0" prefHeight="194.0" prefWidth="120.0" translateY="30.0" />
+   <CheckBox id="devSlot0" layoutX="84.0" layoutY="456.0" mnemonicParsing="false" translateY="-40.0">
       <font>
-         <Font name="Avenir Book" size="13.0"/>
+         <Font name="Avenir Book" size="13.0" />
       </font>
    </CheckBox>
-   <CheckBox id="devSlot1" layoutX="194.0" layoutY="428.0" mnemonicParsing="false" translateY="-35.0">
+   <CheckBox id="devSlot1" layoutX="194.0" layoutY="456.0" mnemonicParsing="false" translateY="-40.0">
       <font>
-         <Font name="Avenir Book" size="13.0"/>
+         <Font name="Avenir Book" size="13.0" />
       </font>
    </CheckBox>
-   <CheckBox id="devSlot2" layoutX="335.0" layoutY="427.0" mnemonicParsing="false" translateY="-35.0">
+   <CheckBox id="devSlot2" layoutX="335.0" layoutY="455.0" mnemonicParsing="false" translateY="-40.0">
       <font>
-         <Font name="Avenir Book" size="13.0"/>
+         <Font name="Avenir Book" size="13.0" />
       </font>
    </CheckBox>
-   <CheckBox id="devSlot3" layoutX="476.0" layoutY="426.0" mnemonicParsing="false" translateY="-35.0">
+   <CheckBox id="devSlot3" layoutX="476.0" layoutY="454.0" mnemonicParsing="false" translateY="-40.0">
       <font>
-         <Font name="Avenir Book" size="13.0"/>
+         <Font name="Avenir Book" size="13.0" />
       </font>
    </CheckBox>
-   <CheckBox id="checkLeader1" layoutX="600.0" layoutY="225.0" mnemonicParsing="false" translateY="-20.0">
+   <CheckBox id="checkLeader1" layoutX="620.0" layoutY="240.0" mnemonicParsing="false" translateY="5.0">
       <font>
-         <Font name="Avenir Book" size="13.0"/>
+         <Font name="Avenir Book" size="13.0" />
       </font>
    </CheckBox>
-   <CheckBox id="checkLeader2" layoutX="600.0" layoutY="440.0" mnemonicParsing="false" translateY="-20.0">
+   <CheckBox id="checkLeader2" layoutX="619.0" layoutY="463.0" mnemonicParsing="false" translateY="40.0">
       <font>
-         <Font name="Avenir Book" size="13.0"/>
+         <Font name="Avenir Book" size="13.0" />
       </font>
    </CheckBox>
-   <Text fill="#065488" layoutX="35.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0"
-         text="Choose the combo of slots you want to activate" translateY="-20.0">
+   <Text fill="WHITE" layoutX="35.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose the combo of slots you want to activate" translateY="-20.0">
       <font>
-         <Font name="Avenir Next Bold" size="24.0"/>
+         <Font name="Avenir Next Bold" size="24.0" />
       </font>
    </Text>
-   <ChoiceBox id="baseInput1" layoutX="5.0" layoutY="415.0" prefWidth="90.0"/>
-   <ChoiceBox id="baseInput2" layoutX="120.0" layoutY="415.0" prefHeight="2.0" prefWidth="90.0"/>
-   <ChoiceBox id="baseOutput" layoutX="60.0" layoutY="450.0" prefWidth="90.0"/>
-   <ChoiceBox id="leaderOut1" layoutX="630.0" layoutY="202.0" prefWidth="90.0"/>
-   <ChoiceBox id="leaderOut2" layoutX="630.0" layoutY="417.0" prefWidth="90.0"/>
-   <ImageView id="startButton" fitHeight="26.0" fitWidth="154.0" layoutX="310.0" layoutY="450.0" pickOnBounds="true"
-              preserveRatio="true">
-      <Image url="@../graphics/buttons/productionButton.png"/>
+   <ChoiceBox id="baseInput1" layoutX="5.0" layoutY="443.0" prefWidth="90.0" />
+   <ChoiceBox id="baseInput2" layoutX="120.0" layoutY="443.0" prefHeight="2.0" prefWidth="90.0" />
+   <ChoiceBox id="baseOutput" layoutX="60.0" layoutY="478.0" prefWidth="90.0" />
+   <ChoiceBox id="leaderOut1" layoutX="650.0" layoutY="237.0" prefWidth="90.0" translateY="5.0" />
+   <ChoiceBox id="leaderOut2" layoutX="649.0" layoutY="460.0" prefWidth="90.0" translateY="40.0" />
+   <ImageView id="startButton" fitHeight="26.0" fitWidth="154.0" layoutX="353.0" layoutY="465.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/buttons/productionButton.png" />
    </ImageView>
 </Pane>
