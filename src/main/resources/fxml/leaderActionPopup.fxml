@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1">
    <ImageView fitHeight="300.0" fitWidth="350.0">
       <Image url="@../graphics/wall.png" />
@@ -12,10 +14,15 @@
       </image>
    </ImageView>
    <Pane id="leader" layoutX="102.0" layoutY="27.0" prefHeight="215.0" prefWidth="131.0" />
-   <ImageView id="activateButton" fitHeight="30.0" fitWidth="100.0" layoutX="50.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="57.0" fitWidth="519.0" layoutX="-54.0" layoutY="263.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../graphics/woodBanner.png" />
+      </image>
+   </ImageView>
+   <ImageView id="activateButton" fitHeight="30.0" fitWidth="100.0" layoutX="50.0" layoutY="272.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../graphics/buttons/activateButton.png" />
    </ImageView>
-   <ImageView id="discardButton" fitHeight="30.0" fitWidth="100.0" layoutX="200.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView id="discardButton" fitHeight="30.0" fitWidth="100.0" layoutX="200.0" layoutY="272.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../graphics/buttons/discardButton.png" />
    </ImageView>
 </Pane>

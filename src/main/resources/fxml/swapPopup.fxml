@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1">
    <ImageView fitHeight="400.0" fitWidth="608.0">
       <Image url="@../graphics/wall.png" />
    </ImageView>
-   <ImageView id="settala" fitHeight="55.0" fitWidth="607.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView id="settala" fitHeight="134.0" fitWidth="746.0" layoutX="-25.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../graphics/woodBanner.png" />
       </image>
@@ -36,8 +39,8 @@
    <CheckBox id="depot1" layoutX="40.0" layoutY="190.0" mnemonicParsing="false" />
    <CheckBox id="depot2" layoutX="17.0" layoutY="253.0" mnemonicParsing="false" />
    <CheckBox id="depot3" layoutX="8.0" layoutY="309.0" mnemonicParsing="false" />
-   <ChoiceBox id="choiceBox" layoutX="273.0" layoutY="16.0" prefWidth="150.0" />
-   <ChoiceBox id="quantityBox" layoutX="483.0" layoutY="17.0" prefHeight="24.0" prefWidth="55.0" />
+   <ChoiceBox id="choiceBox" layoutX="273.0" layoutY="10.0" prefWidth="150.0" />
+   <ChoiceBox id="quantityBox" layoutX="483.0" layoutY="10.0" prefHeight="24.0" prefWidth="55.0" />
    <ImageView id="swapButton" fitHeight="35.0" fitWidth="147.0" layoutX="15.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../graphics/buttons/swapButton.png" />
    </ImageView>
