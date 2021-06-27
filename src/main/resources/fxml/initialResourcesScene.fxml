@@ -12,7 +12,7 @@
    </ImageView>
    <ImageView id="messageBackGround" fitHeight="253.0" fitWidth="922.0" layoutX="139.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
       <image>
-         <Image url="@../graphics/bannerPlayerBoard.png" />
+         <Image url="@../graphics/woodBanner.png" />
       </image>
    </ImageView>
    <Label id="messageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="140.0" layoutY="27.0" prefHeight="91.0" prefWidth="922.0" textAlignment="CENTER" textFill="WHITE">

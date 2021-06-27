@@ -87,9 +87,9 @@
    <Pane id="popeSpace1" layoutX="503.0" layoutY="186.0" prefHeight="58.0" prefWidth="58.0" />
    <Pane id="popeSpace2" layoutX="720.0" layoutY="148.0" prefHeight="58.0" prefWidth="58.0" />
    <Pane id="popeSpace3" layoutX="982.0" layoutY="186.0" prefHeight="58.0" prefWidth="58.0" />
-   <Text id="consoleText" fill="#281404" layoutX="20.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="270.9040069580078">
+   <Text id="consoleText" fill="#281404" layoutX="13.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="227.9040069580078">
       <font>
-         <Font name="Avenir Next Bold" size="24.0" />
+         <Font size="20.0" />
       </font>
    </Text>
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffaa" height="45.0" layoutX="310.0" layoutY="586.0" stroke="BLACK" strokeType="INSIDE" width="64.0" />
