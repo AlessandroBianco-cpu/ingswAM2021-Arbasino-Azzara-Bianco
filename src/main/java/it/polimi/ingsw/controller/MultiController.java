@@ -67,6 +67,15 @@ public class MultiController implements Controller {
                 ChooseResourcesMessage initialRes = (ChooseResourcesMessage) uim.getActionMessage();
                 List<ResourceType> resourcesToAdd = initialRes.getResources();
                 int num = initialRes.getNumOfRes();
+
+                while(!checkingForInitialResources(initialRes)) {
+                    sendErrorToCurrentPlayer("You can't add these resources in these depots!");
+                    virtualView.requestInitialResources(numberOfResources);
+                    initialRes = (ChooseResourcesMessage) uim.getActionMessage();
+                    resourcesToAdd = initialRes.getResources();
+                    num = initialRes.getNumOfRes();
+                }
+
                 int i = 0;
                 while( num > 0) {
                     if(p.canAddResourceInWarehouse(resourcesToAdd.get(i), initialRes.getIndexes().get(i) - 1)) {
@@ -81,6 +90,20 @@ public class MultiController implements Controller {
             playersTurn++;
             virtualView.endTurn();
         }
+    }
+
+    /**
+     * Checks if resources are the same type and they are in the same depots or if the resources are different and are in the same depot
+     * @param message is a initial resources choosing message from client
+     * @return true/false
+     */
+    private boolean checkingForInitialResources(ChooseResourcesMessage message) {
+        if (message.getNumOfRes() == 2) {
+            if (message.getResources().get(0).equals(message.getResources().get(1)) && !(message.getIndexes().get(0).equals(message.getIndexes().get(1)))) {
+                return false;
+            } else return message.getResources().get(0).equals(message.getResources().get(1)) || !message.getIndexes().get(0).equals(message.getIndexes().get(1));
+        }
+        return true;
     }
 
     /**

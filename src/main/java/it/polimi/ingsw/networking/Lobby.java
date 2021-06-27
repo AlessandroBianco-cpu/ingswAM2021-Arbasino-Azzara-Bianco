@@ -129,7 +129,7 @@ public class Lobby implements ConnectionObserver {
         }
         else {
             deregisterConnection(client);
-            if (clients.size() == 0)
+            if (clients.size() == 0 || numOfActivePlayers() == 0)
                 endGameObserver.manageEndGame(ID);
         }
     }
@@ -307,7 +307,6 @@ public class Lobby implements ConnectionObserver {
         //there is only one active player... he wins
         else if (numOfActivePlayers() == 1) {
             System.out.println("[LOBBY #"+ID+"] Closing lobby: only one active player in started game");
-            deregisterConnection(disconnectedClient);
             controller.manageAEndGameForQuitting();
         }
         //advance turn in current game
