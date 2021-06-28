@@ -335,9 +335,22 @@ public class PersonalBoard extends ProductionZoneObservable {
      * @return true if player can activate the production with the given input, false otherwise
      */
     public boolean canUseDevCards(List<Integer> productionSlotsIndexes){
-        if (!(indexesInListAreInBound(productionSlotsIndexes)))
+        if (!(indexesInListAreInBound(productionSlotsIndexes)) || (thereIsAnIndexWithoutACard(productionSlotsIndexes)))
                 return false;
         return (satisfiedResourceRequirement(sumProductionPowerInputs(productionSlotsIndexes)));
+    }
+
+    /**
+     * Method used to know if the combo of slots inserted is valid.
+     * All slots inserted have to contain at least a card, except the base production slot
+     * @param productionSlotsIndexes slots player wants to activate
+     * @return true if all the slots inserted contain cards, false otherwise
+     */
+    public boolean thereIsAnIndexWithoutACard(List<Integer> productionSlotsIndexes){
+        for(int i : productionSlotsIndexes)
+            if (i != 0 && !devCardSlots.get(i).hasCards())
+                return true;
+        return false;
     }
 
     /**
