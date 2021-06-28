@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/15" >
    <ImageView fitHeight="550.0" fitWidth="780.0">
       <Image url="@../graphics/wall.png" />
    </ImageView>
@@ -20,16 +20,13 @@
    <Pane id="slot3card1" layoutX="425.0" layoutY="176.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
    <Pane id="slot3card2" layoutX="425.0" layoutY="136.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
    <Pane id="slot3card3" layoutX="425.0" layoutY="96.0" prefHeight="184.0" prefWidth="120.0" translateY="-12.0" />
-   <ImageView fitHeight="220.0" fitWidth="180.0" layoutX="605.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true" translateY="-20.0">
-      <image>
-         <Image url="@../graphics/cardHolder.png" />
-      </image>
+   <ImageView fitHeight="220.0" fitWidth="180.0" layoutX="605.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true"
+              translateY="-20.0">
    </ImageView>
    <Pane id="leaderCard1" layoutX="620.0" layoutY="50.0" prefHeight="190.0" prefWidth="115.0" translateY="-20.0" />
-   <ImageView fitHeight="220.0" fitWidth="150.0" layoutX="605.0" layoutY="279.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/cardHolder.png" />
-      </image>
+   <ImageView fitHeight="220.0" fitWidth="150.0" layoutX="605.0" layoutY="279.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@../graphics/cardHolder.png"/>
    </ImageView>
    <Pane id="leaderCard2" layoutX="618.0" layoutY="261.0" prefHeight="194.0" prefWidth="120.0" translateY="30.0" />
    <CheckBox id="devSlot0" layoutX="84.0" layoutY="456.0" mnemonicParsing="false" translateY="-40.0">

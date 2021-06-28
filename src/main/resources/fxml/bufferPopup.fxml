@@ -6,11 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" >
    <ImageView fitHeight="413.0" fitWidth="611.0" layoutX="-2.0" layoutY="-8.0">
-      <image>
-         <Image url="@../graphics/wall.png" />
-      </image>
+      <Image url="@../graphics/wall.png"/>
    </ImageView>
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff60" height="65.0" layoutX="25.0" layoutY="37.0" stroke="#d8b32d" strokeType="INSIDE" strokeWidth="5.0" width="315.0" />
    <Pane id="buffer0" layoutX="28.0" layoutY="37.0" prefHeight="65.0" prefWidth="65.0" />
@@ -26,16 +24,14 @@
    <Pane id="4" layoutX="73.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" translateX="-15.0" translateY="10.0" />
    <Pane id="5" layoutX="121.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" translateX="-15.0" translateY="10.0" />
    <Pane id="6" layoutX="169.0" layoutY="297.0" prefHeight="40.0" prefWidth="40.0" translateX="-15.0" translateY="10.0" />
-   <ImageView fitHeight="328.0" fitWidth="170.0" layoutX="256.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true" translateX="-5.0" translateY="10.0">
-      <image>
-         <Image url="@../graphics/cardHolder.png" />
-      </image>
+   <ImageView fitHeight="328.0" fitWidth="170.0" layoutX="256.0" layoutY="114.0" pickOnBounds="true"
+              preserveRatio="true" translateX="-5.0" translateY="10.0">
+      <Image url="@../graphics/cardHolder.png"/>
    </ImageView>
    <Pane id="leader1" layoutX="283.0" layoutY="142.0" prefHeight="220.0" prefWidth="135.0" translateX="-15.0" />
-   <ImageView fitHeight="254.0" fitWidth="170.0" layoutX="431.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true" translateX="-5.0" translateY="10.0">
-      <image>
-         <Image url="@../graphics/cardHolder.png" />
-      </image>
+   <ImageView fitHeight="254.0" fitWidth="170.0" layoutX="431.0" layoutY="114.0" pickOnBounds="true"
+              preserveRatio="true" translateX="-5.0" translateY="10.0">
+      <Image url="@../graphics/cardHolder.png"/>
    </ImageView>
    <Pane id="leader2" layoutX="442.0" layoutY="142.0" prefHeight="220.0" prefWidth="135.0" />
    <ChoiceBox id="resourceBox" layoutX="350.0" layoutY="75.0" prefHeight="25.0" prefWidth="110.0" />

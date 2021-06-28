@@ -1,35 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1">
-   <ImageView id="scenebackground" fitHeight="822.0" fitWidth="1398.0" layoutX="-12.0" layoutY="-67.0" pickOnBounds="true" preserveRatio="true">
+<?import javafx.scene.text.*?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/15" >
+   <ImageView id="backGround" fitHeight="822.0" fitWidth="1398.0" layoutX="-12.0" layoutY="-67.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../graphics/wall.png" />
    </ImageView>
-   <ImageView id="rightborder" fitHeight="720.0" fitWidth="15.0" layoutX="1171.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/divider.png" />
-      </image>
-   </ImageView>
-   <ImageView id="actualboard" fitHeight="636.0" fitWidth="948.0" layoutX="282.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView id="playerBoard" fitHeight="636.0" fitWidth="948.0" layoutX="282.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../graphics/punchBoard/pb_ultimate.png" />
    </ImageView>
-   <ImageView id="endturnbackground" fitHeight="70.0" fitWidth="281.0" layoutY="659.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/endTurnBackground.png" />
-      </image>
+   <ImageView fitHeight="70.0" fitWidth="281.0" layoutY="659.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/endTurnBackground.png"/>
    </ImageView>
-   <ImageView id="topbordo" fitHeight="120.0" fitWidth="1200.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/bannerPlayerBoard.png" />
-      </image>
+   <ImageView fitHeight="120.0" fitWidth="1200.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/bannerPlayerBoard.png"/>
    </ImageView>
    <ChoiceBox id="showChoice" layoutX="1020.0" layoutY="18.0" prefHeight="33.0" prefWidth="160.0" />
    <Pane id="firstDepot" layoutX="375.0" layoutY="355.0" prefHeight="40.0" prefWidth="40.0" />
@@ -63,16 +50,14 @@
    <Pane id="slot22" layoutX="1005.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" />
    <Pane id="slot23" layoutX="1056.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" />
    <Pane id="slot24" layoutX="1100.0" layoutY="132.0" prefHeight="38.0" prefWidth="46.0" />
-   <ImageView id="leaderback1" fitHeight="265.0" fitWidth="178.0" layoutX="52.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/cardHolder.png" />
-      </image>
+   <ImageView fitHeight="265.0" fitWidth="178.0" layoutX="52.0" layoutY="113.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@../graphics/cardHolder.png"/>
    </ImageView>
    <Pane id="leaderCard1" layoutX="70.0" layoutY="130.0" prefHeight="230.0" prefWidth="140.0" />
-   <ImageView id="leaderback2" fitHeight="265.0" fitWidth="178.0" layoutX="52.0" layoutY="394.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/cardHolder.png" />
-      </image>
+   <ImageView fitHeight="265.0" fitWidth="178.0" layoutX="52.0" layoutY="394.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@../graphics/cardHolder.png"/>
    </ImageView>
    <Pane id="leaderCard2" layoutX="70.0" layoutY="410.0" prefHeight="230.0" prefWidth="140.0" />
    <Pane id="slot1card1" layoutX="628.0" layoutY="440.0" prefHeight="229.7" prefWidth="150.0" />
@@ -87,9 +72,9 @@
    <Pane id="popeSpace1" layoutX="503.0" layoutY="186.0" prefHeight="58.0" prefWidth="58.0" />
    <Pane id="popeSpace2" layoutX="720.0" layoutY="148.0" prefHeight="58.0" prefWidth="58.0" />
    <Pane id="popeSpace3" layoutX="982.0" layoutY="186.0" prefHeight="58.0" prefWidth="58.0" />
-   <Text id="consoleText" fill="#281404" layoutX="13.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="227.9040069580078">
+   <Text id="consoleText" fill="#281404" layoutX="9.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="245.9040069580078">
       <font>
-         <Font size="20.0" />
+         <Font name="Avenir Next Bold" size="20.0" />
       </font>
    </Text>
    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffaa" height="45.0" layoutX="310.0" layoutY="586.0" stroke="BLACK" strokeType="INSIDE" width="64.0" />
@@ -155,9 +140,11 @@
       <Image url="@../graphics/punchBoard/cheatCoin.png" />
    </ImageView>
    <Pane id="soundButton" layoutX="203.0" layoutY="661.0" prefHeight="50.0" prefWidth="50.0" />
-   <ImageView id="leftborder" fitHeight="564.0" fitWidth="40.0" layoutX="272.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/divider.png" />
-      </image>
+   <ImageView id="leftBorder" fitHeight="564.0" fitWidth="40.0" layoutX="272.0" layoutY="95.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@../graphics/divider.png"/>
+   </ImageView>
+   <ImageView id="rightBorder" fitHeight="720.0" fitWidth="15.0" layoutX="1171.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/divider.png" />
    </ImageView>
 </Pane>

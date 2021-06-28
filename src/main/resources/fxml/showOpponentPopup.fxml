@@ -5,22 +5,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/15" >
    <ImageView id="wallBackground" fitHeight="826.0" fitWidth="1236.0" layoutX="-57.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" translateX="-55.0" translateY="-90.0">
       <Image url="@../graphics/wall.png" />
    </ImageView>
-   <ImageView id="pb" fitHeight="636.0" fitWidth="948.0" layoutX="282.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true" translateX="-90.0" translateY="-90.0">
+   <ImageView id="playerBoard" fitHeight="636.0" fitWidth="948.0" layoutX="282.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true" translateX="-90.0" translateY="-90.0">
       <Image url="@../graphics/punchBoard/pb_ultimate.png" />
    </ImageView>
    <ImageView fitHeight="265.0" fitWidth="173.0" layoutX="5.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/cardHolder.png" />
-      </image>
+      <Image url="@../graphics/cardHolder.png" />
    </ImageView>
    <ImageView fitHeight="265.0" fitWidth="173.0" layoutX="5.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/cardHolder.png" />
-      </image>
+      <Image url="@../graphics/cardHolder.png" />
    </ImageView>
    <Pane id="firstDepot" layoutX="375.0" layoutY="355.0" prefHeight="40.0" prefWidth="40.0" translateX="-90.0" translateY="-90.0" />
    <Pane id="secondDepot1" layoutX="340.0" layoutY="410.0" prefHeight="40.0" prefWidth="40.0" translateX="-90.0" translateY="-90.0" />
@@ -108,14 +104,10 @@
    <Pane id="secondExtra1" layoutX="48.0" layoutY="515.0" prefHeight="35.0" prefWidth="35.0" />
    <Pane id="secondExtra2" layoutX="102.0" layoutY="515.0" prefHeight="35.0" prefWidth="35.0" />
    <Pane id="inkwell" layoutX="990.0" layoutY="115.0" prefHeight="70.0" prefWidth="70.0" />
-   <ImageView fitHeight="640.0" fitWidth="25.0" layoutX="1076.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/divider.png" />
-      </image>
+   <ImageView id="rightBorder" fitHeight="640.0" fitWidth="25.0" layoutX="1076.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/divider.png" />
    </ImageView>
-   <ImageView fitHeight="640.0" fitWidth="25.0" layoutX="180.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/divider.png" />
-      </image>
+   <ImageView id="leftBorder" fitHeight="640.0" fitWidth="25.0" layoutX="180.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/divider.png" />
    </ImageView>
 </Pane>

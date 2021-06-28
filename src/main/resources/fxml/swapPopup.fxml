@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15" >
    <ImageView fitHeight="400.0" fitWidth="608.0">
       <Image url="@../graphics/wall.png" />
    </ImageView>
-   <ImageView id="settala" fitHeight="134.0" fitWidth="746.0" layoutX="-25.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/woodBanner.png" />
-      </image>
+   <ImageView fitHeight="134.0" fitWidth="746.0" layoutX="-25.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/woodBanner.png" />
    </ImageView>
    <ImageView fitHeight="229.0" fitWidth="230.0" layoutX="26.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../graphics/punchBoard/warehouse.png" />
    </ImageView>
    <ImageView fitHeight="221.0" fitWidth="152.0" layoutX="280.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/cardHolder.png" />
-      </image>
+      <Image url="@../graphics/cardHolder.png" />
    </ImageView>
    <ImageView fitHeight="221.0" fitWidth="152.0" layoutX="440.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../graphics/cardHolder.png" />
-      </image>
+      <Image url="@../graphics/cardHolder.png" />
    </ImageView>
    <Pane id="1" layoutX="121.0" layoutY="193.0" prefHeight="40.0" prefWidth="40.0" />
    <Pane id="2" layoutX="88.0" layoutY="241.0" prefHeight="40.0" prefWidth="40.0" />
