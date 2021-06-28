@@ -141,8 +141,12 @@ public class ProductionPopup extends SceneObservable implements Popup {
         devSlots.get(5).setOnMouseClicked(event -> basePower.get(4).setDisable(!basePower.get(4).isDisable()));
 
         startButton.setOnMouseClicked(event -> {
-            if (parseCheckingList().size() == 0)
+            if (parseCheckingList().size() == 0) {
                 new AlertPopup().displayStringMessages("You have to choose at least one slot!");
+            }
+            else if (!checkingOfBasePowerSetting()) {
+                new AlertPopup().displayStringMessages("Wrong base power production settings!");
+            }
             else {
                 notifyNewMessageFromClient(new ActivateProductionMessage (parseCheckingList(),parseTextField(basePower.get(0)),parseTextField(basePower.get(1)),parseTextField(basePower.get(2)), analyzeLeaderChoose()));
                 stage.close();
@@ -151,6 +155,10 @@ public class ProductionPopup extends SceneObservable implements Popup {
 
         stage.setScene(scene);
         stage.show();
+    }
+
+    public boolean checkingOfBasePowerSetting() {
+        return (!devSlots.get(0).isSelected()) || (!parseTextField(basePower.get(0)).equals(NOTHING) && !parseTextField(basePower.get(1)).equals(NOTHING) && !parseTextField(basePower.get(2)).equals(NOTHING));
     }
 
     @Override
