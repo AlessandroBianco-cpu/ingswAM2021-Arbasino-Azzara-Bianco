@@ -85,7 +85,7 @@ public class ShowOpponentPopup implements Popup {
         for(int i = 0; i<25; i++)
             faithTrack.add((Pane) root.lookup("#slot"+i));
 
-        addImage(faithTrack.get(opponent.getFaithTrack().getPosition()), "/graphics/punchBoard/blackCross.png");
+        addImage(faithTrack.get(opponent.getFaithTrack().getPosition()), "/graphics/punchBoard/redCross.png");
 
         if(opponent.hasInkwell())
             addImage(inkwell, "/graphics/punchBoard/inkwell.png");

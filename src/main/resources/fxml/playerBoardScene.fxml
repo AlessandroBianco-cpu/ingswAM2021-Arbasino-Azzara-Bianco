@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.*?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/15" >
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <ImageView id="backGround" fitHeight="822.0" fitWidth="1398.0" layoutX="-12.0" layoutY="-67.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../graphics/wall.png" />
    </ImageView>
@@ -31,31 +35,31 @@
    <Pane id="thirdDepot1" layoutX="310.0" layoutY="470.0" prefHeight="40.0" prefWidth="40.0" />
    <Pane id="thirdDepot2" layoutX="370.0" layoutY="470.0" prefHeight="40.0" prefWidth="40.0" />
    <Pane id="thirdDepot3" layoutX="430.0" layoutY="470.0" prefHeight="40.0" prefWidth="40.0" />
-   <Pane id="slot0" layoutX="311.0" layoutY="216.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot1" layoutX="357.0" layoutY="216.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot2" layoutX="402.0" layoutY="216.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot3" layoutX="402.0" layoutY="177.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot4" layoutX="402.0" layoutY="129.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot5" layoutX="447.0" layoutY="129.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot6" layoutX="486.0" layoutY="129.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot7" layoutX="528.0" layoutY="129.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot8" layoutX="572.0" layoutY="130.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot9" layoutX="619.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot10" layoutX="619.0" layoutY="177.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot11" layoutX="619.0" layoutY="216.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot12" layoutX="657.0" layoutY="216.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot13" layoutX="702.0" layoutY="216.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot14" layoutX="749.0" layoutY="216.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot15" layoutX="792.0" layoutY="216.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot16" layoutX="839.0" layoutY="216.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot17" layoutX="839.0" layoutY="177.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot18" layoutX="839.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot19" layoutX="879.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot20" layoutX="926.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot21" layoutX="971.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot22" layoutX="1005.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot23" layoutX="1056.0" layoutY="131.0" prefHeight="38.0" prefWidth="46.0" />
-   <Pane id="slot24" layoutX="1100.0" layoutY="132.0" prefHeight="38.0" prefWidth="46.0" />
+   <Pane id="slot0" layoutX="316.0" layoutY="217.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot1" layoutX="359.0" layoutY="217.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot2" layoutX="403.0" layoutY="217.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot3" layoutX="403.0" layoutY="175.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot4" layoutX="403.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot5" layoutX="446.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot6" layoutX="490.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot7" layoutX="534.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot8" layoutX="576.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot9" layoutX="621.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot10" layoutX="621.0" layoutY="175.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot11" layoutX="621.0" layoutY="219.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot12" layoutX="664.0" layoutY="219.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot13" layoutX="708.0" layoutY="219.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot14" layoutX="752.0" layoutY="219.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot15" layoutX="795.0" layoutY="219.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot16" layoutX="839.0" layoutY="219.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot17" layoutX="839.0" layoutY="176.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot18" layoutX="839.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot19" layoutX="882.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot20" layoutX="926.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot21" layoutX="969.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot22" layoutX="1013.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot23" layoutX="1056.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
+   <Pane id="slot24" layoutX="1100.0" layoutY="130.0" prefHeight="40.0" prefWidth="40.0" />
    <ImageView fitHeight="265.0" fitWidth="178.0" layoutX="52.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../graphics/cardHolder.png" />
    </ImageView>

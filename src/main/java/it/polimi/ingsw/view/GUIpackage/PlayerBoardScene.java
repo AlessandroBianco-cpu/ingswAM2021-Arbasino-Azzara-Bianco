@@ -157,7 +157,7 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
             faithTrack.add((Pane) root.lookup("#slot" + i));
 
         //initial playerBoard setting
-        addImage(faithTrack.get(gameModel.getPlayerByNickname(owner).getFaithTrack().getPosition()), "/graphics/punchBoard/blackCross.png");
+        addImage(faithTrack.get(gameModel.getPlayerByNickname(owner).getFaithTrack().getPosition()), "/graphics/punchBoard/redCross.png");
         displayWarehouse();
         displayStrongbox(gameModel.getPlayerByNickname(owner).getStrongbox());
         displayProductionZone();
@@ -313,7 +313,7 @@ public class PlayerBoardScene extends NetworkHandlerObservable implements SceneO
         for(Pane pane : popeSpaces)
             pane.getChildren().clear();
 
-        addImage(faithTrack.get(pos), "/graphics/punchBoard/blackCross.png");
+        addImage(faithTrack.get(pos), "/graphics/punchBoard/redCross.png");
 
         updatePopeTiles();
     }
