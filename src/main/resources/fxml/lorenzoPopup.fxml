@@ -2,15 +2,14 @@
 
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/15" >
    <ImageView fitHeight="500.0" fitWidth="700.0">
-      <Image url="@../graphics/paperMap.png" />
+      <Image url="@../graphics/wall.png" />
    </ImageView>
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d8b32d" height="15.0" layoutY="140.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="700.0" />
-   <ImageView fitHeight="144.0" fitWidth="700.0">
+   <ImageView fitHeight="347.0" fitWidth="678.0" layoutX="90.0" layoutY="156.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/lorenzoBack.png" />
+   </ImageView>
+   <ImageView id="trackLorenzo" fitHeight="144.0" fitWidth="700.0">
       <Image url="@../graphics/punchBoard/FaithTrack.png" />
    </ImageView>
    <Pane id="slot0" layoutX="26.0" layoutY="95.0" prefHeight="33.0" prefWidth="33.0" />
@@ -38,31 +37,29 @@
    <Pane id="slot22" layoutX="574.0" layoutY="26.0" prefHeight="33.0" prefWidth="33.0" />
    <Pane id="slot23" layoutX="608.0" layoutY="29.0" prefHeight="33.0" prefWidth="33.0" />
    <Pane id="slot24" layoutX="644.0" layoutY="28.0" prefHeight="33.0" prefWidth="33.0" />
-   <Pane id="activatedToken" layoutX="45.0" layoutY="292.5" prefHeight="70.0" prefWidth="70.0" />
-   <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="135.0" layoutY="292.5" pickOnBounds="true" preserveRatio="true">
+   <Pane id="activatedToken" layoutX="10.0" layoutY="172.0" prefHeight="70.0" prefWidth="70.0" />
+   <ImageView id="leftBorder" fitHeight="342.0" fitWidth="15.0" layoutX="83.0" layoutY="156.0">
+      <Image url="@../graphics/divider.png" />
+   </ImageView>
+   <ImageView id="upBorder" fitHeight="706.0" fitWidth="19.0" layoutX="342.0" layoutY="-200.0" rotate="90.0">
+      <Image url="@../graphics/divider.png" />
+   </ImageView>
+   <ImageView id="bottomStackLorenzo" fitHeight="75.0" fitWidth="75.0" layoutX="8.0" layoutY="330.0">
       <Image url="@../graphics/punchBoard/retroToken.png" />
    </ImageView>
-   <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="225.0" layoutY="292.5" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="8.0" layoutY="315.0">
       <Image url="@../graphics/punchBoard/retroToken.png" />
    </ImageView>
-   <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="315.0" layoutY="292.5" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="8.0" layoutY="300.0">
       <Image url="@../graphics/punchBoard/retroToken.png" />
    </ImageView>
-   <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="405.0" layoutY="292.5" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="8.0" layoutY="285.0">
       <Image url="@../graphics/punchBoard/retroToken.png" />
    </ImageView>
-   <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="495.0" layoutY="292.5" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="8.0" layoutY="270.0">
       <Image url="@../graphics/punchBoard/retroToken.png" />
    </ImageView>
-   <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="585.0" layoutY="292.5" pickOnBounds="true" preserveRatio="true">
+   <ImageView id="topStackLorenzo" fitHeight="75.0" fitWidth="75.0" layoutX="8.0" layoutY="255.0">
       <Image url="@../graphics/punchBoard/retroToken.png" />
    </ImageView>
-   <ImageView fitHeight="58.0" fitWidth="705.0" layoutX="-3.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@../graphics/woodBanner.png"/>
-   </ImageView>
-   <Text fill="#281404" layoutX="45.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorenzo Il Magnifico' s Board">
-      <font>
-         <Font name="Avenir Next Bold" size="26.0" />
-      </font>
-   </Text>
 </Pane>

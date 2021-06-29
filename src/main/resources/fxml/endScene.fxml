@@ -3,36 +3,117 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/15" >
    <ImageView fitHeight="729.0" fitWidth="1207.0" layoutX="-2.0" layoutY="-2.0">
       <Image url="@../graphics/background.png" />
    </ImageView>
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fafafa5e" height="183.0" layoutX="376.0" layoutY="464.0" stroke="#d8b32d" strokeType="INSIDE" strokeWidth="5.0" width="479.0" />
-   <Text id="textBox" fill="#065488" layoutX="435.0" layoutY="528.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="357.21630859375">
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#065488" height="183.0" layoutX="376.0" layoutY="464.0" strokeType="INSIDE" strokeWidth="5.0" translateY="32.0" width="479.0">
+      <stroke>
+         <LinearGradient>
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.9882352948188782" green="0.7843137383460999" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.8470588326454163" green="0.7019608020782471" blue="0.1764705926179886" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </stroke></Rectangle>
+   <Text id="textBox" fill="#065488" layoutX="435.0" layoutY="540.0" strokeType="OUTSIDE" strokeWidth="0.0" translateY="32.0" wrappingWidth="357.21630859375">
       <font>
          <Font name="Avenir Next Bold" size="24.0" />
       </font>
    </Text>
-   <Text fill="#065488" layoutX="922.0" layoutY="604.0" strokeType="OUTSIDE" strokeWidth="0.0" text="developed by:" textAlignment="CENTER" wrappingWidth="234.23597717285156">
+   <Text layoutX="922.0" layoutY="612.0" strokeType="OUTSIDE" strokeWidth="0.0" text="developed by:" textAlignment="CENTER" wrappingWidth="234.23597717285156">
       <font>
          <Font name="Avenir Next Bold" size="20.0" />
       </font>
+      <fill>
+         <LinearGradient>
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.9882352948188782" green="0.7843137383460999" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.8470588326454163" green="0.7019608020782471" blue="0.1764705926179886" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </fill>
    </Text>
-   <Text fill="#268ed4ba" layoutX="922.0" layoutY="640.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Arbasino Andrea Paolo" textAlignment="CENTER" wrappingWidth="234.23597717285156">
+   <Text layoutX="922.0" layoutY="640.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Arbasino Andrea Paolo" textAlignment="CENTER" wrappingWidth="234.23597717285156">
       <font>
          <Font name="Avenir Next Bold" size="18.0" />
       </font>
+      <fill>
+         <LinearGradient>
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.9882352948188782" green="0.7843137383460999" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.8470588326454163" green="0.7019608020782471" blue="0.1764705926179886" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </fill>
    </Text>
-   <Text fill="#268ed4ba" layoutX="922.0" layoutY="690.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bianco Alessandro" textAlignment="CENTER" wrappingWidth="234.23597717285156">
+   <Text layoutX="922.0" layoutY="690.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bianco Alessandro" textAlignment="CENTER" wrappingWidth="234.23597717285156">
       <font>
          <Font name="Avenir Next Bold" size="18.0" />
       </font>
+      <fill>
+         <LinearGradient>
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.9882352948188782" green="0.7843137383460999" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.8470588326454163" green="0.7019608020782471" blue="0.1764705926179886" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </fill>
    </Text>
-   <Text fill="#268ed4ba" layoutX="922.0" layoutY="665.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Azzarà Daniele" textAlignment="CENTER" wrappingWidth="234.23597717285156">
+   <Text layoutX="922.0" layoutY="665.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Azzarà Daniele" textAlignment="CENTER" wrappingWidth="234.23597717285156">
       <font>
          <Font name="Avenir Next Bold" size="18.0" />
       </font>
+      <fill>
+         <LinearGradient>
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.9882352948188782" green="0.7843137383460999" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.8470588326454163" green="0.7019608020782471" blue="0.1764705926179886" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </fill>
    </Text>
 </Pane>

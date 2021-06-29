@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0"
-      prefWidth="1200.0" xmlns="http://javafx.com/javafx/15" >
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/15" >
    <ImageView fitHeight="724.0" fitWidth="1204.0" layoutY="-3.0">
-      <Image url="@../graphics/background.png"/>
+      <Image url="@../graphics/background.png" />
    </ImageView>
-   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fafafa5e" height="183.0" layoutX="376.0" layoutY="464.0"
-              stroke="#d8b32d" strokeType="INSIDE" strokeWidth="5.0" width="479.0"/>
-   <ProgressIndicator layoutX="600.0" layoutY="567.0" prefHeight="45.0" prefWidth="168.0"/>
-   <Text id="messageText" fill="#065488" layoutX="394.0" layoutY="501.0" strokeType="OUTSIDE" strokeWidth="0.0"
-         wrappingWidth="442.9040069580078">
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#075487" height="183.0" layoutX="376.0" layoutY="485.0" strokeType="INSIDE" strokeWidth="5.0" width="479.0">
+      <stroke>
+         <LinearGradient>
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.9882352948188782" green="0.7843137383460999" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.8470588326454163" green="0.7019608020782471" blue="0.1764705926179886" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </stroke></Rectangle>
+   <ProgressIndicator layoutX="600.0" layoutY="595.0" prefHeight="45.0" prefWidth="168.0">
+      <effect>
+         <ColorAdjust brightness="0.87" contrast="-0.97" hue="1.0" saturation="0.45" />
+      </effect></ProgressIndicator>
+   <Text id="messageText" fill="#d8b32d" layoutX="394.0" layoutY="540.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="442.9040069580078">
       <font>
-         <Font name="Avenir Next Bold" size="24.0"/>
+         <Font name="Avenir Next Bold" size="24.0" />
       </font>
    </Text>
 </Pane>
