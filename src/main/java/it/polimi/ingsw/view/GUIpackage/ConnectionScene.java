@@ -66,6 +66,7 @@ public class ConnectionScene extends NetworkHandlerObservable {
             Platform.runLater(() -> TransitionHandler.setWaitingScene(waitingScene));
             Platform.runLater(TransitionHandler::toWaitingScene);
         });
+
     }
 
     public Pane getRoot() {

@@ -73,9 +73,9 @@ public class CLI extends NetworkHandlerObservable implements Runnable, View {
 
 
     /**
-     * Sends an endTurn message
+     * Sends request to cheat, add resources in strongbox
      */
-    public void cheatRequest(){
+    public void cheatRequest() {
         notifyMessage(new CheatRequestMessage());
     }
 
@@ -146,7 +146,7 @@ public class CLI extends NetworkHandlerObservable implements Runnable, View {
                         endTurn();
                         break;
 
-                    case ":)" :
+                    case "$$" :
                         cheatRequest();
                         break;
 
@@ -624,7 +624,7 @@ public class CLI extends NetworkHandlerObservable implements Runnable, View {
      * Asks the player the connection settings
      */
     private void askConnection() throws IOException {
-        boolean localGame = booleanRequest("Do you want to play a local SP game or an online game? 1-> yes, 0-> no");
+        boolean localGame = booleanRequest("Do you want to play a local SP game or an online game? 1-> local, 0-> online");
         NetworkHandler networkHandler;
         if (localGame){
             networkHandler = new LocalNetworkHandler(this);
