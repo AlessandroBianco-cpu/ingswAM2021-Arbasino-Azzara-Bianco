@@ -55,6 +55,13 @@ The features built according to the design specification are listed in the next 
 - `Disconnection Resilience` : during a game, if a player disconnects, the game will go on without the disconnected player. Eventually they can re-join the match using the same nickname (if the game is still on). If a player disconnects during the setting-up phase (choosing of leader cards and initial resources),the game is taken down and the players are invited to reconnect in another match.
 - `Local Game` : if you want, you can play a single-player game locally (without using socket-connection).
 
+#### Extra Functionalities
+- `Cheat` : in order to show in a shorter amount of time the evolution of the game, we implemented a cheat that allows the user to increase the number of each type of resource in the strongbox by ten at a time. <br> In CLI the command is `$$`, in GUI there's a golden coin button that activates it.
+
+## **Minimum requirements**
+- Screen Resolution : 1200 x 720 pixels.
+- Terminal : - on Unix-based systems "Terminal";<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- on Windows systems "WLS" or "Windows Terminal Preview".
+
 ## **Execution of JAR**
 ### Application choice
 The JAR is unique for server/client side.
