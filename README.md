@@ -52,7 +52,7 @@ The features built according to the design specification are listed in the next 
 
 #### Advanced Functionalities
 - `Multiple Games` : server handles multiple instances of game, all players must have different nicknames.
-- `Disconnection Resilience` : during a game, if a player disconnects, the game will go on without the disconnected player. Eventually they can re-join the match using the same nickname (if the game is still on). If a player disconnects during the setting-up phase (choosing of leader cards and initial resources),the game is taken down and the players are invited to reconnect in another match.
+- `Disconnection Resilience` : during a game, if a player disconnects, the game will go on without the disconnected player. Eventually they can re-join the match using the same nickname (if the game is still on). If a player disconnects during the setting-up phase (choosing of leader cards and initial resources), the game is taken down and the players are invited to reconnect in another match. After a player disconnection during the game, if there is only one active player left, the game is taken down and the active player wins the game. 
 - `Local Game` : if you want, you can play a single-player game locally (without using socket-connection).
 
 #### Extra Functionalities
