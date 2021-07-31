@@ -24,11 +24,8 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
     private final List<Object> C2SMessages;
     private final List<Object> S2CMessages;
 
-    private volatile boolean ready;
-
     public LocalNetworkHandler(View view) {
         this.view = view;
-        this.ready = false;
         this.S2CMessages = Collections.synchronizedList(new LinkedList<>());
         this.C2SMessages = Collections.synchronizedList(new LinkedList<>());
         serverMessagesManager = new ServerMessagesManager(view);
@@ -42,6 +39,7 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
     public void updateMessage(Message message) throws IOException {
         synchronized (C2SMessages){
             C2SMessages.add(message);
+            C2SMessages.notifyAll();
         }
     }
 
@@ -50,7 +48,6 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
      */
     @Override
     public void updateConnection(String ip, String port) {
-        ready = true;
         System.out.println("[LOCAL HANDLER]: Local connection established");
     }
 
@@ -61,23 +58,18 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
      */
     @Override
     public void closeConnection() {
-
         synchronized (C2SMessages){
             C2SMessages.clear();
+            C2SMessages.notifyAll();
         }
         synchronized (S2CMessages){
             S2CMessages.clear();
+            S2CMessages.notifyAll();
         }
         System.out.println("[LOCAL HANDLER]: Local connection closed.");
     }
 
-    @Override
-    public void run() {
-        synchronized (this) {
-            while (!ready) {
-            }
-        }
-
+    private void createLocalGame(){
         try{
             System.out.println("[LOCAL HANDLER]: Creating a local game...");
             LocalGameServer localGameServer = new LocalGameServer(C2SMessages, S2CMessages);
@@ -85,24 +77,33 @@ public class LocalNetworkHandler implements Runnable, NetworkHandler {
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
 
+    private void listenToServer(){
         try{
             while (true) {
                 synchronized (S2CMessages){
                     if (S2CMessages.size() > 0){
-
                         Object inputObject = S2CMessages.get(0);
                         S2CMessages.remove(0);
                         serverMessagesManager.manageInputFromServer(inputObject);
                         if((inputObject instanceof WinnerMessage) || (inputObject instanceof RemoveClientForErrors))
                             break;
                     }
+                    if (S2CMessages.isEmpty())
+                        S2CMessages.wait();
                 }
             }
-        } catch(NoSuchElementException e) {
+        } catch(NoSuchElementException | InterruptedException e) {
             view.displayNetworkError();
         } finally {
             closeConnection();
         }
+    }
+
+    @Override
+    public void run() {
+        createLocalGame();
+        listenToServer();
     }
 }

@@ -20,6 +20,7 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
     private Message answer;
     private final List<Object> C2SMessages;
     private final List<Object> S2CMessages;
+    private final Object lock;
 
     public LocalClientHandler(List<Object>C2SMessages,List<Object>S2CMessages) {
         this.C2SMessages = C2SMessages;
@@ -27,6 +28,7 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
         this.connected = true;
         this.myTurn = false;
         this.answerReady = false;
+        this.lock = new Object();
     }
 
     public void setMyTurn (boolean myTurn) {
@@ -40,6 +42,7 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
     public void send(Object object){
         synchronized (S2CMessages){
             S2CMessages.add(object);
+            S2CMessages.notifyAll();
         }
     }
 
@@ -58,9 +61,11 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
         connected = false;
         synchronized (C2SMessages){
             C2SMessages.clear();
+            C2SMessages.notifyAll();
         }
         synchronized (S2CMessages){
             S2CMessages.clear();
+            S2CMessages.notifyAll();
         }
     }
 
@@ -80,13 +85,18 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
                                 if (myTurn) {
                                     answer = fromClient;
                                     answerReady = true;
+                                    synchronized (lock){
+                                        lock.notifyAll();
+                                    }
                                 } else {
                                     send(new WrongTurnMessage());
                                 }
                             }
                         }
+                        if (C2SMessages.isEmpty())
+                            C2SMessages.wait();
                     }
-                } catch (NullPointerException | IllegalArgumentException e) {
+                } catch (NullPointerException | IllegalArgumentException | InterruptedException e) {
                     System.out.println("[LOCAL-HANDLER] "+userNickname+"-local connection closed");
                     closeConnection();
                     notifyDisconnection(this);
@@ -102,8 +112,14 @@ public class LocalClientHandler extends ConnectionObservable implements ClientHa
      * @return message sent from client
      */
     public Message read() {
-        while (!answerReady) {
-
+        synchronized (lock){
+            while (!answerReady) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         answerReady = false;
         return answer;
