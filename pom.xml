@@ -30,18 +30,18 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>15</version>
+      <version>19</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <version>15</version>
+      <version>19</version>
       <classifier>win</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <version>15</version>
+      <version>19</version>
       <classifier>linux</classifier>
     </dependency>
     <dependency>
@@ -53,7 +53,7 @@
       <dependency>
           <groupId>org.openjfx</groupId>
           <artifactId>javafx-media</artifactId>
-          <version>15</version>
+          <version>19</version>
           <classifier>win</classifier>
       </dependency>
       <dependency>
