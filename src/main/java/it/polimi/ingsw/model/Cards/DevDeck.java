@@ -416,7 +416,7 @@ public class DevDeck extends Deck{
         costThree.add(new QuantityResource(SERVANT,7));
         powerInputThree.add(new QuantityResource(COIN,1));
         powerOutputThree.add(new QuantityResource(STONE,1));
-        powerInputThree.add(new QuantityResource(FAITH,3));
+        powerOutputThree.add(new QuantityResource(FAITH,3));
         costFour.add(new QuantityResource(SERVANT,4));
         costFour.add(new QuantityResource(SHIELD,4));
         powerInputFour.add(new QuantityResource(COIN,1));
